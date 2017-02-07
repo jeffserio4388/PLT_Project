@@ -77,7 +77,11 @@ the file extension.
 %\setcounter{section}{3}
 
 \section{Motivation}
-\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as java, python, and C++ offering concurrent programming mechanisms as part of their API. However, they tend to be too complicated and clunky for most programmers. Node.js and go are the two programming languages that have been the most successfull at streamlining this process, offering several easy to understand mechanisms for concurrent programming. It is the streamlined mechanisms that have inspired the conception of Pipeline and it is our goal to offer a language for concurrent asynchronous programming.
+\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as Java, Python, and C++ offering concurrent programming mechanisms as part of their APIs. However, they tend to be complicated - sometimes necessarily - and invite a host of additional concerns like atomicity. And of course, complexity of code is strongly correlated with bugs. 
+
+Node.js has emerged as a framework with a unique approach toward asynchronous programming - the single-threaded (but not really) asynchronous programming. The event-driven architecture of Node.js and nonblocking I/O API makes it a perfect fit for backend web development.
+
+We want to build a simple language that encompasses these features from Javascript and the Node.js framework - easy asynchronous programming using the event-driven architecture and a speedy I/O API.
 
 \section{Description of Pipeline}
 \hspace{0.5cm} The main influence of Pipeline is the promises object of NodeJs, and the lower-level yet easy to understand C-like syntax of go. Pipeline aims to take the NodeJs concurrency model and create a lower-level syntax like go. Pipeline will of course center around a "pipeline", which will act in a very similar way to the promises object of NodeJs. The pipeline will allow the programmer to pipe functions together synchronously that depend on the succesive outputs of the previous functions, but will execute it asynchronously from the main body of code. 
