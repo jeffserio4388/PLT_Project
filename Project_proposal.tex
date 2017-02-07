@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[headsepline,plainheadsepline]{scrpage2}
-\usepackage{changepage} 
+\usepackage{changepage}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{comment}
@@ -39,18 +39,18 @@
 % The comment bellow has a list of usefull commands
 \begin{comment}
 If you want a box around your answer and that answer is an
-equation then use \boxed{$$ equation $$} 
+equation then use \boxed{$$ equation $$}
 
 if you want to indent a block of text:
 \begin{adjustwidth}{cm of right indent}{cm of left indent}
 % paragraph to be indented
 \end{adjustwidth}
 
-if you just want one indent for one line 
+if you just want one indent for one line
 use \indent per intended indent per line
 
-A sections numbers automatically, so if the number of 
-the problem is out of order it would be easier to 
+A sections numbers automatically, so if the number of
+the problem is out of order it would be easier to
 just indent and bold the sections and subsections
 and not use the \section{} kind of commands
 
@@ -72,24 +72,41 @@ the file extension.
 \thispagestyle{empty}
 %\newpage
 % If you want to change how the subsubsection's are numbered
-\renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}.} 
+\renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}.}
 
 %\setcounter{section}{3}
 
 \section{Motivation}
-\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as Java, Python, and C++ offering concurrent programming mechanisms as part of their APIs. However, they tend to be complicated - sometimes necessarily - and invite a host of additional concerns like atomicity. And of course, complexity of code is strongly correlated with bugs. 
+\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as Java, Python, and C++ offering concurrent programming mechanisms as part of their APIs. However, they tend to be complicated - sometimes necessarily - and invite a host of additional concerns like atomicity. And of course, complexity of code is strongly correlated with bugs.
 
 Node.js has emerged as a framework with a unique approach toward asynchronous programming - the single-threaded (but not really) asynchronous programming. The event-driven architecture of Node.js and nonblocking I/O API makes it a perfect fit for backend web development.
 
 We want to build a simple language that encompasses these features from Javascript and the Node.js framework - easy asynchronous programming using the event-driven architecture and a speedy I/O API.
 
 \section{Description of Pipeline}
-\hspace{0.5cm} The main influence of Pipeline is the promises object of NodeJs, and the lower-level yet easy to understand C-like syntax of go. Pipeline aims to take the NodeJs concurrency model and create a lower-level syntax like go. Pipeline will of course center around a "pipeline", which will act in a very similar way to the promises object of NodeJs. The pipeline will allow the programmer to pipe functions together synchronously that depend on the succesive outputs of the previous functions, but will execute it asynchronously from the main body of code. 
+\hspace{0.5cm} The main influence of Pipeline is the promises object of NodeJs, and the lower-level yet easy to understand C-like syntax of go. Pipeline aims to take the NodeJs concurrency model and create a lower-level syntax like go. Pipeline will of course center around a "pipeline", which will act in a very similar way to the promises object of NodeJs. The pipeline will allow the programmer to pipe functions together synchronously that depend on the succesive outputs of the previous functions, but will execute it asynchronously from the main body of code.
 
 \section{Pipeline's Features and syntax}
-\subsection{Data types}
-\subsubsection{Primatives}
-\subsubsection{Compound}
+\subsection*{Data types}
+
+\subsubsection*{a. Primatives}\\
+
+\quad\space\space\textbf{int}:Basic integer type, 4 byte in size \\
+
+\textbf{char}: ASCII characters, 1 bytet in size\\
+
+\textbf{float}:Floating point numbers, 4 bytes in size\\
+
+\textbf{pointer}:A memory address stored in a 8 byte\\
+
+\textbf{function}:Takes in parameters and return if needed
+\subsubsection{Compound type}
+
+\quad\space\space\textbf{String}:String type, support basic string manipulation.\\
+
+\textbf{List}:A collection of data supports basic list operation.\\
+
+\textbf{Struct}: set of grouped variables.\\
 \subsection{Loops, and conditionals}
 \subsection{Operators}
 \subsubsection{Basic Operators}
