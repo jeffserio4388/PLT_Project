@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+\usepackage[headsepline,plainheadsepline]{scrpage2}
+\usepackage{changepage} 
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{comment}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\graphicspath{ {images/} }
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+
+% Make sure to change the name of the problem set
+\title{\textbf{Project Proposal:\\ The Pipeline Language}}
+\author{Team: Brandon Bakhshai, Ben Lai, Jeffrey Serio, and Somya Vasudevan \\ UNIs: bab2209, bl2633, jjs2240, and (need Somyas) respectively}
+
+\makeatletter
+  \markboth{\@title}{\@author}
+\makeatother
+
+\pagestyle{scrheadings}
+
+% The comment bellow has a list of usefull commands
+\begin{comment}
+If you want a box around your answer and that answer is an
+equation then use \boxed{$$ equation $$} 
+
+if you want to indent a block of text:
+\begin{adjustwidth}{cm of right indent}{cm of left indent}
+% paragraph to be indented
+\end{adjustwidth}
+
+if you just want one indent for one line 
+use \indent per intended indent per line
+
+A sections numbers automatically, so if the number of 
+the problem is out of order it would be easier to 
+just indent and bold the sections and subsections
+and not use the \section{} kind of commands
+
+\newpage makes a new page
+
+$normal math mode$
+$$Special math mode$$
+
+to include an image use
+\includegraphics{image_name}
+image_name is the file name (.png) without the extension. The file
+name cannot have any spaces or any periods other than the one before
+the file extension.
+
+\end{comment}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+%\newpage
+% If you want to change how the subsubsection's are numbered
+\renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}.} 
+
+%\setcounter{section}{3}
+
+\section{Motivation}
+\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as java, python, and C++ offering concurrent programming mechanisms as part of their API. However, they tend to be too complicated and clunky for most programmers. Node.js and go are the two programming languages that have been the most successfull at streamlining this process, offering several easy to understand mechanisms for concurrent programming. It is the streamlined mechanisms that have inspired the conception of Pipeline and it is our goal to offer a language for concurrent asynchronous programming.
+
+\section{Description of Pipeline}
+\hspace{0.5cm} The main influence of Pipeline is the promises object of NodeJs, and the lower-level yet easy to understand C-like syntax of go. Pipeline aims to take the NodeJs concurrency model and create a lower-level syntax like go. Pipeline will of course center around a "pipeline", which will act in a very similar way to the promises object of NodeJs. The pipeline will allow the programmer to pipe functions together synchronously that depend on the succesive outputs of the previous functions, but will execute it asynchronously from the main body of code. 
+
+\section{Pipeline's Features and syntax}
+\subsection{Data types}
+\subsubsection{Primatives}
+\subsubsection{Compound}
+\subsection{Loops, and conditionals}
+\subsection{Operators}
+\subsubsection{Basic Operators}
+\subsubsection{Comperison and conditional operators}
+\subsubsection{declaration and assignment operators}
+\subsubsection{Pipeline operators}
+
+
+\section{Example Program}
+\begin{lstlisting}
+this
+	that
+\end{lstlisting}
+%\setcounter{subsection}{1}
+%\section{Language Description}
+% put indent but not necessary
+%\subsection{Motivation}
+%like to indent here 2cm is a good indent but 1cm's standard
+%\begin{adjustwidth}{1cm}{}
+%blah blah blah
+%\end{adjustwidth}
+
+%just cut and paste the previous for any ne subsections
+
+\end{document}
