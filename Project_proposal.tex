@@ -87,7 +87,9 @@ We want to build a simple language that encompasses these features from Javascri
 
 \hspace{0.5cm} The asynchronous programming model takes after that of Node.js, while the syntax is more like that of Go. The way chains of functions which depend on the results of the previous function are handled is in a manner similar to Promises from Javascript, except we use the pipe ("|") syntax from bash shell. A chain of blocking functions which rely on each other is written as follows:
 
+\begin{lstlisting}
 firstDoThis() | secondDoThis(_) | thirdDoThis(_) | fourthDoThis(_) || errorHandler();
+\end{lstlisting}
 
 As soon as firstDoThis() blocks, the program will continue on to the next line, without executing secondDoThis(). Only when firstDoThis() returns does secondDoThis() run with the return value of firstDoThis(). If there is an error in any function, then the pipeline jumps to errorHandler().
 
@@ -96,7 +98,7 @@ The language is designed for web-based programming, leveraging features like non
 \section{Pipeline's Features and syntax}
 \subsection*{Data types}
 
-\subsubsection*{a. Primatives}\\
+\subsubsection*{a. Primatives}
 
 \quad\space\space\textbf{int}:Basic integer type, 4 byte in size \\
 
