@@ -84,7 +84,13 @@ Node.js has emerged as a framework with a unique approach toward asynchronous pr
 We want to build a simple language that encompasses these features from Javascript and the Node.js framework - easy asynchronous programming using the event-driven architecture and a speedy I/O API.
 
 \section{Description of Pipeline}
-\hspace{0.5cm} The main influence of Pipeline is the promises object of NodeJs, and the lower-level yet easy to understand C-like syntax of go. Pipeline aims to take the NodeJs concurrency model and create a lower-level syntax like go. Pipeline will of course center around a "pipeline", which will act in a very similar way to the promises object of NodeJs. The pipeline will allow the programmer to pipe functions together synchronously that depend on the succesive outputs of the previous functions, but will execute it asynchronously from the main body of code. 
+\hspace{0.5cm} The asynchronous programming model takes after that of Node.js, while the syntax is more like that of Go. The way chains of functions which depend on the results of the previous function are handled is in a manner similar to Promises from Javascript, except we use the pipe ("|") syntax from bash shell. A chain of blocking functions which rely on each other is written as follows:
+
+firstDoThis() | secondDoThis(_) | thirdDoThis(_) | fourthDoThis(_) || errorHandler();
+
+As soon as firstDoThis() blocks, the program will continue on to the next line, without executing secondDoThis(). Only when firstDoThis() returns does secondDoThis() run with the return value of firstDoThis(). If there is an error in any function, then the pipeline jumps to errorHandler().
+
+The language is designed for web-based programming, leveraging features like non-blocking I/O for external client communication. 
 
 \section{Pipeline's Features and syntax}
 \subsection{Data types}
