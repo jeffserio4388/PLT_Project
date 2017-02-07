@@ -77,100 +77,102 @@ the file extension.
 %\setcounter{section}{3}
 
 \section{Motivation}
-\hspace{0.5cm} Concurrent programming has become a very important paradigm in modern times, with mainstream languages such as Java, Python, and C++ offering concurrent programming mechanisms as part of their APIs. However, they tend to be complicated - sometimes necessarily - and invite a host of additional concerns like atomicity. And of course, complexity of code is strongly correlated with bugs.
+\hspace{0.5cm} Concurrent programming has become a very important paradigm in 
+modern times, with mainstream languages such as Java, Python, and C++ offering 
+concurrent programming mechanisms as part of their APIs. However, they tend to 
+be complicated - sometimes necessarily - and invite a host of additional 
+concerns like atomicity. And of course, complexity of code is strongly 
+correlated with bugs.
 
-Node.js has emerged as a framework with a unique approach toward asynchronous programming - the single-threaded (but not really) asynchronous programming. The event-driven architecture of Node.js and nonblocking I/O API makes it a perfect fit for backend web development.
+Node.js has emerged as a framework with a unique approach toward asynchronous 
+programming - the single-threaded (but not really) asynchronous programming. 
+The event-driven architecture of Node.js and nonblocking I/O API makes it a 
+perfect fit for backend web development.
 
-We want to build a simple language that encompasses these features from Javascript and the Node.js framework - easy asynchronous programming using the event-driven architecture and a speedy I/O API.
+We want to build a simple language that encompasses these features from 
+Javascript and the Node.js framework - easy asynchronous programming using the 
+event-driven architecture and a speedy I/O API.
 
 \section{Description of Pipeline}
 
-\hspace{0.5cm} The asynchronous programming model takes after that of Node.js, while the syntax is more like that of Go. The way chains of functions which depend on the results of the previous function are handled is in a manner similar to Promises from Javascript, except we use the pipe ("|") syntax from bash shell. A chain of blocking functions which rely on each other is written as follows:
+\hspace{0.5cm} The asynchronous programming model takes after that of Node.js, 
+while the syntax is more like that of Go. The way chains of functions which 
+depend on the results of the previous function are handled is in a manner 
+similar to Promises from Javascript, except we use the pipe ("|") syntax from 
+bash shell. A chain of blocking functions which rely on each other is written 
+as follows:
 
 \begin{lstlisting}
 firstDoThis() | secondDoThis(_) | thirdDoThis(_) | fourthDoThis(_) || errorHandler();
 \end{lstlisting}
 
-As soon as firstDoThis() blocks, the program will continue on to the next line, without executing secondDoThis(). Only when firstDoThis() returns does secondDoThis() run with the return value of firstDoThis(). If there is an error in any function, then the pipeline jumps to errorHandler().
+As soon as firstDoThis() blocks, the program will continue on to the next line, 
+without executing secondDoThis(). Only when firstDoThis() returns does 
+secondDoThis() run with the return value of firstDoThis(). If there is an 
+error in any function, then the pipeline jumps to errorHandler().
 
-The language is designed for web-based programming, leveraging features like non-blocking I/O for external client communication. 
+The language is designed for web-based programming, leveraging features like 
+non-blocking I/O for external client communication. 
 
 \section{Pipeline's Features and syntax}
 \subsection*{Data types}
 
 \subsubsection*{a. Primatives}
 
-\quad\space\space\textbf{int}:Basic integer type, 4 byte in size \\
-
+\begin{adjustwidth}{1cm}{}
+\textbf{int}:Basic integer type, 4 byte in size \\
 \textbf{char}: ASCII characters, 1 bytet in size\\
-
 \textbf{float}:Floating point numbers, 4 bytes in size\\
-
 \textbf{pointer}:A memory address stored in a 8 byte\\
-
 \textbf{function}:Takes in parameters and return if needed
+\end{adjustwidth}
+
 \subsubsection{Compound type}
 
-\quad\space\space\textbf{String}:String type, support basic string manipulation.\\
-
+\begin{adjustwidth}{1cm}{}
+\textbf{String}:String type, support basic string manipulation.\\
 \textbf{List}:A collection of data supports basic list operation.\\
-
 \textbf{Struct}: set of grouped variables.\\
-
+\end{adjustwidth}
 \subsection{Control Flow:}
+\begin{adjustwidth}{1cm}{}
+\textbf {if - else - if else: } \\
+if condition \{
 
-\quad\qquad \textbf {if - else - if else: } \\
-
-\qquad\qquad if condition:
-
-\qquad\qquad\qquad \#statements\\
-
-\qquad\qquad else if condition:
-
-\qquad\qquad\qquad \#statements\\
-
-\qquad\qquad else condition:
-
-\qquad\qquad\qquad \#statements
-
-\qquad \textbf{for -} It is a control flow statement for iterations. Syntax :  for init; condition; inc/dec: \\
-
-\qquad \textbf{while -} while (condition) \{statements;\}\\
-
-\qquad \textbf{break -} breaks the control flow out of loop \\
-
-\qquad \textbf{continue -} forces the next iteration of the loop to take place, skipping any code in between. \\
-
-\qquad \textbf{return} terminates the execution of a function and returns control to the calling function.
+\indent \indent \#statements\\
+\} else if condition \{\\
+\indent \indent \#statements\\
+\} else condition \{ \\
+\indent \indent \#statements\\
+\}\\
+ \textbf{for -} It is a control flow statement for iterations. Syntax :\\ \indent for init; condition; inc/dec \{ statements \} \\
+\textbf{while -} while (condition) \{statements;\}\\
+\textbf{break -} breaks the control flow out of loop \\
+\textbf{continue -} forces the next iteration of the loop to take place, skipping any code in between. \\
+\textbf{return} terminates the execution of a function and returns control to the calling function.
+\end{adjustwidth}
 
 \subsection{Operators}
 
-\qquad \qquad \textbf{Arithmetic:}+,=,*,/,\%\\
-
-\qquad \textbf{Assignment:} =, + =, − =, ∗ =, / =, \% =\\
-
-\qquad \textbf{Comparison:} ==, !=, <=, >= \\
-
-\qquad \textbf{Increment/Decrement:} ++, - - \\
-
-\qquad \textbf{Logical:} AND, OR, NOT
+\begin{adjustwidth}{1cm}{}
+\textbf{Arithmetic:} we use the standard C operators +,=,*,/,\%\\
+\textbf{Assignment:} =, +=, −=, ∗=, /=, \%=\\
+\textbf{Comparison:} ==, !=, <=, >= \\
+\textbf{Increment/Decrement:} ++, - - \\
+\textbf{Logical:} (these are the only operators that differ from c) and, or, not
+\end{adjustwidth}
 
 \subsection{ Keywords}
-\qquad \qquad \textbf {null -} The return statement terminates the execution of a function and returns control to the calling function.\\
-
-\qquad \textbf{/*....*/ - } Comments \\ 
-
-\qquad \textbf{@ - } Dereferencing \\ 
-
-\qquad \textbf{* -} Referencing\\ 
- 
-\qquad $\mathbf{\vert \ -}$ Pipeline operator\\ 
-
-\qquad $\mathbf{\vert \vert \ -}$  Error Handler at the end of a pipelineg\\
-
-\qquad \textbf{pipe -} feed returned pipe data into here\\ 
-
-\qquad \textbf{. -} Name space indicator\\
+\begin{adjustwidth}{1cm}{}
+\textbf {null -} The return statement terminates the execution of a function and returns control to the calling function.\\
+\textbf{/*....*/ - } Comments \\ 
+\textbf{@ - } Dereferencing \\ 
+\textbf{* -} Referencing\\ 
+$\mathbf{\vert \ -}$ Pipeline operator\\ 
+$\mathbf{\vert \vert \ -}$  Error Handler at the end of a pipelineg\\
+\textbf{pipe -} feed returned pipe data into here\\ 
+\textbf{. -} Name space indicator\\
+\end{adjustwidth}
 
 
 \section{Example Programs}
@@ -205,13 +207,14 @@ function gcd(int a, int b)(int)
 function main(void)(int)
 {
 	/* Here is one way to type it */
-	pipe gcd(a, b)| gcd(1031940, pipe)| gcd(49980, pipe)| printf("gcd: %d", pipe);
+	pipe gcd(a, b)| gcd(1031940, pipe)| gcd(49980, pipe)| printf("gcd: %d", pipe) || printf("invalid numbers");
 	
 	/* Here is an alternative way to type the same thing*/
 	pipe gcd(a, b)|
 	gcd(1031940, pipe)|
 	gcd(49980, pipe)|
-	printf("gcd_2: %d", pipe);
+	printf("gcd_2: %d", pipe)||
+	printf("invalid numbers");
 	
 	/* the idea is that these two pipes will be executed asynchronously, but
 	 * the functions inside the pipe will be executed synchronously */
@@ -245,7 +248,8 @@ function main()(int)
 	perror("pipe failed");
 	
 }	
-\end{lstlisting}\section{Example Programs}
+\end{lstlisting}
+\section{Example Programs}
 \subsection{simple program}
 \begin{lstlisting}
 function gcd(int a, int b)(int)
