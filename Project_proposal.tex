@@ -28,7 +28,7 @@
 
 % Make sure to change the name of the problem set
 \title{\textbf{Project Proposal:\\ The Pipeline Language}}
-\author{Team: Brandon Bakhshai, Ben Lai, Jeffrey Serio, and Somya Vasudevan \\ UNIs: bab2209, bl2633, jjs2240, and sv2500}
+\author{\textbf{Team:} Brandon Bakhshai (bab2209), Ben Lai (bl2633), Jeffrey Serio (jjs2240),\\ and Somya Vasudevan (sv2500)}% \\ UNIs: bab2209, bl2633, jjs2240, and sv2500}
 
 \makeatletter
   \markboth{\@title}{\@author}
@@ -98,7 +98,7 @@ event-driven architecture and a speedy I/O API.
 \hspace{0.5cm} The asynchronous programming model takes after that of Node.js, 
 while the syntax is more like that of Go. The way chains of functions which 
 depend on the results of the previous function are handled is in a manner 
-similar to Promises from Javascript, except we use the pipe ("|") syntax from 
+similar to Promises from Javascript, except we use the pipe, "$\vert$", syntax from 
 bash shell. A chain of blocking functions which rely on each other is written 
 as follows:
 
@@ -174,35 +174,27 @@ $\mathbf{\vert \vert \ -}$  Error Handler at the end of a pipelineg\\
 \textbf{. -} Name space indicator\\
 \end{adjustwidth}
 
-
+\newpage
 \section{Example Programs}
 \subsection{simple program}
+This program is to give the reader an example of how we intend the syntax to be. It is a simple GCD function, and it shows how the pipes are to run asynchronously from eachothe.
 \begin{lstlisting}
 function gcd(int a, int b)(int)
 {
-	if a < 0 {
-		a = -a;
-	}
-	if b < 0 {
-		b = -b;
-	}
+	if a < 0 { a = -a;}
+	if b < 0 { b = -b;}
 	if b > a {
 		int temp = a;
 		a = b;
 		b = temp;
 	}
 	while 1 {
-		if b == 0 {
-			return a;
-		}
+		if b == 0 { return a;}
 		a = a % b;
-		if a == 0 {
-			return b;		
-		}
+		if a == 0 { return b;}
 		b = b % a;
 	}
 }
-
 
 function main(void)(int)
 {
@@ -215,13 +207,15 @@ function main(void)(int)
 	gcd(49980, pipe)|
 	printf("gcd_2: %d", pipe)||
 	printf("invalid numbers");
-	
+
 	/* the idea is that these two pipes will be executed asynchronously, but
 	 * the functions inside the pipe will be executed synchronously */
 }
 
 \end{lstlisting}
+\begin{comment}
 \subsection{Simple Server Example}
+This example is to give the reader an example of how Pipeline can used for web developement.
 \begin{lstlisting}
 /* assuming listen, and reply are already defined socket api
  * and that stripe has an api for Pipeline*/
@@ -249,6 +243,7 @@ function main()(int)
 	
 }	
 \end{lstlisting}
+\end{comment}
 %\setcounter{subsection}{1}
 %\section{Language Description}
 % put indent but not necessary
