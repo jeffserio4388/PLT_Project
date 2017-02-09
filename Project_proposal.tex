@@ -75,46 +75,78 @@ the file extension.
 \renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}.}
 
 %\setcounter{section}{3}
+\section{Team Structure}
+\textbf{Architecture Guru:} Brandon Bakhshai (bab2209)\\
+\textbf{Language Guru:} Ben Lai (bl2633)\\
+\textbf{Team Manager:} Jeffrey Serio (jjs2240)\\
+\textbf{Tester:} Somya Vasudevan (sv2500)
 
 \section{Motivation}
 \hspace{0.5cm} Concurrent programming has become a very important paradigm in 
 modern times, with mainstream languages such as Java, Python, and C++ offering 
 concurrent programming mechanisms as part of their APIs. However, they tend to 
 be complicated - sometimes necessarily - and invite a host of additional 
-concerns like atomicity. And of course, complexity of code is strongly 
-correlated with bugs.
-
-Node.js has emerged as a framework with a unique approach toward asynchronous 
+concerns like atomicity. Node.js has emerged as a framework with a unique approach toward asynchronous 
 programming - the single-threaded (but not really) asynchronous programming. 
 The event-driven architecture of Node.js and nonblocking I/O API makes it a 
 perfect fit for backend web development.
 
-We want to build a simple language that encompasses these features from 
+Our intent with Pipeline is to build a simple language that encompasses these features from 
 Javascript and the Node.js framework - easy asynchronous programming using the 
 event-driven architecture and a speedy I/O API.
 
 \section{Description of Pipeline}
+\hspace{0.5cm} Pipeline is a structured inperative C-style language that incorporates the asynchronous programming model of Node.js in the form of a pipeline. Pipeline expands on the idea of Javascript's promises, and maked this concept central to the design of the language in the form of a pipeline. A pipeline allows the programmer to chain functions together that must run synchronously and handle them asynchronously from the body of code in which it resides -- a manner similar to Promises from Javascript, except with a more convienient syntax. 
 
-\hspace{0.5cm} The asynchronous programming model takes after that of Node.js, 
-while the syntax is more like that of Go. The way chains of functions which 
-depend on the results of the previous function are handled is in a manner 
-similar to Promises from Javascript, except we use the pipe, "$\vert$", syntax from 
-bash shell. A chain of blocking functions which rely on each other is written 
-as follows:
+\subsection{Implementation Plans}
+\hspace{0.5cm} Pipeline is designed to provide an easy to use mechanism for concurrent programming. The language is designed mostly to be web-based programming, leveraging features like non-blocking I/O for external client communication.
+
+\begin{adjustwidth}{1cm}{}
+\textbf{LLVM IR} Pipeline will compile into LLVM IR, which is capable of running on many achitectures, as well as a built-in optimizer
+and a third-party parallelization optimizer called Polly.\\ \\
+\textbf{Libraries} We plan to use LLVM IR's ability to link C and C++ libraries to support Socket I/O, complex data structures, and web-developement tools.
+
+\end{adjustwidth}
+
+
+\section{Pipeline's Features and syntax}
+\hspace{0.5cm} In pipeline there are two methods to create and use a pipeline. The first is an anonymous pipeline, created with the pipe keyword, the function and the use of the pipe symbol, "$\vert$" from 
+bash shell, in between function calls. This creates a non-blocking asynchronous chain of blocking functions which rely on each other, and is written as follows:
 
 \begin{lstlisting}
-firstDoThis() | secondDoThis(_) | thirdDoThis(_) | fourthDoThis(_) || errorHandler();
+pipe firstDoThis() | secondDoThis(_) | thirdDoThis(_) | fourthDoThis(_) || errorHandler();
 \end{lstlisting}
 
 As soon as firstDoThis() blocks, the program will continue on to the next line, 
 without executing secondDoThis(). Only when firstDoThis() returns does 
 secondDoThis() run with the return value of firstDoThis(). If there is an 
 error in any function, then the pipeline jumps to errorHandler().
+The second way is to create a named pipeline, which allows the programmer the flexibility of interleving function calls that belong to a single pipe, as well as utilize the coupiling feature, which will allow one named pipe to be connected with another one from a specific point. This will allow the progorammer to write a traditional synchrounous program, test it, then group together function calls that could be ran asynchronously at a later time. A named Pipeline is declared with the following syntax:
+\begin{lstlisting}
+Pipeline <name_of_pipeline>;
+/* this will be the syntax for the error handler function*
+<name_of_pipeline> || errorHandler();
+\end{lstlisting}
+Once created any function or anonymous pipe with the name of the Pipeline in front is logically grouped together as a normal pipeline.
+\begin{lstlisting}
+<name_of_pipeline> foo(param);
+<name_of_pipeline> foo'(_)| foo''(_);
+<name_of_pipeline>
+/* they will be logically grouped together and work just like this:
+pipe foo(param)| foo'(_) | foo''(_);
+\end{lstlisting}
 
-The language is designed for web-based programming, leveraging features like 
-non-blocking I/O for external client communication. 
+A coupling will be a way for one named pipeline to feed into another one, and in a blocking manner but at that point. Meaning, at the point in the code in which the coupling is placed, the pipeline that arrives at that point will wait there untill it is able to send or recieve that information, and then both will proceed asynchronously. The syntax will be like so:
+\begin{lstlisting}
 
-\section{Pipeline's Features and syntax}
+Pipeline <From>;
+Pipeline <Into>;
+<From> foo(param);
+<From> coupling <Into> foo'(_);
+<Into> foo''(_);
+<From> foo'(_)| foo''(_);
+/* this will allow A to */
+\end{lstlisting}
 \subsection*{Data types}
 
 \subsubsection*{a. Primatives}
@@ -124,7 +156,10 @@ non-blocking I/O for external client communication.
 \textbf{char}: ASCII characters, 1 bytet in size\\
 \textbf{float}:Floating point numbers, 4 bytes in size\\
 \textbf{pointer}:A memory address stored in a 8 byte\\
-\textbf{function}:Takes in parameters and return if needed
+\textbf{function}:Takes in parameters and return if needed, with the folloing syntax:
+\begin{lstlisting}
+function function_name(type parameter_name, ...) (return_type [optional name]) { #statements }
+\end{lstlisting}
 \end{adjustwidth}
 
 \subsubsection{Compound type}
@@ -137,15 +172,10 @@ non-blocking I/O for external client communication.
 \subsection{Control Flow:}
 \begin{adjustwidth}{1cm}{}
 \textbf {if - else - if else: } \\
-if condition \{
-
-\indent \indent \#statements\\
-\} else if condition \{\\
-\indent \indent \#statements\\
-\} else condition \{ \\
-\indent \indent \#statements\\
-\}\\
- \textbf{for -} It is a control flow statement for iterations. Syntax :\\ \indent for init; condition; inc/dec \{ statements \} \\
+\indent if condition \{ \#statements \}\\
+\indent else if condition \{ \#statements \}\\
+\indent else condition \{ \#statements \}\\
+ \textbf{for -} \\ \indent for init; condition; inc/dec \{ statements \} \\
 \textbf{while -} while (condition) \{statements;\}\\
 \textbf{break -} breaks the control flow out of loop \\
 \textbf{continue -} forces the next iteration of the loop to take place, skipping any code in between. \\
@@ -155,9 +185,8 @@ if condition \{
 \subsection{Operators}
 
 \begin{adjustwidth}{1cm}{}
-\textbf{Arithmetic:} we use the standard C operators +,=,*,/,\%\\
-\textbf{Assignment:} =, +=, −=, ∗=, /=, \%=\\
-\textbf{Comparison:} ==, !=, <=, >= \\
+\textbf{Assignment and Arithmetic:} we use the standard C operators +,=,*,/,\%, =, +=, −=, ∗=, /=, \%=\\
+\textbf{Comparison:} $==,\ !=,\ <=,\ >=$ \\
 \textbf{Increment/Decrement:} ++, - - \\
 \textbf{Logical:} (these are the only operators that differ from c) and, or, not
 \end{adjustwidth}
@@ -174,7 +203,7 @@ $\mathbf{\vert \vert \ -}$  Error Handler at the end of a pipelineg\\
 \textbf{. -} Name space indicator\\
 \end{adjustwidth}
 
-\newpage
+%\newpage
 \section{Example Programs}
 \subsection{simple program}
 This program is to give the reader an example of how we intend the syntax to be. It is a simple GCD function, and it shows how the pipes are to run asynchronously from eachothe.
@@ -196,20 +225,36 @@ function gcd(int a, int b)(int)
 	}
 }
 
+function error(String err_message)() {
+	printf(err_message);
+	exit(1);
+}
+
 function main(void)(int)
-{
-	/* Here is one way to type it */
-	pipe gcd(a, b)| gcd(1031940, pipe)| gcd(49980, pipe)| printf("gcd: %d", pipe) || printf("invalid numbers");
-	
-	/* Here is an alternative way to type the same thing*/
-	pipe gcd(a, b)|
-	gcd(1031940, pipe)|
-	gcd(49980, pipe)|
-	printf("gcd_2: %d", pipe)||
-	printf("invalid numbers");
+{	/* Here is one way to type it */
+	pipe gcd(a, b)| gcd(1031940, pipe)| gcd(49980, pipe)| printf("gcd: %d", pipe) || error("invalid numbers");	
+	pipe gcd(a, b)
+	| gcd(1031940, _)
+	| gcd(49980, _)
+	| printf("gcd_2: %d", _)
+	|| error("invalid numbers"); /* Here is an alternative way to type the same thing*/
 
 	/* the idea is that these two pipes will be executed asynchronously, but
 	 * the functions inside the pipe will be executed synchronously */
+	
+	/* Here are the named pipelines */
+	Pipeline A;
+	Pipeline B;
+	A gcd(a, b);
+	A coupling B gcd(1031940, _); /* Here is the coupling mechanism */
+	B gcd(49980, _);
+	A gcd(49980, _);
+	A printf("gcd_A: %d", _);
+	A || error("oops");
+	B || error("oops");
+	
+	 
+	return 0;
 }
 
 \end{lstlisting}
@@ -217,20 +262,38 @@ function main(void)(int)
 \subsection{Simple Server Example}
 This example is to give the reader an example of how Pipeline can used for web developement.
 \begin{lstlisting}
+
+/* obj is expected to contain e 
+function reply(obj) {
+	var request = obj.request;
+	var response = obj.response;
+	
+	response.send(obj.message);		
+
+
+
+
+}
+
 /* assuming listen, and reply are already defined socket api
  * and that stripe has an api for Pipeline*/
+import "socket_tools"
 function main()(int)
 {
+	
 	while (1) {
-		listen(80)|
+		listen(80) |
 		stripe.charges.create({
 			"amount": 1000,
 			"currency": "usd",
 			"description": "Example charge",
-			"source": token,})|
-			reply(pipe); /*assumes stripe.charges.create returns
+			"source": token,}) |
+		reply(pipe); /*assumes stripe.charges.create returns
 			              *everything needed for the reply */
 	}
+	
+	/* the following uses goback(8) as syntactic sugar for a while loop 
+	 * that runs 8 times */
 	
 	listen(80)|
 	stripe.charges.create({
@@ -244,6 +307,8 @@ function main()(int)
 }	
 \end{lstlisting}
 \end{comment}
+
+
 %\setcounter{subsection}{1}
 %\section{Language Description}
 % put indent but not necessary
