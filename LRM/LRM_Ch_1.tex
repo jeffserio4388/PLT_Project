@@ -53,7 +53,25 @@ ExampleCode(blah, blah)
 
 %\setcounter{page}{0}
 \chapter{Introduction}
-This is some text
+Concurrent programming has become a very important paradigm in 
+modern times, with mainstream languages such as Java, Python, and C++ offering 
+concurrent programming mechanisms as part of their APIs. However, they tend to 
+be complicated - sometimes necessarily - and invite a host of additional 
+concerns like atomicity. Node.js has emerged as a framework with a unique approach toward asynchronous 
+programming - the single-threaded (but not really) asynchronous programming. 
+The event-driven architecture of Node.js and nonblocking I/O API makes it a 
+perfect fit for backend web development.
+
+Our intent with Pipeline is to build a simple language that encompasses these features from 
+Javascript and the Node.js framework - easy asynchronous programming using the 
+event-driven architecture and a speedy I/O API.
+
+\section{About Pipeline}
+Pipeline is a structured inperative C-style language that incorporates the asynchronous programming model of Node.js in the form of a pipeline. Pipeline expands on the idea of Javascript's promises, and maked this concept central to the design of the language in the form of a pipeline. A pipeline allows the programmer to chain functions together that must run synchronously and handle them asynchronously from the body of code in which it resides -- a manner similar to Promises from Javascript, except with a more convienient syntax. 
+
+\section{Your First Programs in Pipeline}
+\subsection{An Oldie But a Goodie: “Hello World”}
+\subsection{Getting to know the Pipeline with GCD}
 
 
 \end{document}
