@@ -52,12 +52,65 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{Statements}
-\section{Declaration}
-\section{Expressions and Assignment}
+\chapter{Control Flow and Pipelines}
 \section{Control Flow}
+As with any imperative programming language, Pipeline has control flow mechanisms. Control flow mechanisms control the order in which statements are executed within a program. Although this definition does not fully apply to Pipeline by design, control flow mechanisms in Pipeline still control the order in which statements are executed both inside of and, to an extent, outside of pipelines.
 \subsection{Conditionals}
+A conditional is a way to decide what action you wish to take based on the given situation. A conditional relies on some given expression that can be evaluated to true or false, or rather in Pipeline, like in C, any expression that can be evaluated to an integer. Pipeline uses the conventions established in C for evaluating an integer as true or false, where ANY non-zero value evaluates to true and only zero(0) evaluates to false.\\
+A conditional statement is written with the \texttt{if} statement followed by the aforementioned conditional statement and encloses the body of its text in curly braces ('\{' and '\}').
+\begin{lstlisting}
+if <conditional expression> { <body_of_statements> }
+\end{lstlisting}
+It can then be followed by the optional \texttt{else if} statement, wich executes its body if the if statement evaluates to false and the \texttt{else if} condition evaluates to true, and/or the \texttt{else} statement which acts as a catch all and executes when no previous condition was true.
+\begin{lstlisting}
+if <conditional expression> {
+	<body_of_statements>
+} else if {
+	<body_of_statements>
+} else {
+	<body_of_statements>
+}
+\end{lstlisting}
 \subsection{Loops}
+Loops are exactly what they sound like; they execute a body of code repeatedly. They are one of the most important tools in an imperative language for they allow the user to automate repetitive processes in an intuitive manner.\\
+Pipeline uses the two most standard types of loops, while and for loops. The while loop works exactly like the conditional if statement, except after it executes its body of code it re-evaluates the expression and if it remains true (non-zero) it repeats the block of code. This continues until the condition becomes false, at which point the program continues past the loop. The loop is constructed with the \texttt{while} keyword as follows:
+\begin{lstlisting}
+while <conditional expression> {
+	<body_of_statements>
+}
+\end{lstlisting}
+\section{Pipelines}
+There are two flavors of pipelines in Pipeline: The anonymous pipeline, and the named pipeline. The anonymous pipeline contains less features than its named counterpart, but it is concise. The named variety offers more features and is more flexible than its anonymous counterpart. The purposes of this section is merely an introduction to the vocabulary of the asynchronous pipeline features, but the use and explaination of asynchronous programming is located in chapter 7.
+\subsection{Anonymous Pipelines}
+An anonymous pipeline creates a non-blocking asynchronous chain of functions which themselves are executed synchronously. Anonymous pipelines are created with the \texttt{pipe} keyword followed by one or more functions joined by the pipe symbol, "$\vert$" from 
+bash shell. At bare minimum requires the \texttt{pipe} keyword and one initial function, and the syntax of an anonymous pipeline is as follows:
+\begin{lstlisting}
+pipe firstDoThis() | secondDoThis() | thirdDoThis() | fourthDoThis() || errorHandler();
+\end{lstlisting}
+As soon as firstDoThis() blocks, the program will continue on to the next line, without executing secondDoThis(). Only when firstDoThis() returns does 
+secondDoThis() run with the return value of firstDoThis(). If there is an 
+error in any function, then the pipeline jumps to errorHandler().
+\subsection{Named Pipelines}
+The second variety is the named pipeline, which allows the programmer the flexibility of interleving function calls that belong to a single pipe, as well as other features, such as coupling, not scene in the Anonymous pipeline. A named Pipeline is declared with the following syntax:
+\begin{lstlisting}
+Pipeline <name_of_pipeline>;
+/* this will be the syntax for the error handler function*
+<name_of_pipeline> || errorHandler();
+\end{lstlisting}
+Once created any function or anonymous pipe with the name of the Pipeline in front is logically grouped together as a normal pipeline.
+\begin{lstlisting}
+<name_of_pipeline> foo(param);
+<name_of_pipeline> foo'(_)| foo''(_);
+<name_of_pipeline>
+/* they will be logically grouped together and work just like this:
+pipe foo(param)| foo'(_) | foo''(_);
+\end{lstlisting}
+
+\subsection{Pipeline Control Flow}
+\subsubsection{goback}
+\subsubsection{Coupling}
+The coupiling feature, which will allow one named pipe to be connected with another one from a specific point. This will allow the progorammer to write a traditional synchrounous program, test it, then group together function calls that could be ran asynchronously at a later time.
+
 
 
 %\subsection{subsection}
