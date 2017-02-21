@@ -52,9 +52,46 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{Expressions and Operatos}
-\section{Assignment}
+\chapter{Operators and Expression}
+\section{Expression}
+In pipeline, a expression must contain at least one operand with any number of operators. Each operator has either one or two operand. Pipeline does not support the (inline if) operator.A expression must be a typed object.\\ 
+\vspace{1mm}\\
+Examples of Expression:\\
+\begin{lstlisting}
+100;
+100+10;
+sqrt(10);
+\end{lstlisting}
+\vspace{5mm}\\
+Group of subexpressions are done by parentheses, the innermost expression is evaluated first. Outermost parentheses is optional.\\
+Example of expression grouping:
+\begin{lstlisting}
+(1+(2+3)-10)*(1-2+(3+1))
+\end{lstlisting}
+\section{Assignment Operator}
+A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand. \\
+Examples of assignment:\\
+\begin{lstlisting}
+int x = 10; 
+float y  =  0.5;  
+float z = 1.0 + 2.5;
+\end{lstlisting}	
+Pipeline also supports compound assignment that combines arithmetic evaluation and assign the result to the left operand. \\
+\pagebreak\\
+Supported compound assignment operators: \\
+\begin{itemize}
+\item +=\\
+Adds the two operands together, and then assign the result of the addition to the left operand.\\
 
+\item -=\\
+Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
+
+\item *=\\
+Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
+
+\item /=\\
+Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
+\end{itemize}
 \section{Arithmetic Operations}
 \section{Boolean Expressions}
 \section{Pointers and References}
