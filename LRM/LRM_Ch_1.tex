@@ -95,12 +95,12 @@ function gcd(int a, int b)(int)
 	}
 }
 
-function error(String err_message)() {
+fun error(String err_message)() {
 	printf(err_message);
 	exit(1);
 }
 
-function main(void)(int)
+fun main(void)(int)
 {	/* Here is one way to type it */
 	pipe gcd(a, b)| gcd(1031940, pipe)| gcd(49980, pipe)| printf("gcd: %d", pipe) || error("invalid numbers");	
 	pipe gcd(a, b)
@@ -111,20 +111,7 @@ function main(void)(int)
 
 	/* the idea is that these two pipes will be executed asynchronously, but
 	 * the functions inside the pipe will be executed synchronously */
-	
-	/* Here are the named pipelines */
-	Pipeline A;
-	Pipeline B;
-	A gcd(a, b);
-	A coupling B gcd(1031940, _); /* Here is the coupling mechanism */
-	B gcd(49980, _);
-	A gcd(49980, _);
-	A printf("gcd_A: %d", _);
-	A || error("oops");
-	B || error("oops");
-	
-	 
-	return 0;
+
 }
 
 \end{lstlisting}

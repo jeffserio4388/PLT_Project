@@ -105,12 +105,24 @@ Once created any function or anonymous pipe with the name of the Pipeline in fro
 /* they will be logically grouped together and work just like this:
 pipe foo(param)| foo'(_) | foo''(_);
 \end{lstlisting}
-
+\begin{comment}
 \subsection{Pipeline Control Flow}
+Pipes have their own control flow mechanisms, gobacks and couplings which allow the programmer to 
 \subsubsection{goback}
 \subsubsection{Coupling}
 The coupiling feature, which will allow one named pipe to be connected with another one from a specific point. This will allow the progorammer to write a traditional synchrounous program, test it, then group together function calls that could be ran asynchronously at a later time.
+\begin{lstlisting}
+Pipeline <From>;
+Pipeline <Into>;
+<From> foo(param);
+<From> coupling <Into> foo'(_);
+<Into> foo''(_);
+<From> foo'(_)| foo''(_);
+/* this will allow A to */
+\end{lstlisting}
+\subsection*{Data types}
 
+\end{comment}
 
 
 %\subsection{subsection}
