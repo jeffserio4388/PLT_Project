@@ -1,27 +1,4 @@
-\documentclass[11pt, oneside]{book}
-\usepackage{subfiles}
-\usepackage{mystyle}
-
-
-\graphicspath{ {images/} }
-\lstset{frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{dkgreen},
-  stringstyle=\color{mauve},
-  breaklines=true,
-  breakatwhitespace=true,
-  tabsize=4
-}
-\newlength{\drop}
-
-% The comment bellow has a list of usefull commands
+\documentclass[./LRM_main.tex]{subfiles}
 \begin{comment}
 If you want a box around your answer and that answer is an
 equation then use \boxed{$$ equation $$} 
@@ -65,26 +42,24 @@ ExampleCode(blah, blah)
 \end{comment}
 
 \begin{document}
-
-\frontmatter
-
-\subfile{LRM_title}
-
-\tableofcontents
-
-\mainmatter
-
-\subfile{LRM_Ch_1}
-\subfile{LRM_Ch_2}
-\subfile{LRM_Ch_3}
-\subfile{LRM_Ch_4}
-\subfile{LRM_Ch_5}
-\subfile{LRM_Ch_6}
-\subfile{LRM_Ch_7}
-\subfile{LRM_Ch_8}
-
-\begin{appendix}
-\subfile{LRM_Appendix}
-\end{appendix}
+  \begin{titlepage}
+    \drop=0.1\textheight
+    \centering
+    \vspace*{\baselineskip}
+%    \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
+    \rule{\textwidth}{3pt}\\[\baselineskip]
+    {\Huge PIPELINE \\[0.3\baselineskip] LANGUAGE RESOURCE MANUAL}\\[0.2\baselineskip]
+%    \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+    \rule{\textwidth}{3pt}\\[\baselineskip]
+    \scshape
+    \vspace*{2\baselineskip}
+    By Team Pipe Dream: \\ %[\baselineskip]
+    {\Large Brandon Bakhshai (bab2209) \\ Ben Lai (bl2633) \\ 
+    Jeffrey Serio (jjs2240) \\ Somya Vasudevan (sv2500) \par}
+%    {\itshape Columbia University\par}
+    \vfill
+    {\scshape Spring 2017} \ {\large COMS W4115: Programming Languages and translators}\par
+  \end{titlepage}
+  
 \end{document}
 

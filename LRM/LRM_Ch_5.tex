@@ -79,6 +79,7 @@ while <conditional expression> {
 	<body_of_statements>
 }
 \end{lstlisting}
+\begin{comment}
 \section{Pipelines}
 There are two flavors of pipelines in Pipeline: The anonymous pipeline, and the named pipeline. The anonymous pipeline contains less features than its named counterpart, but it is concise. The named variety offers more features and is more flexible than its anonymous counterpart. The purposes of this section is merely an introduction to the vocabulary of the asynchronous pipeline features, but the use and explaination of asynchronous programming is located in chapter 7.
 \subsection{Anonymous Pipelines}
@@ -111,7 +112,7 @@ Pipes have their own control flow mechanisms, gobacks and couplings which allow 
 \subsubsection{goback}
 \subsubsection{Coupling}
 The coupiling feature, which will allow one named pipe to be connected with another one from a specific point. This will allow the progorammer to write a traditional synchrounous program, test it, then group together function calls that could be ran asynchronously at a later time.
-\begin{lstlisting}
+
 Pipeline <From>;
 Pipeline <Into>;
 <From> foo(param);

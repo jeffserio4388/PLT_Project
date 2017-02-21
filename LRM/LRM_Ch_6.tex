@@ -69,7 +69,7 @@ A function need not take any parameters, nor need it return any values.
 \subsection{Declaration}
 In Pipeline, as in C, the function must exist before it is called to be used. Meaning, you cannot call any function within any other function unless it has been explicitly stateted previous to that function was defined. A function declaration allows the programmer to declare a function exists before he/she has defined the function itself. A function declaration is almost identical to the above function definition, except that instead of curly braces and a code body, there is only a semicolon:
 \begin{lstlisting}
-fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type_1,..., ret_type_n)
+fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 {
 	<body of code>
 }
@@ -78,20 +78,15 @@ fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type_1,..., ret
 Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.
 \subsection{The "main" function}
 The main function is the function that is executed at run time. The main function has as parameters char *string and int argc, which are related to the command-line arguments provided at run-time. The argv variable holds a pointer to the array of the strings typed by the user at run-time, the first of which is always the name of the executable, and the argc variable is the number of those arguments including the executable name.
+\section{Function Scope}
+
 \section{Decorators and Function Pointers}
-\subsection{Function Pointers}
+\section{Function Pointers}
 \subsection{Decorators}
 \section{Standard Library}
 \subsection{Built-in functions}
 Pipeline comes with several built-in functions in its standard library. 
-\begin{table}
-    \begin{tabular}{lll}
-    this & that & the other \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    \end{tabular}
-\end{table}
+
 
 \begin{comment}
 sizeof
