@@ -56,21 +56,23 @@ ExampleCode(blah, blah)
 \section{Expression}
 In pipeline, a expression must contain at least one operand with any number of operators. Each operator has either one or two operand. Pipeline does not support the (inline if) operator.A expression must be a typed object.\\ 
 \vspace{1mm}\\
-Examples of Expression:\\
+Examples of Expression:
 \begin{lstlisting}
 100;
 100+10;
 sqrt(10);
 \end{lstlisting}
-\vspace{5mm}\\
+\vspace{1 mm}
 Group of subexpressions are done by parentheses, the innermost expression is evaluated first. Outermost parentheses is optional.\\
+\vspace{1 mm}\\
 Example of expression grouping:
 \begin{lstlisting}
 (1+(2+3)-10)*(1-2+(3+1))
 \end{lstlisting}
 \section{Assignment Operator}
-A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand. \\
-Examples of assignment:\\
+A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand.\\
+\vspace{1 mm}\\
+Examples of assignment:
 \begin{lstlisting}
 int x = 10; 
 float y  =  0.5;  
@@ -82,17 +84,35 @@ Supported compound assignment operators: \\
 \begin{itemize}
 \item +=\\
 Adds the two operands together, and then assign the result of the addition to the left operand.\\
-
 \item -=\\
 Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
-
 \item *=\\
 Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
-
 \item /=\\
 Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
 \end{itemize}
+Example with compound assignment:
+\begin{lstlisting}
+a += b  /* the same as a = a + b */
+a *= b  /* the saem as a = a * b */
+\end{lstlisting}
+\section{Increment and decrement}
+Pipeline supports increment operator “++” and  decrement operator “--”. The operand must be one of the primitive types or a pointer. The operators can only be applied after the operand.Operand will be evaluated before incrementation.\\
+The result of pointer increment will depends on the type of the pointer.\\
+\vspace{1 mm}\\
+Examples:
+\begin{lstlisting}
+int x;
+int@ p = &x;
+x++     /* same as x =  x+1 */
+p++    /* same as p = &x + sizeof(x) */ 
+\end{lstlisting}
 \section{Arithmetic Operations}
+Pipeline provides 
+\subsection{Addition and Subtraction}
+\subsection{Multiplication}
+\subsection{Division}
+\subsection{Modulus}
 \section{Boolean Expressions}
 \section{Pointers and References}
 \section{Array access}
