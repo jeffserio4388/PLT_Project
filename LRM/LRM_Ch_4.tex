@@ -108,16 +108,122 @@ x++     /* same as x =  x+1 */
 p++    /* same as p = &x + sizeof(x) */ 
 \end{lstlisting}
 \section{Arithmetic Operations}
-Pipeline provides 
-\subsection{Addition and Subtraction}
-\subsection{Multiplication}
-\subsection{Division}
-\subsection{Modulus}
-\section{Boolean Expressions}
-\section{Pointers and References}
-\section{Array access}
-\section{Operator Precedence and Associativity}
+Pipeline provides 4 standard arithmetic operations (addition, subtraction, multiplication, and division) as well as modular division and negation.\\
+\vspace{1 mm}
+\vspace{2 mm}\\
+Examples:
+\begin{lstlisting}
+Addition:
+a = 1 + 2;
+x = a + b;
+y = 1 + x;
 
+Subtraction:
+a = 5 - 1;
+b = x - y;
+
+Multiplication:
+a = x * y;
+b = 10 * 5;
+
+Division:
+x = 5 / 3; 
+/*The result of division will be promoted to float even when the result is integer*/
+y = 10 / a;
+
+Modular division:
+a = x % b;
+b = x % 2;
+
+Negation:
+x = -a;
+b = -10;
+\end{lstlisting}
+\section{Comparison Operator}
+Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
+\vspace{1 mm}\\
+Examples:
+\begin{lstlisting}
+Equality:
+x == y;
+a == 10;
+
+Inequality:
+x != 1;
+y != a;
+
+Less than:
+x < 10;
+y < a;
+
+Less or equal than:
+x <= 10;
+y <= b;
+
+Greater than:
+x > 10;
+y > a;
+
+Greater or equal than:
+x >= 100;
+y >= x;
+
+\end{lstlisting}
+\section{Logical Expression}
+Logical Expression will evaluate both operands and compute the truth value of those two operands. In Pipeline, only 0 will be evaluated to False. AND and OR are two logical expression in pipeline.\\
+AND operator "and":\\
+The expression will be evaluated to 1 if and only if both operands are true.
+\begin{lstlisting}
+int x = 1;
+int y = 0;
+x and y /* This expression will be evaluated to 0*/
+\end{lstlisting}
+OR operator "or":\\
+The expression will be evaluated to 1 if and only if at least one of the two operands is true.
+\begin{lstlisting}
+int x = 1;
+int y = 0;
+x or y /* This expression will be evaluated to 1*/
+\end{lstlisting}
+\section{Pointers Operator}
+There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
+"@" operator will dereference the value in the pointer address.\\
+"\&" operator will return the memory address of a varable.\\
+\vspace{1 mm}\\
+Example:
+\begin{lstlisting}
+int x = 10;
+int@ p;
+p = &x; /* the memory address of x will be stored in pointer variable p*/
+int@@ ptr;
+ptr = &p; /* the address of the address of the pointer to x will be stored in ptr*/
+\end{lstlisting}
+The pointer type will indicate the size of the object stored in the given address. If the type of the object in the address is not known, a void pointer can be used. However, a void pointer cannot be dereferenced since the machine won't know how many byte to read in the address. 
+\section{type casting}
+Pipeline supports type casting between scalar types(int,float,pointer).Type casting operator "<type>" cast the operand to the type indicated.\\
+\vspace{1 mm}\\
+Example:
+\begin{lstlisting}
+int x = 10;
+float y;
+y = <float>(x);
+
+int@ p;
+float@ q;
+float y = 10.5;
+p = &<int>(y);
+q = <float@>(p);
+\end{lstlisting}
+\section{Array access}
+Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
+\vspace{1 mm}\\
+Example:
+\begin{lstlisting}
+x [10]int = [1,2,3,4,5,6,7,8,9,10];
+x[0]; /*This expression will be evaluated to 1*/
+x[9]; /*This expression will be evaluated to 10*/
+\end{lstlisting}
+\section{Operator Precedence and Associativity}
 
 %\subsection{subsection}
 %\subsubsection{subsubsection}
