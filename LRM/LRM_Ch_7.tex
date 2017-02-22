@@ -60,24 +60,30 @@ Async control flow is incredibly useful when dealing with I/O operations, which 
 Consider the following example pipeline:
 
 \begin{lstlisting}
-readFile('/home/user/you/data.txt') 
-| processData(_) 
-| saveProcessedData(_, '/home/user/you/processedData.txt')
+pipe {
+	var a = readFile('/home/user/you/data.txt'); 
+ 	var b = processData(a); 
+	saveProcessedData(b, '/home/user/you/processedData.txt');
+}
 \end{lstlisting}
 Formally, the definition of a pipeline is as such:
 \begin{lstlisting}
-function0(Type param0, ..., Type paramN) | 
-function1(_, Type param0, ..., Type paramN) | 
-function2(_, Type param0, ..., Type paramN) | ... | 
-functionN(_, Type param0, ..., Type paramN)
+pipe {
+	tuple a0 = function0(Type param0, ..., Type paramN); 
+	tuple a1 = function1(a0, Type param0, ..., Type paramN); 
+	tuple a2 = function2(a1, Type param0, ..., Type paramN);
+	... 
+	functionN(anminus1, Type param0, ..., Type paramN)
+}
 \end{lstlisting}
 How to interpret the above:
 "Type" references some actual type
-"Type param1, ..., Type paramN" references some (potentially zero-length) sequence of parameters to a function "\_" acts as a placeholder for whatever value will be provided by the function one to the left in the pipeline
+"Type param1, ..., Type paramN" references some (potentially zero-length) sequence of parameters to a function
+"tuple ax" is a tuple holding the results of the corresponding function, which can be used by the next function in sequence
 
+It's extremely important for the programmer to understand the code within the curly brackets above would not run the way it should if it were placed outside a pipeline. Because any of the functions may be blocking, if they are not placed in a pipeline, the main thread will not wait for the function to return, so any code immediately after "tuple a0 = function0(Type param0, ..., Type paramN);" that makes use of variable "a0" could be reading a null or junk value. Blocking functions must be placed within pipelines, which will handle the control flow so that blocking functions must return before subsequent code runs.
 \begin{adjustwidth}{1cm}{2cm}
 Note that:\\
-The first function in the pipeline, function0, has no placeholder "\_" because it has no function one to the left from which to take a value.
 The sequence of parameters can be of any finite length, including zero.
 \end{adjustwidth}
 \section{And Then There Were Two}
@@ -87,20 +93,11 @@ Consider the terms "pipelineX" to refer to a sequence of functions arranged in a
 pipeline0;
 pipeline1;
 \end{lstlisting}
-Let's mimic the flow of a real program as it executes the two lines above. "Pipeline0" is executed and runs until there is a blocking operation. As soon as a blocking operation is encountered, the program moves it off to a worker thread, and then on the main thread continues on to execute "pipeline1."  
-
-Now we have a handful of different cases to consider.
-
+Let's mimic the flow of a real program as it executes the two lines above. "Pipeline0" is executed and runs until there is a blocking operation. As soon as a blocking operation is encountered, the program moves it off of the main thread, and then on the main thread continues on to execute "pipeline1." The functions in pipeline1 will execute until one blocks, at which point this pipeline1 will also be queued and moved off the main thread. The main thread will continue executing any code after pipeline1. When the blocking function in pipeline0 or pipeline1 returns, the corresponding pipeline resumes execution.   
 
 
 \section{Brief Summary of the Architecture?}
-Functions in a pipeline do not return. Rather, an entire pipeline may be thought of a series of nested functions, where what might be mistaken for the return value is simply passed as a parameter to the next nested function, and so on. 
-
-Therefore, if there is data you wish to manipulate or use after a function yields it, this manipulation/use should be done within the same pipeline.
-
-The same state is kept throughout an entire pipeline
-
-This is some text
+If there is a blocking I/O operation, it must be put in a pipeline or the return value for the blocking function may be filled with junk or a null value, and this erroneous value could be used immediately if the next line makes use of the variable. Pipelines should be treated as islands of data, in that functions which depend on (take as arguments) values returned from blocking functions can only execute after the blocking function returns, which is unpredictable. In that sense, functions that are data dependent and relate to a particular instance or type of I/O operation should likely be encapsulated in a single pipeline. 
 
 \end{document}
 
