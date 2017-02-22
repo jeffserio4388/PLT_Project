@@ -56,6 +56,26 @@ ExampleCode(blah, blah)
 \section{Expression}
 In pipeline, a expression must contain at least one operand with any number of operators. Each operator has either one or two operand. Pipeline does not support the (inline if) operator.A expression must be a typed object.\\ 
 \vspace{1mm}\\
+Grammar:
+\begin{lstlisting}
+expression:
+    identifier
+    string
+    (expression)
+
+postfix-expression:
+    expression
+    postfix-expression [expression]
+    postfix-expression (argument-expression-list)
+    postfix-expression . identifier
+    postfix-expression ++
+    postfix-expression --
+    
+argument-expression-list:
+    assignment-expression
+    argument-expression-list , assignment-expression
+\end{lstlisting}\\
+\vspace{1 mm}\\
 Examples of Expression:
 \begin{lstlisting}
 100;
@@ -69,36 +89,24 @@ Example of expression grouping:
 \begin{lstlisting}
 (1+(2+3)-10)*(1-2+(3+1))
 \end{lstlisting}
-\section{Assignment Operator}
-A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand.\\
+\section{Unary Operators}
+Expression with unary operators group from right to left.\\
 \vspace{1 mm}\\
-Examples of assignment:
+Grammar:
 \begin{lstlisting}
-int x = 10; 
-float y  =  0.5;  
-float z = 1.0 + 2.5;
-\end{lstlisting}	
-Pipeline also supports compound assignment that combines arithmetic evaluation and assign the result to the left operand. \\
-\pagebreak\\
-Supported compound assignment operators: \\
-\begin{itemize}
-\item +=\\
-Adds the two operands together, and then assign the result of the addition to the left operand.\\
-\item -=\\
-Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
-\item *=\\
-Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
-\item /=\\
-Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
-\end{itemize}
-Example with compound assignment:
-\begin{lstlisting}
-a += b  /* the same as a = a + b */
-a *= b  /* the saem as a = a * b */
+unary-expression:
+    postfix-expression
+    unary-operator cast-expression
+    
+unary-expression: one of
+    &  @  +  -
 \end{lstlisting}
+Address operator and dereference operator will be introduced in pointer operators section below.\\
+Unary operator "+" and "-" must be applied to arithmetic type and the result is the operand itself and the negative of the operand respectively.\\
 \section{Increment and decrement}
 Pipeline supports increment operator “++” and  decrement operator “--”. The operand must be one of the primitive types or a pointer. The operators can only be applied after the operand.Operand will be evaluated before incrementation.\\
 The result of pointer increment will depends on the type of the pointer.\\
+Grammar for postfix increment and decrement is listed in the postfix expression section above.\\
 \vspace{1 mm}\\
 Examples:
 \begin{lstlisting}
@@ -109,8 +117,21 @@ p++    /* same as p = &x + sizeof(x) */
 \end{lstlisting}
 \section{Arithmetic Operations}
 Pipeline provides 4 standard arithmetic operations (addition, subtraction, multiplication, and division) as well as modular division and negation.\\
-\vspace{1 mm}
-\vspace{2 mm}\\
+\vspace{1 mm}\\
+Grammar:
+\begin{lstlisting}
+additive-expression:
+    unary-expression
+    additive-expression + unary-expression
+    additive-expression - unary-expression
+
+multiplicative-expression:
+    additive-expression
+    multiplicative-expression * additive-expression
+    multiplicative-expression / additive-expression
+    multiplicative-expression % additive-expression
+\end{lstlisting}
+\pagebreak\\
 Examples:
 \begin{lstlisting}
 Addition:
@@ -142,6 +163,22 @@ b = -10;
 \section{Comparison Operator}
 Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
 \vspace{1 mm}\\
+Grammar:
+\begin{lstlisting}
+relational-expression:
+    multiplicative-expression
+    relational-expression < multiplicative-expression
+    relational-expression > multiplicative-expression
+    relational-expression <= multiplicative-expression
+    relational-expression >= multiplicative-expression
+
+equality-expression:
+    relational-expression
+    equality-expression == relational-expression
+    equality-expression != relational-expression
+    
+\end{lstlisting}
+\pagebreak\\
 Examples:
 \begin{lstlisting}
 Equality:
@@ -171,6 +208,17 @@ y >= x;
 \end{lstlisting}
 \section{Logical Expression}
 Logical Expression will evaluate both operands and compute the truth value of those two operands. In Pipeline, only 0 will be evaluated to False. AND and OR are two logical expression in pipeline.\\
+\vspace{1 mm}\\
+Grammar:
+\begin{lstlisting}
+logical-AND-expression:
+    equality-expression
+    logical-AND-expression and equality-expression
+
+logical-OR-expression:
+    logical-AND-expression
+    logical-OR-expression or logical-AND-expression
+\end{lstlisting}
 AND operator "and":\\
 The expression will be evaluated to 1 if and only if both operands are true.
 \begin{lstlisting}
@@ -185,10 +233,53 @@ int x = 1;
 int y = 0;
 x or y /* This expression will be evaluated to 1*/
 \end{lstlisting}
+Logical negation operator "!":\\
+The expression will flip the truth value of its operand.
+\begin{lstlisting}
+int x = 1;
+int y = 0;
+!(x or y) /*This expressil will be evaluated to 0*/
+\end{lstlisting}
+\section{Assignment Operator}
+A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand.\\
+Grammar:
+\begin{lstlisting}
+assignment-expression:
+    logical-OR-expression
+    unary-expression assignment-operator assignment-expression
+    
+asignment-operator: one of
+    =  +=  -=  *=  /=
+\end{lstlisting}
+\vspace{1 mm}\\
+Examples of assignment:
+\begin{lstlisting}
+int x = 10; 
+float y  =  0.5;  
+float z = 1.0 + 2.5;
+\end{lstlisting}	
+Pipeline also supports compound assignment that combines arithmetic evaluation and assign the result to the left operand. \\
+Supported compound assignment operators: \\
+\begin{itemize}
+\item +=\\
+Adds the two operands together, and then assign the result of the addition to the left operand.\\
+\item -=\\
+Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
+\item *=\\
+Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
+\item /=\\
+Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
+\end{itemize}
+Example with compound assignment:
+\begin{lstlisting}
+a += b  /* the same as a = a + b */
+a *= b  /* the saem as a = a * b */
+\end{lstlisting}
 \section{Pointers Operator}
 There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
 "@" operator will dereference the value in the pointer address.\\
 "\&" operator will return the memory address of a varable.\\
+Grammar for pointer expressions are listed above in the unary expression section.\\
 \vspace{1 mm}\\
 Example:
 \begin{lstlisting}
@@ -202,6 +293,12 @@ The pointer type will indicate the size of the object stored in the given addres
 \section{type casting}
 Pipeline supports type casting between scalar types(int,float,pointer).Type casting operator "<type>" cast the operand to the type indicated.\\
 \vspace{1 mm}\\
+Grammar:
+\begin{lstlisting}
+cast-expression:
+    logical-OR-expression
+    <type-name> cast-expression
+\end{lstlisting}
 Example:
 \begin{lstlisting}
 int x = 10;
@@ -216,7 +313,8 @@ q = <float@>(p);
 \end{lstlisting}
 \section{Array access}
 Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
-\vspace{1 mm}\\
+The grammar for array access expression is described in the postfix expression section above.\\
+\pagebreak\\
 Example:
 \begin{lstlisting}
 x [10]int = [1,2,3,4,5,6,7,8,9,10];
@@ -224,7 +322,29 @@ x[0]; /*This expression will be evaluated to 1*/
 x[9]; /*This expression will be evaluated to 10*/
 \end{lstlisting}
 \section{Operator Precedence and Associativity}
-
+\begin{tabu} to 1\textwidth { | X[c] | X[c] | }
+ \hline
+ Precedence & operator \\
+ \hline
+ 1  & Function calls, array subscripting, and membership access operator expressions.\\
+ \hline
+ 2  & Unary operators(from right to left)\\
+\hline
+3 & Multiplication, division, and modular division expressions.\\
+\hline
+4 & Addition and subtraction expressions.\\
+\hline
+5 & relational expressions.\\
+\hline
+6 &　equality and inequality expressions.\\
+\hline
+7 & Logical AND expressions.\\
+\hline
+8 & Logical OR expressions.\\
+\hline
+9 & All assignment expressions.\\
+\hline
+\end{tabu}
 %\subsection{subsection}
 %\subsubsection{subsubsection}
 \end{document}
