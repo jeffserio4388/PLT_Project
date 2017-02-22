@@ -54,15 +54,98 @@ ExampleCode(blah, blah)
 %\setcounter{page}{0}
 \chapter{Lexical Conventions}
 
+Pipelines is a free form language, i.e the position of characters in the program is insignificant. The parser will discard whitespace characters such as '', '\textbackslash t', and '\textbackslash n'. \\
+
 \section{Identifiers}
+Identifiers for Pipeline will be defined in the same way as they are in most other languages; any sequence of letters and numbers without whitespaces and is not a keyword will be parsed as an identifier. Identifiers cannot begin with a number.The variables are declared : vartype varname; //
+
+The regular expression defining identifiers is as follows:  
+
+\begin{lstlisting}
+["a"-"z" "A"-"Z"]["a"−"z" "A"−"Z" "0"−"9" "_ "]∗
+\end{lstlisting}
+
+These are examples definitions:
+
+\begin{lstlisting}
+int 2number int; /∗ not a valid identifier declaration ∗/ 
+float number; /∗ valid ∗/ 
+int number1; /∗ valid ∗/
+\end{lstlisting}
 
 \section{Literals}
+Literals are sequence of numbers, which may be identified with the regular expression : 
+\begin{lstlisting}
+["0"−"9"]\mbox{*}"."["0"−"9"]+ (∗ Float ∗)
+["0"−"9"]+ (∗ Int ∗) 
+\end{lstlisting}
 
 \section{Tokens}
+These are the list of tokens used in pipeline:\\
+\begin{lstlisting}
+
+| "(" { LPAREN } 
+| ")" { RPAREN } 
+| "{" { LBRACE } 
+| "}" { RBRACE } 
+| ";" { SEMI } 
+| "." { NAMESPACE }
+| ":" { COLON } 
+| "," { COMMA } 
+| "+" { PLUS } 
+| "−" { MINUS }
+| "∗" { TIMES } 
+| "%" { MOD } 
+| ">>" { RSHIFT } 
+| "<<" { LSHIFT } 
+| "/" { DIVIDE } 
+| "=" { ASSIGN } 
+| "==" { EQ }
+| "!=" { NEQ } 
+| "<" { LT } 
+| "<=" { LEQ } 
+| ">" { GT } 
+| ">=" { GEQ } 
+| "!" { NOT } 
+| "if" { IF } 
+| "else" { ELSE } 
+| "elif" { ELIF } 
+| "for" { FOR } 
+| "return" { RETURN } 
+| "int" { INT }
+| "float" { FLOAT } 
+| "char" { CHAR }
+| "pipe" {PIPE}
+| "@" { POINTER } 
+| "&" { AMPERSAND } 
+| "fun" { FUNCTION } 
+| "pipe" {PIPELINE}
+| "void" { VOID } 
+| "struct" { STRUCT } 
+| "string" { STRING } 
+| "break" { BREAK } 
+| "coupling" {COUPLING}
+ 
+
+\end{lstlisting}
+
 
 \section{Punctuation}
+\subsubsection{Semicolon}
+As in C, the semicolon ‘;’ is required to terminate any statement in Pipeline
+\begin{lstlisting}
+statement SEMI
+\end{lstlisting}
+
+\subsubsection{Braces}
+In order to keep the language free-format, braces are used to separate blocks. These braces are required even for single-statement conditional and iteration loops. 
+\begin{lstlisting}
+LBRACE statements RBRACE
+\end{lstlisting}
 
 
+\subsubsection{Comments }
+Comments are initiated with ‘/* ‘ and closed with ‘*/’ and cannot be nested.}
 %\subsection{subsection}
 %\subsubsection{subsubsection}
 \end{document}
