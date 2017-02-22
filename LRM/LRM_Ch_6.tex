@@ -56,11 +56,11 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{Functions and the Standard Library}
+\chapter{Functions}
 \section{Anatomy of a Function}
-A function in pipeline is defined with the keyword \texttt{fun} followed by the function name, the parameters and then the return type or types if applicable. The function definition must contain these elements in order to be a viable function, and the body of the function must be enclosed in curly braces ('\{' '\}'). In general the function definition has the following syntax:
+A function in pipeline is defined with the keyword \texttt{fun} followed by the function name, the parameters and then the return type or types if applicable. The function definition must contain these elements in order to be a viable function, and the body of the function must be enclosed in curly braces ('\{' '\}'). In general the function definition has the following Grammar and syntax:\\
 \begin{lstlisting}
-fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type_1,..., ret_type_n)
+fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 {
 	<body of code>
 }
@@ -78,37 +78,10 @@ fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.
 \subsection{The "main" function}
 The main function is the function that is executed at run time. The main function has as parameters char *string and int argc, which are related to the command-line arguments provided at run-time. The argv variable holds a pointer to the array of the strings typed by the user at run-time, the first of which is always the name of the executable, and the argc variable is the number of those arguments including the executable name.
-\section{Function Scope}
-
-\section{Decorators and Function Pointers}
-\section{Function Pointers}
-\subsection{Decorators}
-\section{Standard Library}
-\subsection{Built-in functions}
-Pipeline comes with several built-in functions in its standard library. 
+\section{Scope}
+The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am refering to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function.
 
 
-\begin{comment}
-sizeof
-sprintf
-strlen
-strcompare
-substring
-strlen
-sprintf
-\end{comment}
-\subsection{I/O}
-\begin{comment}
-printf
-formatting
-verbs
-user input
-\end{comment}
-%\subsubsection{File I/O}
-%parsing and regular expressions
-\subsection{Memory}
-%malloc
-%free
 
 
 %\subsection{subsection}
