@@ -54,8 +54,38 @@ ExampleCode(blah, blah)
 %\setcounter{page}{0}
 \chapter{Data Types}
 
-This is some text
-\section{Primitive Types}
+
+
+\section{Primitive Typpes}
+These are the following primitive data types in Pipeline:
+\begin{itemize}
+    \item int -  Standard 32-bit (4 bytes) signed integer. It can take any value in the range [-2147483648, 2147483647].
+    \item float - Single precision floating point number, that occupies 32 bits (4 bytes) and its significand has a precision of 24 bits (about 7 decimal digits). 
+    \item char - An 8-bit (1 byte) ASCII character. Extended ASCII set is included, so we use all 256 possible values.
+    \item pointer - A 64-bit pointer that holds the value to a location in memory; very similar to those found in C.
+\end{itemize}
+
+\section{Compound Types}
+\begin{itemize}
+    \item String - objects that represent sequences of characters. 
+    \item List - A data structure that lets you store one or more elements (of a particular data type) consecutively in memory. The elements are indexed beginning at position zero. 
+    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types).
+\end{itemize}
+
+Examples with compound data types:
+\begin{lstlisting}
+                      a = [1,2,3,4,5];
+		              c = [ [1,2,3,4],[5,6,7,8]];
+		              d = []
+		              
+		              struct foo {
+			               int bar;
+			               string bar1;
+			               bar2 = []
+                     }
+
+\end{lstlisting}
+
 %\subsection{subsection}
 %\subsubsection{subsubsection}
 \section{Complex Types}
