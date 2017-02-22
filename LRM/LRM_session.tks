@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TexmakerSession quickmode="3">
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_title.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_2.tex" bookmark1="0"/>
-    <document bookmark3="0" line="53" hasfocus="false" bookmark2="0" master="true" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_main.tex" bookmark1="0"/>
-    <document bookmark3="0" line="53" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_1.tex" bookmark1="0"/>
-    <document bookmark3="0" line="12" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/mystyle.sty" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_3.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_4.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_5.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_7.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_6.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="false" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_8.tex" bookmark1="0"/>
-    <document bookmark3="0" line="0" hasfocus="true" bookmark2="0" master="false" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Appendix.tex" bookmark1="0"/>
+    <document hasfocus="true" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Title.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_2.tex" bookmark1="0"/>
+    <document hasfocus="false" master="true" line="53" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_main.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="53" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_1.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="12" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/mystyle.sty" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_3.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_4.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_5.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_7.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_6.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Ch_8.tex" bookmark1="0"/>
+    <document hasfocus="false" master="false" line="0" bookmark2="0" bookmark3="0" file="/media/jeffserio4388/DATA/Documents/School/Comp_Sci/PLT/PLT_Project/LRM/LRM_Appendix.tex" bookmark1="0"/>
 </TexmakerSession>
