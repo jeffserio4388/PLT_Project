@@ -74,9 +74,8 @@ postfix-expression:
 argument-expression-list:
     assignment-expression
     argument-expression-list , assignment-expression
-\end{lstlisting}\\
-\vspace{1 mm}\\
-Examples of Expression:
+\end{lstlisting}
+\subsection{Examples of Expression:}
 \begin{lstlisting}
 100;
 100+10;
@@ -131,7 +130,7 @@ multiplicative-expression:
     multiplicative-expression / additive-expression
     multiplicative-expression % additive-expression
 \end{lstlisting}
-\pagebreak\\
+
 Examples:
 \begin{lstlisting}
 Addition:
@@ -162,8 +161,8 @@ b = -10;
 \end{lstlisting}
 \section{Comparison Operator}
 Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
-\vspace{1 mm}\\
-Grammar:
+\vspace{1 mm}
+\textbf{Grammar:}
 \begin{lstlisting}
 relational-expression:
     multiplicative-expression
@@ -178,8 +177,8 @@ equality-expression:
     equality-expression != relational-expression
     
 \end{lstlisting}
-\pagebreak\\
-Examples:
+\vspace{1 mm}
+\textbf{Examples:}
 \begin{lstlisting}
 Equality:
 x == y;
@@ -251,8 +250,7 @@ assignment-expression:
 asignment-operator: one of
     =  +=  -=  *=  /=
 \end{lstlisting}
-\vspace{1 mm}\\
-Examples of assignment:
+\subsection{Examples of assignment:}
 \begin{lstlisting}
 int x = 10; 
 float y  =  0.5;  
@@ -324,19 +322,19 @@ x[9]; /*This expression will be evaluated to 10*/
 \section{Operator Precedence and Associativity}
 \begin{tabu} to 1\textwidth { | X[c] | X[c] | }
  \hline
- Precedence & operator \\
+ Precedence & operator \\ 
  \hline
  1  & Function calls, array subscripting, and membership access operator expressions.\\
  \hline
  2  & Unary operators(from right to left)\\
-\hline
+ \hline
 3 & Multiplication, division, and modular division expressions.\\
 \hline
 4 & Addition and subtraction expressions.\\
 \hline
 5 & relational expressions.\\
 \hline
-6 &　equality and inequality expressions.\\
+6 & equality and inequality expressions.\\
 \hline
 7 & Logical AND expressions.\\
 \hline

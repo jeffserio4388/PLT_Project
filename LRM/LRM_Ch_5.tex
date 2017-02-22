@@ -39,6 +39,10 @@ ExampleCode(blah, blah)
 }
 \end{lstlisting}
 
+\begin{lstlisting}
+
+\end{lstlisting}
+
 \end{comment}
 
 
@@ -52,7 +56,41 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{Control Flow}
+\chapter{Declarations and Statements}
+\section{Declaration}
+A declaration specifies the interpretation of a given identifier. Declarations have the form
+\begin{lstlisting}
+declaration:
+	declaration-specifiers;
+	declaration-specifiers init-declarator-list;
+\end{lstlisting}
+The init-delarator-list and declaration-specifiers have the following grammar:
+\begin{lstlisting}
+declaration-specifiers:
+	storage-speifier; | storage-specifier declaration-specifiers
+	type-specifier | type-specifier declaration-specifiers
+	type-qualifier | type-qualifier declaration-specifiers
+	
+init-declarator-list:
+	init-declarator
+	init-declarator-list, init-declarator
+	
+init-declarator:
+	declarator
+	declarator = initializer
+
+initializer:
+	assignment-expression
+	{ initializer-list }
+	{ initializer-list , }
+
+initializer-list:
+	initializer
+	initializer-list , initializer
+\end{lstlisting}
+Every declaration must have a declarator, any declaration without a specific declarator (explained below) will not be counted as a valid function.
+\subsection{Declarators}
+each declarator declares a unique identifier, and asserts that when that identifier appears agian in any expression the result must be of the same form. There 
 \section{Control Flow}
 As with any imperative programming language, Pipeline has control flow mechanisms. Control flow mechanisms control the order in which statements are executed within a program. Although this definition does not fully apply to Pipeline by design, control flow mechanisms in Pipeline still control the order in which statements are executed both inside of and, to an extent, outside of pipelines.
 \subsection{Conditionals}
