@@ -61,11 +61,11 @@ Consider the following example pipeline:
 
 \begin{lstlisting}
 pipe {
-	var a = readFile('/home/user/you/data.txt'); 
- 	var b = processData(a); 
-	saveProcessedData(b, '/home/user/you/processedData.txt');
+	tuple a0 = readFile("/home/user/you/data.txt"); 
+ 	tuple a1 = processData(a); 
+	saveProcessedData(a1, "/home/user/you/processedData.txt";
 } catch(String functionName, String kindOfError, String errorMessage) {
-    printf('%s resulted in the following error:\n%s - %s', functionName, kindOfError, errorMessage);
+    printf("%s resulted in the following error:\n%s - %s", functionName, kindOfError, errorMessage);
 }
 \end{lstlisting}
 Formally, the definition of a pipeline is as such:
@@ -92,9 +92,6 @@ when a function makes a blocking database call to a database that does not exist
 Note: It's extremely important for the programmer to understand the code within the curly brackets above would not run the way it should if it were placed outside a pipeline. Because any of the functions
 may be blocking, if they are not placed in a pipeline, the main thread will not wait for the function to return, so any code immediately after \textit{tuple a0 = function0(Type param0, ..., Type
 paramN);} that makes use of variable \textit{a0} could be reading a null or junk value. Blocking functions must be placed within pipelines, which will handle the control flow so that blocking functions must return before subsequent code runs.
-\begin{adjustwidth}{1cm}{2cm}
-Note that the sequence of parameters can be of any finite length, including zero.
-\end{adjustwidth}
 \section{And Then There Were Two}
 Consider the terms \textit{pipelineX} to refer to a sequence of functions arranged in a pipeline as detailed in the section \textit{My First Pipeline}, where X is a number serving as a unique ID for
 the pipeline. Now consider the two distinct pipelines, \textit{pipeline0} and \textit{pipeline1}. Both pipelines contain functions which are blocking, waiting for the results of an I/O operation. The two pipelines are arranged as such in code:
