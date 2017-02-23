@@ -124,22 +124,27 @@ These are the following primitive data types in Pipeline:
 \end{lstlisting}
         
 
-    \item Tuples - A tuple is a finite ordered list of elements. Tuples are used to group together related data, they are immutable.
-    
+    \item Tuples - A tuple is a finite ordered list of elements. Tuples are used to group together related data, they are immutable. Tuples have the following form:
+    \begin{lstlisting}
+                                tuple specifier:
+                                    tuple identifier
+                                    
+                                tuple-list:
+                                    tuple
+                                    tuple-list
+                                    
+                                tuple:
+                                    tuple
+                                    tuple = expression
+                                    
+                                    
+    \end{lstlisting}
     
 \end{itemize}
 
-Examples with compound data types:
+Example with tuple:
 \begin{lstlisting}
-                      a = [1,2,3,4,5];
-		              c = [ [1,2,3,4],[5,6,7,8]];
-		              d = []
-		              
-		              struct foo {
-			               int bar;
-			               string bar1;
-                      };
-
+                            b = ("Bob", 19, "CS")
 \end{lstlisting}
 
 
