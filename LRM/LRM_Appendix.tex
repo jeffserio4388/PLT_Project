@@ -54,6 +54,67 @@ ExampleCode(blah, blah)
 %\setcounter{page}{0}
 \chapter{Full List of Grammars}
 
+\quad \textbf {Type specifiers are:}
+    \begin{lstlisting}
+    void
+    char
+    int
+    float
+    \end{lstlisting}
+    
+\\\textbf{Structure Declarations:}
+ \begin{lstlisting}
+ 
+Structures have the following form.
+     struct specifier:
+            struct specifier:
+                struct identifier
+                
+        structure:
+            struct
+            
+        struct-declaration-list:
+            struct-declaration
+            struct-declaration-list struct-declaration
+        
+        struct-declaration-list:
+            specifier-qualifier-list struct-declarator-list
+        
+        specifier-qualifier-list:
+            type-specifier specifier-qualifier-list
+            type-qualifier specifier-qualifier-list
+        
+        struct-declarator-list:
+            struct-declarator
+            struct-declarator-list struct-declarator
+        
+        struct-declarator:
+            declarator
+\end{lstlisting}
+
+\textbf{Unary Operators}    
+\begin{lstlisting}
+expression:
+    identifier
+    string
+    (expression)
+
+postfix-expression:
+    expression
+    postfix-expression [expression]
+    postfix-expression (argument-expression-list)
+    postfix-expression . identifier
+    postfix-expression ++
+    postfix-expression --
+    
+argument-expression-list:
+    assignment-expression
+    argument-expression-list , assignment-expression
+\end{lstlisting}
+
+
+
+
 %malloc
 %free
 
