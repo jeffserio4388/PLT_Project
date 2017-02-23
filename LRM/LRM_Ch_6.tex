@@ -37,7 +37,7 @@ ExampleCode(blah, blah)
 {
 	it does tabbing and everything;
 	for (coloring of major languages like java){
-		add the folloing to the \lstset tuple:
+		add the following to the \lstset tuple:
 			language=<name_of_language>;
 	}
 }
@@ -67,7 +67,7 @@ fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 \end{lstlisting}
 A function need not take any parameters, nor need it return any values.
 \subsection{Declaration}
-In Pipeline, as in C, the function must exist before it is called to be used. Meaning, you cannot call any function within any other function unless it has been explicitly stateted previous to that function was defined. A function declaration allows the programmer to declare a function exists before he/she has defined the function itself. A function declaration is almost identical to the above function definition, except that instead of curly braces and a code body, there is only a semicolon:
+In Pipeline, as in C, the function must exist before it is called to be used. Meaning, you cannot call any function within any other function unless it has been explicitly stated previous to that function was defined. A function declaration allows the programmer to declare a function exists before he/she has defined the function itself. A function declaration is almost identical to the above function definition, except that instead of curly braces and a code body, there is only a semicolon:
 \begin{lstlisting}
 fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 {
@@ -101,7 +101,7 @@ Pipeline is a pass by value language, meaning that whenever a value is passed to
 \subsection{The "main" function}
 The main function is the function that is executed at run time. The main function has as parameters char *string and int argc, which are related to the command-line arguments provided at run-time. The argv variable holds a pointer to the array of the strings typed by the user at run-time, the first of which is always the name of the executable, and the argc variable is the number of those arguments including the executable name.
 \section{Scope}
-The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am refering to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function.
+The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am referring to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function.
 
 
 
