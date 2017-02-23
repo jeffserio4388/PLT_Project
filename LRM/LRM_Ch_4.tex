@@ -237,10 +237,11 @@ The expression will flip the truth value of its operand.
 \begin{lstlisting}
 int x = 1;
 int y = 0;
-!(x or y) /*This expressil will be evaluated to 0*/
+!(x or y) /*This expression will be evaluated to 0*/
 \end{lstlisting}
 \section{Assignment Operator}
 A assignment operator stores the value of the right operand in the left operand with “=” operator. The left operand must be a variable identifier with the same type of the right operand.\\
+\vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
 assignment-expression:
@@ -250,7 +251,8 @@ assignment-expression:
 asignment-operator: one of
     =  +=  -=  *=  /=
 \end{lstlisting}
-\subsection{Examples of assignment:}
+\vspace{1 mm}\\
+Examples of assignment:
 \begin{lstlisting}
 int x = 10; 
 float y  =  0.5;  
@@ -271,12 +273,12 @@ Divide the left operand by the right operand, and assign the result of the divis
 Example with compound assignment:
 \begin{lstlisting}
 a += b  /* the same as a = a + b */
-a *= b  /* the saem as a = a * b */
+a *= b  /* the same as a = a * b */
 \end{lstlisting}
 \section{Pointers Operator}
 There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
 "@" operator will dereference the value in the pointer address.\\
-"\&" operator will return the memory address of a varable.\\
+"\&" operator will return the memory address of a variable.\\
 Grammar for pointer expressions are listed above in the unary expression section.\\
 \vspace{1 mm}\\
 Example:
@@ -319,14 +321,14 @@ x [10]int = [1,2,3,4,5,6,7,8,9,10];
 x[0]; /*This expression will be evaluated to 1*/
 x[9]; /*This expression will be evaluated to 10*/
 \end{lstlisting}
-\section{Operator Precedence and Associativity}
+\section{Operator Precedence}
 \begin{tabu} to 1\textwidth { | X[c] | X[c] | }
  \hline
  Precedence & operator \\ 
  \hline
- 1  & Function calls, array subscripting, and membership access operator expressions.\\
+1  & Function calls, array sub-scripting, and membership access operator expressions.\\
  \hline
- 2  & Unary operators(from right to left)\\
+2  & Unary operators(from right to left)\\
  \hline
 3 & Multiplication, division, and modular division expressions.\\
 \hline
