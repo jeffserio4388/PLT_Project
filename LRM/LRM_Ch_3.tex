@@ -54,11 +54,10 @@ ExampleCode(blah, blah)
 %\setcounter{page}{0}
 \chapter{Lexical Conventions}
 
-Pipelines is a free form language, i.e the position of characters in the program is insignificant. The parser will discard whitespace characters such as '', '\textbackslash t', and '\textbackslash n'. \\
+Pipelines is a free form language, i.e the position of characters in the program is insignificant. The parser will discard whitespace characters such as '', '\textbackslash t', and '\textbackslash n'. 
 
 \section{Identifiers}
-Identifiers for Pipeline will be defined in the same way as they are in most other languages; any sequence of letters and numbers without whitespaces and is not a keyword will be parsed as an identifier. Identifiers cannot begin with a number.The variables are declared : vartype varname; //
-
+Identifiers for Pipeline will be defined in the same way as they are in most other languages; any sequence of letters and numbers without whitespaces and is not a keyword will be parsed as an identifier. Identifiers cannot begin with a number.The variables are declared : vartype varname;  \\
 The regular expression defining identifiers is as follows:  
 
 \begin{lstlisting}
@@ -81,6 +80,9 @@ Literals are sequence of numbers, which may be identified with the regular expre
 \end{lstlisting}
 
 \section{Tokens}
+There are five classes of tokens:
+identifiers, keywords, string literals,operators, other separators.\\
+The following "white space" characters are ignored except they separate tokens: blanks, tabs, newlines, and comments.\\
 These are the list of tokens used in pipeline:\\
 \begin{lstlisting}
 | "(" { LPAREN } 
@@ -126,7 +128,6 @@ These are the list of tokens used in pipeline:\\
 | "coupling" {COUPLING}
 | "catch" {CATCH}
 \end{lstlisting}
-
 
 \section{Punctuation}
 \subsubsection{Semicolon}

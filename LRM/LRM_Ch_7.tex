@@ -53,7 +53,7 @@ ExampleCode(blah, blah)
 
 %\setcounter{page}{0}
 \chapter{Asynchronous Programming with Pipeline}
-Async control flow is incredibly useful when dealing with I/O operations, which are the foundation of web-based programming. When restricted to a single-threaded and single-process model, I/O operations in a programming language are blocking and a program can wait for an unbounded time. Introduce multi-threading or multi-process models, and a programming language becomes much more complex. The single-threaded asynchronous control flow model simplifies dealing with I/O operations such that the program does not halt because of them.
+Async control flow is incredibly useful when dealing with I/O operations, which are the foundation of web-based programming. When restricted to a single-threaded and single-process model, I/O operations in a programming language are blocking forcing the program to wait for a potentially unbounded time. Introduce multi-threading or multi-process models, and a programming language becomes much more complex. The single-threaded asynchronous control flow model simplifies dealing with I/O operations such that the program does not.
 
 
 \section{My First Pipeline}
@@ -108,8 +108,9 @@ If there is a blocking I/O operation, it must be put in a pipeline or the return
 
 \section{Grammars}
 \begin{lstlisting}
-pipe { statement-list }
-catch( parameter-list ) { statement-list }
+pipe-statement:
+	pipe { statement-list }
+	pipe { statement-list } catch( parameter-list ) { statement-list }
 
 statement-list:
     statement
