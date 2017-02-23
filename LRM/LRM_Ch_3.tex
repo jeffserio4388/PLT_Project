@@ -124,6 +124,7 @@ These are the list of tokens used in pipeline:\\
 | "string" { STRING } 
 | "break" { BREAK } 
 | "coupling" {COUPLING}
+| "catch" {CATCH}
 \end{lstlisting}
 
 
@@ -140,7 +141,12 @@ In order to keep the language free-format, braces are used to separate blocks. T
 LBRACE statements RBRACE
 \end{lstlisting}
 
-
+\subsubsection{Paranthesis }
+To assert precedence, expressions may be encapsulated within parentheses to guarantee order of operations.
+\begin{lstlisting}
+LBRACE statements RBRACE
+\end{lstlisting}
+LPAREN expression RPAREN
 \subsubsection{Comments }
 Comments are initiated with $‘/* ‘$ and closed with $‘*/’$ and cannot be nested.
 %\subsection{subsection}
