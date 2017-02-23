@@ -74,6 +74,28 @@ fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 	<body of code>
 }
 \end{lstlisting}
+\section{Grammar}
+\begin{lstlisting}
+fun-definition:
+	fun declarator param-list_opt type-qualifier_opt compund-statement
+
+fun-declaration:
+	fun declarator param-list_opt type-qualifier_opt;
+
+param-list_opt:
+	( param_list )
+	( )
+
+type-qualifier_opt:
+	( type-specifier )
+	( )
+
+param-list:
+	declaration-specifiers declarator
+	param-list , declaration-specifiers declarator
+
+
+\end{lstlisting}
 \subsection{Parameters and Return values}
 Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.
 \subsection{The "main" function}

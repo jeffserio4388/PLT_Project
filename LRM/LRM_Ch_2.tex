@@ -64,12 +64,47 @@ These are the following primitive data types in Pipeline:
     \item char - An 8-bit (1 byte) ASCII character. Extended ASCII set is included, so we use all 256 possible values.
     \item pointer - A 64-bit pointer that holds the value to a location in memory; very similar to those found in C.
 \end{itemize}
+\begin{lstlisting}
+        Type specifiers are:
+        void
+        char
+        int
+        float
 
+\end{lstlisting}
 \section{Compound Types}
 \begin{itemize}
     \item String - objects that represent sequences of characters. 
     \item List - A data structure that lets you store one or more elements (of a particular data type) consecutively in memory. The elements are indexed beginning at position zero. 
-    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types).
+    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types). Structures have the following form.
+    \begin{lstlisting}
+        struct specifier:
+            struct specifier:
+                struct identifier
+                
+        structure:
+            struct
+            
+        struct-declaration-list:
+            struct-declaration
+            struct-declaration-list struct-declaration
+        
+        struct-declaration-list:
+            specifier-qualifier-list struct-declarator-list
+        
+        specifier-qualifier-list:
+            type-specifier specifier-qualifier-list
+            type-qualifier specifier-qualifier-list
+        
+        struct-declarator-list:
+            struct-declarator
+            struct-declarator-list struct-declarator
+        
+        struct-declarator:
+            declarator
+        
+\end{lstlisting}
+    
 \end{itemize}
 
 Examples with compound data types:
@@ -82,7 +117,7 @@ Examples with compound data types:
 			               int bar;
 			               string bar1;
 			               bar2 = []
-                     }
+                     };
 
 \end{lstlisting}
 
