@@ -67,7 +67,7 @@ declaration:
 The init-delarator-list and declaration-specifiers have the following grammar:
 \begin{lstlisting}
 declaration-specifiers:
-	storage-speifier; | storage-specifier declaration-specifiers
+	storage-specifier; | storage-specifier declaration-specifiers
 	type-specifier | type-specifier declaration-specifiers
 	type-qualifier | type-qualifier declaration-specifiers
 	
@@ -110,7 +110,7 @@ struct-declarator-list:
 \end{lstlisting}
 Every declaration must have a declarator, any declaration without a specific declarator (explained below) will not be counted as a valid function.
 \subsection{Declarators}
-each declarator declares a unique identifier, and asserts that when that identifier appears agian in any expression the result must be of the same form. Meaning that given a declarator, such as an int, any expression that involves the identifier must result in a value that is of the same type.
+each declarator declares a unique identifier, and asserts that when that identifier appears again in any expression the result must be of the same form. Meaning that given a declarator, such as an int, any expression that involves the identifier must result in a value that is of the same type.
 \subsubsection{Grammar:}
 \begin{lstlisting}
 declarator:
@@ -167,7 +167,7 @@ A conditional statement is written with the \texttt{if} statement followed by th
 \begin{lstlisting}
 if <conditional expression> { <body_of_statements> }
 \end{lstlisting}
-It can then be followed by the optional \texttt{else if} statement, wich executes its body if the if statement evaluates to false and the \texttt{else if} condition evaluates to true, and/or the \texttt{else} statement which acts as a catch all and executes when no previous condition was true.
+It can then be followed by the optional \texttt{else if} statement, which executes its body if the if statement evaluates to false and the \texttt{else if} condition evaluates to true, and/or the \texttt{else} statement which acts as a catch all and executes when no previous condition was true.
 \begin{lstlisting}
 if <conditional expression> {
 	<body_of_statements>
@@ -209,7 +209,7 @@ expr_opt:
 	;	
 \end{lstlisting}
 For clarification, here is the explicit order of evaluation for the loop-statements:\\
-For the \texttt{while} loop, the expression that is the test expression, is evaluated. If that epression is non-zero the program then executes the subsequent statement or statements. After executing them, it re-evaluates the expression, and if still non-zero it repeats the statements.\\
+For the \texttt{while} loop, the expression that is the test expression, is evaluated. If that expression is non-zero the program then executes the subsequent statement or statements. After executing them, it re-evaluates the expression, and if still non-zero it repeats the statements.\\
 For the \texttt{for} loop, the first expression is evaluated only once, when the loop is first encountered. Then it evaluates the second expression upon each iteration, if it is non-zero, then it will execute the code. The 3rd expression is evaluated after each iteration, before it re-evaluates the second instruction.
 %\subsection{subsection}
 %\subsubsection{subsubsection}
