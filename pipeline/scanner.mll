@@ -18,7 +18,6 @@ rule token = parse
 | "<=" { LEQ }
 | "==" { EQUAL }
 | "!=" { NEQ }
-(*| "**" { SQUARE }*)
 | '>' { GREATER }
 | '<' { LESS }
 | '(' { LPAREN }
