@@ -69,7 +69,6 @@ rule token = parse
 | ['"'][^'"']*['"'] as str { LIT_STR(str) }
 | ['A'-'Z' 'a'-'z']+['A'-'Z' 'a'-'z' '0'-'9']* as i { ID(i) }
 | "/*"  { multiLineComment lexbuf }
-| _ as c { raise (Failure("Illegal character : " ^ Char.escaped c)) }
 
 and multiLineComment = parse
 |"*/"   { token lexbuf }
