@@ -62,7 +62,6 @@ rule token = parse
 | "string" { STRING }
 | "coupling" {COUPLING}
 | "catch" {CATCH}
-| "fun" { FN }
 | "return" { RETURN }
 | '-'?(['0'-'9']+('.'['0'-'9']*)?) as lxm { LIT_NUM(float_of_string lxm) } (*Change to add negative*)
 | ['"'][^'"']*['"'] as str { LIT_STR(str) }
