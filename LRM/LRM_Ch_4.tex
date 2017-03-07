@@ -293,6 +293,7 @@ The pointer type will indicate the size of the object stored in the given addres
 \section{Array access}
 Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 The grammar for array access expression is described in the postfix expression section above.\\
+attempting to access elements outside of the list bound is undefined.\\
 \pagebreak\\
 Example:
 \begin{lstlisting}
