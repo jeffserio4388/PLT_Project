@@ -116,17 +116,32 @@ These are the list of tokens used in pipeline:\\
 | "int" { INT }
 | "float" { FLOAT } 
 | "char" { CHAR }
-| "pipe" {PIPE}
 | "@" { POINTER } 
 | "&" { AMPERSAND } 
-| "fun" { FUNCTION } 
-| "pipe" {PIPELINE}
 | "void" { VOID } 
 | "struct" { STRUCT } 
 | "string" { STRING } 
 | "break" { BREAK } 
-| "coupling" {COUPLING}
-| "catch" {CATCH}
+
+The "pipe" token : {PIPE}
+This token is used to signify the beginning of the pipe block of code. 
+pipe
+{
+statement-list
+} 
+
+The "fun" token : { FUNCTION } 
+This token is used to define functions, followed by the function name, the parameters and then the return type or types if applicable.
+fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
+{
+<body of code>
+}
+
+The "catch" token : {CATCH}
+Any pipe's sequential flow could be  interrupted by an error. This token is used for catching such unrecoverable errors.
+catch( parameter-list ) { statement-list }
+
+
 \end{lstlisting}
 
 \section{Punctuation}
