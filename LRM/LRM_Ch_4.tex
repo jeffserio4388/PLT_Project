@@ -58,22 +58,17 @@ In pipeline, a expression must contain at least one operand with any number of o
 \vspace{1mm}\\
 Grammar:
 \begin{lstlisting}
-expression:
-    identifier
-    string
-    (expression)
+p-expr:
+  id
+  |string
+  |(expr)
 
-postfix-expression:
-    expression
-    postfix-expression [expression]
-    postfix-expression (argument-expression-list)
-    postfix-expression . identifier
-    postfix-expression ++
-    postfix-expression --
+postfix_expr:
+  p-expr
+  |postfix_expr . identifer
+  |postfix_expr ++
+  |postfix_expr --
     
-argument-expression-list:
-    assignment-expression
-    argument-expression-list , assignment-expression
 \end{lstlisting}
 \subsection{Examples of Expression:}
 \begin{lstlisting}
@@ -93,12 +88,17 @@ Expression with unary operators group from right to left.\\
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-unary-expression:
-    postfix-expression
-    unary-operator cast-expression
+unary_expr:
+   postfix_expr
+   |unary_op unary_expr
+
     
-unary-expression: one of
-    &  @  +  -
+unary_op:
+    &
+   |@
+   |+
+   |-
+   |!
 \end{lstlisting}
 Address operator and dereference operator will be introduced in pointer operators section below.\\
 Unary operator "+" and "-" must be applied to arithmetic type and the result is the operand itself and the negative of the operand respectively.\\
@@ -119,16 +119,16 @@ Pipeline provides 4 standard arithmetic operations (addition, subtraction, multi
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-additive-expression:
-    unary-expression
-    additive-expression + unary-expression
-    additive-expression - unary-expression
+additive-expr:
+    unary-expr
+    additive-expr+ unary-expr
+    additive-expr - unary-expr
 
 multiplicative-expression:
-    additive-expression
-    multiplicative-expression * additive-expression
-    multiplicative-expression / additive-expression
-    multiplicative-expression % additive-expression
+    additive-expr
+    multiplicative-expr * additive-expr
+    multiplicative-expr / additive-expr
+    multiplicative-expr % additive-expr
 \end{lstlisting}
 
 Examples:
@@ -161,20 +161,26 @@ b = -10;
 \end{lstlisting}
 \section{Comparison Operator}
 Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
+comparable types:\\
+ints: the numerical value will be compared.\\
+floats: the numerrical value will be compared.\\
+int and float: the numerical value will be compared.\\
+pointers:pointer comparison is undefined in pipeline.\\
 \vspace{1 mm}
 \textbf{Grammar:}
 \begin{lstlisting}
-relational-expression:
-    multiplicative-expression
-    relational-expression < multiplicative-expression
-    relational-expression > multiplicative-expression
-    relational-expression <= multiplicative-expression
-    relational-expression >= multiplicative-expression
+relational_expr:
+     additive_expr
+     |relational_expr < additive_expr
+     |relational_expr > additive_expr
+     |relational_expr >= additive_expr
+     |relational_expr <= additive_expr
 
-equality-expression:
-    relational-expression
-    equality-expression == relational-expression
-    equality-expression != relational-expression
+
+equality_expr:
+      relational_expr 
+     | equality_expr == relational_expr
+     | equality_expr != relational_expr
     
 \end{lstlisting}
 \vspace{1 mm}
@@ -210,13 +216,14 @@ Logical Expression will evaluate both operands and compute the truth value of th
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-logical-AND-expression:
-    equality-expression
-    logical-AND-expression and equality-expression
+and_expr:
+      equality_expr
+      |and_expr 'and' equality_expr
 
-logical-OR-expression:
-    logical-AND-expression
-    logical-OR-expression or logical-AND-expression
+or_expr:
+      and_expr
+      |or_expr 'or' and_expression
+
 \end{lstlisting}
 AND operator "and":\\
 The expression will be evaluated to 1 if and only if both operands are true.
@@ -244,12 +251,9 @@ A assignment operator stores the value of the right operand in the left operand 
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-assignment-expression:
-    logical-OR-expression
-    unary-expression assignment-operator assignment-expression
-    
-asignment-operator: one of
-    =  +=  -=  *=  /=
+ assignmnet_expr:
+      or_expression
+      | unary_expr = assignemnt_expr
 \end{lstlisting}
 \vspace{1 mm}\\
 Examples of assignment:
@@ -257,23 +261,6 @@ Examples of assignment:
 int x = 10; 
 float y  =  0.5;  
 float z = 1.0 + 2.5;
-\end{lstlisting}	
-Pipeline also supports compound assignment that combines arithmetic evaluation and assign the result to the left operand. \\
-Supported compound assignment operators: \\
-\begin{itemize}
-\item +=\\
-Adds the two operands together, and then assign the result of the addition to the left operand.\\
-\item -=\\
-Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
-\item *=\\
-Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
-\item /=\\
-Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
-\end{itemize}
-Example with compound assignment:
-\begin{lstlisting}
-a += b  /* the same as a = a + b */
-a *= b  /* the same as a = a * b */
 \end{lstlisting}
 \section{Pointers Operator}
 There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
@@ -290,31 +277,10 @@ int@@ ptr;
 ptr = &p; /* the address of the address of the pointer to x will be stored in ptr*/
 \end{lstlisting}
 The pointer type will indicate the size of the object stored in the given address. If the type of the object in the address is not known, a void pointer can be used. However, a void pointer cannot be dereferenced since the machine won't know how many byte to read in the address. 
-\section{type casting}
-Pipeline supports type casting between scalar types(int,float,pointer).Type casting operator "<type>" cast the operand to the type indicated.\\
-\vspace{1 mm}\\
-Grammar:
-\begin{lstlisting}
-cast-expression:
-    logical-OR-expression
-    <type-name> cast-expression
-\end{lstlisting}
-Example:
-\begin{lstlisting}
-int x = 10;
-float y;
-y = <float>(x);
-
-int@ p;
-float@ q;
-float y = 10.5;
-p = &<int>(y);
-q = <float@>(p);
-\end{lstlisting}
 \section{Array access}
 Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 The grammar for array access expression is described in the postfix expression section above.\\
-\pagebreak\\
+while the user tries to access an element is out of the list bound, the behavior is undefined.\\
 Example:
 \begin{lstlisting}
 x [10]int = [1,2,3,4,5,6,7,8,9,10];
