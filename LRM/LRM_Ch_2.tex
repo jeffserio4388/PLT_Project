@@ -75,7 +75,7 @@ These are the following primitive data types in Pipeline:
 \section{Compound Types}
 \begin{itemize}
     \item String - objects that represent sequences of characters. 
-    \item List - A data structure that lets you store one or more elements (of a particular data type) consecutively in memory. The elements are indexed beginning at position zero. 
+    \item Array - A data structure that lets you store one or more elements (of a particular data type) consecutively in memory. The elements are indexed beginning at position zero. 
     \\Example:
 
 \begin{lstlisting}
@@ -83,43 +83,14 @@ These are the following primitive data types in Pipeline:
 		              c = [ [1,2,3,4],[5,6,7,8]];
 		              d = []
 \end{lstlisting}
-    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types). Structures have the following form.
-    \begin{lstlisting}
-        struct specifier:
-            struct specifier:
-                struct identifier
-                
-        structure:
-            struct
-            
-        struct-declaration-list:
-            struct-declaration
-            struct-declaration-list struct-declaration
-        
-        struct-declaration-list:
-            specifier-qualifier-list struct-declarator-list
-        
-        specifier-qualifier-list:
-            type-specifier specifier-qualifier-list
-            type-qualifier specifier-qualifier-list
-        
-        struct-declarator-list:
-            struct-declarator
-            struct-declarator-list struct-declarator
-        
-        struct-declarator:
-            declarator
-  \end{lstlisting}
+    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types). 
  Example:
-        \begin{lstlisting}
-                      a = [1,2,3,4,5];
-		              c = [ [1,2,3,4],[5,6,7,8]];
-		              d = []
-		              
+        \begin{lstlisting}		              
 		              struct foo {
 			               int bar;
 			               string bar1;
                       };
+		      
 
 \end{lstlisting}
         
