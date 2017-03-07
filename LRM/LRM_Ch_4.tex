@@ -290,27 +290,6 @@ int@@ ptr;
 ptr = &p; /* the address of the address of the pointer to x will be stored in ptr*/
 \end{lstlisting}
 The pointer type will indicate the size of the object stored in the given address. If the type of the object in the address is not known, a void pointer can be used. However, a void pointer cannot be dereferenced since the machine won't know how many byte to read in the address. 
-\section{type casting}
-Pipeline supports type casting between scalar types(int,float,pointer).Type casting operator "<type>" cast the operand to the type indicated.\\
-\vspace{1 mm}\\
-Grammar:
-\begin{lstlisting}
-cast-expression:
-    logical-OR-expression
-    <type-name> cast-expression
-\end{lstlisting}
-Example:
-\begin{lstlisting}
-int x = 10;
-float y;
-y = <float>(x);
-
-int@ p;
-float@ q;
-float y = 10.5;
-p = &<int>(y);
-q = <float@>(p);
-\end{lstlisting}
 \section{Array access}
 Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 The grammar for array access expression is described in the postfix expression section above.\\
