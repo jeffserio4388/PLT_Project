@@ -162,6 +162,10 @@ b = -10;
 \end{lstlisting}
 \section{Comparison Operator}
 Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
+comparable types:\\
+ints and floats can be compared by their numerical value.\\
+comparison between 2 pointers is not defined.\\
+all other types arer not comparable in pipeline.\\
 \vspace{1 mm}
 \textbf{Grammar:}
 \begin{lstlisting}
