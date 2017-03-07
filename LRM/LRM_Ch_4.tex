@@ -246,12 +246,10 @@ A assignment operator stores the value of the right operand in the left operand 
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-assignment-expression:
-    logical-OR-expression
-    unary-expression assignment-operator assignment-expression
-    
-asignment-operator: one of
-    =  +=  -=  *=  /=
+assignmnet_expr:
+      or_expression
+      | unary_expr = assignemnt_expr
+
 \end{lstlisting}
 \vspace{1 mm}
 Examples of assignment:
@@ -260,23 +258,6 @@ int x = 10;
 float y  =  0.5;  
 float z = 1.0 + 2.5;
 \end{lstlisting}	
-Pipeline also supports compound assignment that combines arithmetic evaluation and assign the result to the left operand. \\
-Supported compound assignment operators: \\
-\begin{itemize}
-\item +=\\
-Adds the two operands together, and then assign the result of the addition to the left operand.\\
-\item -=\\
-Subtract the right operand from the left operand, and then assign the result of the subtraction to the left operand.\\
-\item *=\\
-Multiply the two operands together, and then assign the result of the multiplication to the left operand.\\
-\item /=\\
-Divide the left operand by the right operand, and assign the result of the division to the left operand.\\
-\end{itemize}
-Example with compound assignment:
-\begin{lstlisting}
-a += b  /* the same as a = a + b */
-a *= b  /* the same as a = a * b */
-\end{lstlisting}
 \section{Pointers Operator}
 There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
 "@" operator will dereference the value in the pointer address.\\
