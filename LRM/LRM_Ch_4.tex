@@ -58,22 +58,17 @@ In pipeline, a expression must contain at least one operand with any number of o
 \vspace{1mm}\\
 Grammar:
 \begin{lstlisting}
-expression:
-    identifier
-    string
-    (expression)
+p-expr:
+  id
+  |string
+  |(expr)
 
-postfix-expression:
-    expression
-    postfix-expression [expression]
-    postfix-expression (argument-expression-list)
-    postfix-expression . identifier
-    postfix-expression ++
-    postfix-expression --
+postfix_expr:
+  p-expr
+  |postfix_expr . identifer
+  |postfix_expr ++
+  |postfix_expr --
     
-argument-expression-list:
-    assignment-expression
-    argument-expression-list , assignment-expression
 \end{lstlisting}
 Examples of Expression:
 \begin{lstlisting}
@@ -93,15 +88,20 @@ Expression with unary operators group from right to left.\\
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-unary-expression:
-    postfix-expression
-    unary-operator cast-expression
-    
-unary-expression: one of
-    &  @  +  -
+unary_expr:
+   postfix_expr
+   |unary_op unary_expr
+
+unary_op:
+    &
+   |@
+   |+
+   |-
+   |!
 \end{lstlisting}
 Address operator and dereference operator will be introduced in pointer operators section below.\\
 Unary operator "+" and "-" must be applied to arithmetic type and the result is the operand itself and the negative of the operand respectively.\\
+"!" negation can only be applied to boolean expression and will inverse the value of the expression.\\ 
 \section{Increment and decrement}
 Pipeline supports increment operator “++” and  decrement operator “--”. The operand must be one of the primitive types or a pointer. The operators can only be applied after the operand.Operand will be evaluated before incrementation.\\
 The result of pointer increment will depends on the type of the pointer.\\
@@ -119,16 +119,17 @@ Pipeline provides 4 standard arithmetic operations (addition, subtraction, multi
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-additive-expression:
-    unary-expression
-    additive-expression + unary-expression
-    additive-expression - unary-expression
+multiplicative_expr:
+    unary_expr
+    |multiplicative_expr * multiplicative_expr
+    |multiplicative_expr / multiplicative_expr
+    |multiplicative_expr % multiplicative_expr
 
-multiplicative-expression:
-    additive-expression
-    multiplicative-expression * additive-expression
-    multiplicative-expression / additive-expression
-    multiplicative-expression % additive-expression
+additive_expr:
+     multiplicative_expr
+     |additive_expr + additive_expr
+     |additive_expr - additive_expr
+
 \end{lstlisting}
 \pagebreak
 Examples:
@@ -164,18 +165,18 @@ Pipeline supports Comparison Operator to determine the relationship between two 
 \vspace{1 mm}
 \textbf{Grammar:}
 \begin{lstlisting}
-relational-expression:
-    multiplicative-expression
-    relational-expression < multiplicative-expression
-    relational-expression > multiplicative-expression
-    relational-expression <= multiplicative-expression
-    relational-expression >= multiplicative-expression
+relational_expr:
+     additive_expr
+     |relational_expr < additive_expr
+     |relational_expr > additive_expr
+     |relational_expr >= additive_expr
+     |relational_expr <= additive_expr
 
-equality-expression:
-    relational-expression
-    equality-expression == relational-expression
-    equality-expression != relational-expression
-    
+ equality_expr:
+      relational_expr 
+     | equality_expr == relational_expr
+     | equality_expr != relational_expr
+
 \end{lstlisting}
 \vspace{1 mm}
 \textbf{Examples:}
@@ -210,13 +211,14 @@ Logical Expression will evaluate both operands and compute the truth value of th
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-logical-AND-expression:
-    equality-expression
-    logical-AND-expression and equality-expression
+and_expr:
+      equality_expr
+      |and_expr 'and' equality_expr
 
-logical-OR-expression:
-    logical-AND-expression
-    logical-OR-expression or logical-AND-expression
+or_expr:
+      and_expr
+      |or_expr 'or' and_expression
+
 \end{lstlisting}
 AND operator "and":\\
 The expression will be evaluated to 1 if and only if both operands are true.
