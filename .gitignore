@@ -1,0 +1,9 @@
+*.aux
+*.log
+*.gz
+*.pdf
+**/LRM_Ch_template.tex
+*.toc
+*.kra
+*.kra~
+

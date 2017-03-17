@@ -17,7 +17,7 @@ type expr =
   | Dotop of expr * string 
   | Castop of typ * expr
   | Unop of uop * expr
-  | Assign of expr * expr
+  | Assign of string * expr
   | Call of string * expr list
   | Noexpr
 
