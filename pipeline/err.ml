@@ -1,1 +1,0 @@
-(* CATCH THE ERRORS HERE *)
