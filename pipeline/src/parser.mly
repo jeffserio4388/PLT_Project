@@ -9,7 +9,7 @@ let third (_,_,c) = c;;
 %token COLON SEMI LPAREN RPAREN LBRACE RBRACE LBRACK RBRACK COMMA 
 %token PLUS MINUS STAR DIVIDE MOD ASSIGN NOT DOT DEREF REF
 %token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR POINTER
-%token LET RETURN IF ELSE FOR INT FLOAT BOOL CHAR VOID STRING FUNCTION STRUCT CAST TO SET
+%token LET RETURN IF ELSE FOR INT FLOAT BOOL CHAR VOID STRING FUNCTION STRUCT CAST TO SET PIPELINE WHILE
 %token <string> STR_LIT
 %token <float> FLOAT_LIT
 %token <int> INT_LIT
@@ -95,7 +95,7 @@ stmt:
   | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
-  | FOR LPAREN expr RPAREN stmt { While($3, $5) }
+  | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
 
 expr_opt:
     /* nothing */ { Noexpr }
@@ -108,6 +108,7 @@ expr:
   | FALSE            { BoolLit(false) }
   | ID               { Id($1) }
   | STR_LIT	     { MyStringLit($1) }
+  /* | CHAR_LIT            { CharLit($1) } */
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr STAR  expr { Binop($1, Mult,  $3) }

@@ -51,7 +51,7 @@ rule token = parse
 (*types*)
 | "int"     { INT }
 | "float"   { FLOAT }
-| "char"    { CHAR }
+(*| "char"    { CHAR } *)
 | "string"  { STRING }
 | "void"    { VOID }
 
@@ -63,20 +63,20 @@ rule token = parse
 (*control sequence*)
 | "if"          { IF }
 | "else"        { ELSE }
-| "elif"        { ELIF }
-| "end"         { END } (* what is this used for? *)
 | "for"         { FOR }
 | "while"       { WHILE }
+(*
 | "break"       { BREAK }
 | "continue"    { CONTINUE }
-| "catch"       { CATCH }
+| "catch"       { CATCH } 
+*)
 | "return"      { RETURN }
 
 | float_t as lxm      { FLOAT_LIT(float_of_string lxm) }
 | int_t as lxm        { INT_LIT(int_of_string lxm) }
 | string_t as str     { STR_LIT(str) }
-| char_t as ch        { CHAR_LIT(ch) }
-| escape_char as es { ESC_CHAR(es) }
+(*| char_t as ch        { CHAR_LIT(ch) }*)
+(*| escape_char as es { ESC_CHAR(es) }*)
 | id as i           { ID(i) }
 | eof               { EOF }
 
