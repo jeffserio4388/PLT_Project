@@ -8,7 +8,7 @@ let third (_,_,c) = c;;
 
 %token COLON SEMI LPAREN RPAREN LBRACE RBRACE LBRACK RBRACK COMMA 
 %token PLUS MINUS STAR DIVIDE MOD ASSIGN NOT DOT DEREF REF
-%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
+%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR POINTER
 %token LET RETURN IF ELSE FOR INT FLOAT BOOL CHAR VOID STRING FUNCTION STRUCT CAST TO SET
 %token <string> STR_LIT
 %token <float> FLOAT_LIT
@@ -102,12 +102,12 @@ expr_opt:
   | expr          { $1 }
 
 expr:
-    LITERAL          { Literal($1) }
-  | FLOATLITERAL     { FloatLiteral($1) }
+    INT_LIT          { Literal($1) }
+  | FLOAT_LIT     { FloatLiteral($1) }
   | TRUE             { BoolLit(true) }
   | FALSE            { BoolLit(false) }
   | ID               { Id($1) }
-  | STRING	     { MyStringLit($1) }
+  | STR_LIT	     { MyStringLit($1) }
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr STAR  expr { Binop($1, Mult,  $3) }
@@ -128,7 +128,7 @@ expr:
   | STAR expr %prec DEREF { Unop(Deref, $2) }
   | REF expr { Unop(Ref, $2) }
   | NOT expr         { Unop(Not, $2) }
-  | expr ASSIGN expr   { Assign($1, $3) }
+  | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | LPAREN expr RPAREN { $2 }
 

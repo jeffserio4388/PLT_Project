@@ -11,10 +11,10 @@ let alpha = ['a'-'z' 'A'-'Z']
 let ascii = ([' '-'!' '#'-'[' ']'-'~'])
 let digit = (['0'-'9'])
 let id = alpha (alpha | digit | '_')*
-let string = '"' ( (ascii | escape)* as s) '"'
-let char = ''' (ascii | digit) '''
-let float = (digit+)? ['.'] digit+
-let int = digit+
+let string_t = '"' ( (ascii | escape)* as s) '"'
+let char_t = ''' (ascii | digit) '''
+let float_t = (digit+)? ['.'] digit+
+let int_t = digit+
 
 rule token = parse
   whitespace    { token lexbuf }
@@ -72,10 +72,10 @@ rule token = parse
 | "catch"       { CATCH }
 | "return"      { RETURN }
 
-| float as lxm      { FLOAT_LIT(float_of_string lxm) }
-| int as lxm        { INT_LIT(int_of_string lxm) }
-| string as str     { STR_LIT(str) }
-| char as ch        { CHAR_LIT(ch) }
+| float_t as lxm      { FLOAT_LIT(float_of_string lxm) }
+| int_t as lxm        { INT_LIT(int_of_string lxm) }
+| string_t as str     { STR_LIT(str) }
+| char_t as ch        { CHAR_LIT(ch) }
 | escape_char as es { ESC_CHAR(es) }
 | id as i           { ID(i) }
 | eof               { EOF }

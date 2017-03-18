@@ -5,7 +5,7 @@ all: scanner.ml parser.ml parser.mli ast.cmi parser.cmi scanner.cmo parser.cmo
 parser.ml parser.mli:
 	ocamlyacc parser.mly
 
-%.cmi: %.mli
+%.cmi: %.ml
 	ocamlc -c $<
 
 %.cmo: %.ml

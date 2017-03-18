@@ -3,7 +3,7 @@ type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Less | Leq | Greater | Ge
 
 type uop = Neg | Not | Deref | Ref
 
-type typ = Int | Float | Bool | Void | MyString | StructType of string | Voidstar | PointerType of typ
+type typ = Int | Float | Bool | Char | Void | MyString | StructType of string | Voidstar | PointerType of typ
 
 type bind = typ * string
 
@@ -12,6 +12,7 @@ type expr =
   | FloatLiteral of float
   | BoolLit of bool
   | MyStringLit of string
+  | CharLit of char
   | Id of string
   | Binop of expr * op * expr
   | Dotop of expr * string 
