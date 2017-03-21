@@ -40,12 +40,20 @@ program:
 decls:
    /* nothing */ { [], [], [] }
  | decls vdecl { ($2 :: first $1), second $1, third $1 }
- | decls fdecl { first $1, ($2 :: second $1), third $1 }
- | decls sdecl { first $1, second $1, ($2 :: third $1) }
+ | decls fun_decl { first $1, ($2 :: second $1), third $1 }
+ | decls struct_decl { first $1, second $1, ($2 :: third $1) }
+/* add 
+  | decls pipe_decl
+  | decls array_decl     
+*/
 
-fdecl:
+
+fun_decl:
+   /*Add typ_opt as per grammar in wiki */
+   /* statement before declaring anything fails because of this grammar*/
    FUNCTION ID LPAREN formals_opt RPAREN typ LBRACE vdecl_list stmt_list RBRACE
      { { typ = $6;
+
 	 fname = $2;
 	 formals = $4;
 	 locals = List.rev $8;
@@ -76,7 +84,7 @@ vdecl_list:
 vdecl:
    LET ID typ SEMI { ($3, $2) }
 
-sdecl:
+struct_decl:
     STRUCT ID LBRACE vdecl_list RBRACE
       { { sname = $2;
       sformals = $4;
