@@ -4,7 +4,7 @@ from datetime import datetime
 
 def interpret(s):
     from subprocess import Popen, PIPE, STDOUT
-    p = Popen(["menhir", "--interpret", "../parser.mly"], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+    p = Popen(["menhir", "--interpret", "../../src/parser.mly"], stdout=PIPE, stdin=PIPE, stderr=PIPE)
     p.stdin.write(s + "\n")
     res = p.communicate()[0].strip()
     return "ACCEPT" == res

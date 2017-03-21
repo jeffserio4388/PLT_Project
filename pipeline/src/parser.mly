@@ -50,7 +50,7 @@ decls:
 
 fun_decl:
    /*Add typ_opt as per grammar in wiki */
-   /* statement before declaring anything fails because of this grammar*/
+   /* statement before declaring anything fails because of*/
    FUNCTION ID LPAREN formals_opt RPAREN typ LBRACE vdecl_list stmt_list RBRACE
      { { typ = $6;
 
