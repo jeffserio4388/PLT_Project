@@ -18,4 +18,4 @@ scanner.ml: scanner.mll
 	ocamllex $<
 
 clean:
-	rm -f calc parser.ml parser.mli scanner.ml *.cmo *.cmi
+	rm -f calc parser.ml parser.mli scanner.ml *.cmo *.cmi *.c
