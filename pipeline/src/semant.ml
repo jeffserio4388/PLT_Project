@@ -141,5 +141,3 @@ let check (globals, functions) =
         stmt (Block func.body)
     in
     List.iter check_function functions
-
-

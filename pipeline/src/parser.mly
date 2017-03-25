@@ -38,7 +38,8 @@ program:
   decls EOF { $1 }
 
 decls:
-   /* nothing */ { [], [], [] }
+   /* nothing */ 
+   { [], [], [] }
  | decls vdecl { ($2 :: first $1), second $1, third $1 }
  | decls fun_decl { first $1, ($2 :: second $1), third $1 }
  | decls struct_decl { first $1, second $1, ($2 :: third $1) }
@@ -75,7 +76,6 @@ typ:
   | VOID { Void }
   | STRING { MyString }
   | STRUCT ID { StructType ($2) }
-  | STAR typ %prec POINTER{ PointerType ($2) }
 
 vdecl_list:
     /* nothing */    { [] }
@@ -135,8 +135,6 @@ expr:
 /*  | expr DOT    ID ASSIGN expr { SAssign($1, $3, $5) } */
   | CAST expr TO typ { Castop($4, $2) }
   | MINUS expr %prec NEG { Unop(Neg, $2) }
-  | STAR expr %prec DEREF { Unop(Deref, $2) }
-  | REF expr { Unop(Ref, $2) }
   | NOT expr         { Unop(Not, $2) }
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }

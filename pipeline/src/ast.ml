@@ -1,9 +1,9 @@
 type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Less | Leq | Greater | Geq |
           And | Or
 
-type uop = Neg | Not | Deref | Ref
+type uop = Neg | Not 
 
-type typ = Int | Float | Bool | Char | Void | MyString | StructType of string | Voidstar | PointerType of typ
+type typ = Int | Float | Bool | Char | Void | MyString | StructType of string 
 
 type bind = typ * string
 
@@ -12,6 +12,8 @@ type expr =
   | FloatLiteral of float
   | BoolLit of bool
   | MyStringLit of string
+  (*add struct*)
+  (*add list *)
   | CharLit of char
   | Id of string
   | Binop of expr * op * expr
@@ -28,9 +30,12 @@ type stmt =
   | Expr of expr
   | Return of expr
   | If of expr * stmt * stmt
+  (* else *)
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | SAssign of typ * string * expr
+  | Print of expr (* print 5 *)
+  
 
 type func_decl = {
     typ : typ;
@@ -40,6 +45,8 @@ type func_decl = {
     body : stmt list;
   }
 
+
+
 type struct_decl = {
     sname: string;
     sformals: bind list;
@@ -48,7 +55,14 @@ type struct_decl = {
 
 type program = bind list * func_decl list * struct_decl list
 
-(* Pretty-printing functions 
+(*
+type program = {
+                    funcs : stmt list;
+                    main  : stmt list;
+               }
+*)
+
+(* Pretty-printing functions *)
 
 let string_of_op = function
     Add -> "+"
@@ -65,11 +79,9 @@ let string_of_op = function
   | And -> "&&"
   | Or -> "||"
 
-let string_of_uop = function
+let string_of_unop = function
     Neg -> "-"
   | Not -> "!"
-  | Deref -> "*"
-  | Ref -> "&"
 
 let rec string_of_typ = function
     Int -> "int"
@@ -78,8 +90,6 @@ let rec string_of_typ = function
   | Void -> "void"
   | MyString -> "string"
   | StructType(s) -> "struct" ^ s
-  | Voidstar -> "voidstar"
-  | PointerType(s) -> "pointerof" ^ (string_of_typ s)
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
@@ -90,10 +100,9 @@ let rec string_of_expr = function
   | Id(s) -> s
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
-  | Unop(o, e) -> string_of_uop o ^ string_of_expr e
+  | Unop(o, e) -> string_of_unop o ^ string_of_expr e
   | Dotop(e1, e2) -> string_of_expr e1 ^ ". " ^ e2
   | Castop(t, e) -> "(" ^ string_of_typ t ^ ")" ^ string_of_expr e
-  | SAssign(e1, v, e2) -> string_of_expr(e1) ^ "." ^ v ^ " = " ^ string_of_expr e2 
   | Assign(v, e) -> string_of_expr v ^ " = " ^ string_of_expr e
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
@@ -127,4 +136,4 @@ let string_of_sdecl sdecl = sdecl.sname
 let string_of_program (vars, funcs, structs) =
   String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n" ^
-  String.concat "\n" (List.map string_of_sdecl structs)*)
+  String.concat "\n" (List.map string_of_sdecl structs)
