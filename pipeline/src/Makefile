@@ -1,6 +1,7 @@
-objs = parser.cmo scanner.cmo
+OBJS = ast.cmo parser.cmo scanner.cmo semant.cmo codegen.cmo pipeline.cmo
 
-all: scanner.ml parser.ml parser.mli ast.cmi parser.cmi scanner.cmo parser.cmo
+pipeline : $(OBJS)
+	ocamlc -o pipeline $(OBJS)
 
 parser.ml parser.mli:
 	ocamlyacc parser.mly
@@ -18,4 +19,18 @@ scanner.ml: scanner.mll
 	ocamllex $<
 
 clean:
-	rm -f calc parser.ml parser.mli scanner.ml *.cmo *.cmi *.c
+	rm -f calc parser.ml parser.mli scanner.ml *.cmo *.cmi
+
+ast.cmo:
+ast.cmx:
+semant.cmo: ast.cmo
+semant.cmx: ast.cmx
+codegen.cmo: ast.cmo
+codegen.cmx: ast.cmx
+pipeline.cmo: semant.cmo scanner.cmo parser.cmi codegen.cmo ast.cmo
+pipeline.cmx: semant.cmx scannser.cmx parser.cmx codegen.cmx ast.cmx
+parser.cmo: parser.cmi
+parser.cmx: ast.cmx
+scanner.cmo : ast.cmo
+scanner.cmx: parser.cmx
+parser.cmi: ast.cmo
