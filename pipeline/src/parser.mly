@@ -8,7 +8,7 @@ let third (_,_,c) = c;;
 
 %token COLON SEMI LPAREN RPAREN LBRACE RBRACE LBRACK RBRACK COMMA 
 %token PLUS MINUS STAR DIVIDE MOD ASSIGN NOT DOT DEREF REF
-%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR POINTER
+%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR SASSIGN POINTER
 %token LET RETURN IF ELSE FOR INT FLOAT BOOL CHAR VOID STRING FUNCTION STRUCT CAST TO SET PIPELINE WHILE
 %token <string> STR_LIT
 %token <float> FLOAT_LIT
@@ -64,8 +64,8 @@ formals_opt:
   | formal_list   { List.rev $1 }
 
 formal_list:
-    ID typ                   { [($2,$1)] }
-  | formal_list COMMA ID typ { ($4,$3) :: $1 }
+    typ ID                   { [($1,$2)] }
+  | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 typ:
     INT { Int }
@@ -104,6 +104,7 @@ stmt:
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+  | typ ID ASSIGN expr SEMI {SAssign($1, $2, $4)}
 
 expr_opt:
     /* nothing */ { Noexpr }
