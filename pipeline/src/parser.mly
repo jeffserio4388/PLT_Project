@@ -65,7 +65,7 @@ formals_opt:
 
 formal_list:
     typ ID                   { [($1,$2)] }
-  | formal_list COMMA ID typ { ($4,$3) :: $1 }
+  | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 typ:
     INT { Int }
