@@ -1,0 +1,261 @@
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          [expr:
+            ID
+            LPAREN
+            [actuals_opt: [actuals_list: [expr: INT_LIT]]]
+            RPAREN
+          ]
+          SEMI
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          [expr:
+            ID
+            LPAREN
+            [actuals_opt:
+              [actuals_list:
+                [actuals_list: [expr: INT_LIT]]
+                COMMA
+                [expr: FLOAT_LIT]
+              ]
+            ]
+            RPAREN
+          ]
+          SEMI
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:
+        [formal_list: [formal_list: ID [typ: INT]] COMMA ID [typ: INT]]
+      ]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          FOR
+          LPAREN
+          [expr_opt: [expr: ID ASSIGN [expr: INT_LIT]]]
+          SEMI
+          [expr: [expr: ID] LEQ [expr: INT_LIT]]
+          SEMI
+          [expr_opt:
+            [expr: ID ASSIGN [expr: [expr: ID] PLUS [expr: INT_LIT]]]
+          ]
+          RPAREN
+          [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          IF
+          LPAREN
+          [expr: [expr: ID] GEQ [expr: ID]]
+          RPAREN
+          [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+          ELSE
+          [stmt: [expr: ID ASSIGN [expr: FLOAT_LIT]] SEMI]
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          IF
+          LPAREN
+          [expr: [expr: ID] GEQ [expr: ID]]
+          RPAREN
+          [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+          ELSE
+          [stmt:
+            IF
+            LPAREN
+            [expr: [expr: ID] GEQ [expr: ID]]
+            RPAREN
+            [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+          ]
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
+ACCEPT
+[program:
+  [decls:
+    [decls:]
+    [fun_decl:
+      FUNCTION
+      ID
+      LPAREN
+      [formals_opt:]
+      RPAREN
+      [typ: VOID]
+      LBRACE
+      [vdecl_list:]
+      [stmt_list:
+        [stmt_list:]
+        [stmt:
+          IF
+          LPAREN
+          [expr: [expr: ID] GEQ [expr: ID]]
+          RPAREN
+          [stmt: [expr: ID ASSIGN [expr: INT_LIT]] SEMI]
+          ELSE
+          [stmt: [expr: ID ASSIGN [expr: FLOAT_LIT]] SEMI]
+        ]
+      ]
+      RBRACE
+    ]
+  ]
+  EOF
+]
