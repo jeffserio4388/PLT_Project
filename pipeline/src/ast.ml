@@ -18,7 +18,7 @@ type expr =
   | Dotop of expr * string
   | Castop of typ * expr
   | Unop of uop * expr
-  | SAssign of expr * string * expr 
+  (*| SAssign of typ * string * expr *) 
   | Assign of string * expr
   | Call of string * expr list
   | Noexpr
@@ -30,6 +30,7 @@ type stmt =
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
   | While of expr * stmt
+  | SAssign of typ * string * expr
 
 type func_decl = {
     typ : typ;
@@ -47,7 +48,7 @@ type struct_decl = {
 
 type program = bind list * func_decl list * struct_decl list
 
-(* Pretty-printing functions *)
+(* Pretty-printing functions 
 
 let string_of_op = function
     Add -> "+"
@@ -126,4 +127,4 @@ let string_of_sdecl sdecl = sdecl.sname
 let string_of_program (vars, funcs, structs) =
   String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n" ^
-  String.concat "\n" (List.map string_of_sdecl structs)
+  String.concat "\n" (List.map string_of_sdecl structs)*)

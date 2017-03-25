@@ -8,7 +8,7 @@ let third (_,_,c) = c;;
 
 %token COLON SEMI LPAREN RPAREN LBRACE RBRACE LBRACK RBRACK COMMA 
 %token PLUS MINUS STAR DIVIDE MOD ASSIGN NOT DOT DEREF REF
-%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR POINTER
+%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR SASSIGN POINTER
 %token LET RETURN IF ELSE FOR INT FLOAT BOOL CHAR VOID STRING FUNCTION STRUCT CAST TO SET PIPELINE WHILE
 %token <string> STR_LIT
 %token <float> FLOAT_LIT
@@ -104,7 +104,7 @@ stmt:
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
-  | typ ID ASIIGN expr SEMI {SAssign($1, $2, $4)}
+  | typ ID ASSIGN expr SEMI {SAssign($1, $2, $4)}
 
 expr_opt:
     /* nothing */ { Noexpr }
