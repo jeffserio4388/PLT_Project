@@ -28,6 +28,7 @@ semant.cmx: ast.cmx
 codegen.cmo: ast.cmo
 codegen.cmx: ast.cmx
 pipeline.cmo: semant.cmo scanner.cmo parser.cmi codegen.cmo ast.cmo
+	ocamlc -custom unix.cma parser.ml $< -cclib -linux
 pipeline.cmx: semant.cmx scannser.cmx parser.cmx codegen.cmx ast.cmx
 parser.cmo: parser.cmi
 parser.cmx: ast.cmx

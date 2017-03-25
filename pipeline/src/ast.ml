@@ -37,6 +37,13 @@ type stmt =
   | Print of expr (* print 5 *)
   
 
+
+type pipe_decl = {
+    
+    locals : bind list;
+    body : stmt list;
+}
+
 type func_decl = {
     typ : typ;
     fname : string;
