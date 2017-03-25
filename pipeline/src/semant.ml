@@ -4,7 +4,7 @@ open Ast
 
 module StringMap = Map.Make(String)
 
-let check (globals, functions) = 
+let check (globals, functions, structs) = 
     let report_duplicate exceptf list =
         let rec helper = function
             n1::n2::_ when n1 = n2 -> raise (Failure (exceptf n1))
