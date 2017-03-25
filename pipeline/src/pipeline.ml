@@ -4,7 +4,6 @@
 
 type action = Ast | C_code | Compile
 open Printf
-module Parser = P
 
 let file = "out.c"
 
