@@ -33,6 +33,12 @@ type stmt =
   | SAssign of typ * string * expr
 
 
+type pipe_decl = {
+    
+    locals : bind list;
+    body : stmt list;
+}
+
 type func_decl = {
     typ : typ;
     fname : string;
