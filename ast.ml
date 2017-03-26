@@ -39,15 +39,12 @@ type func_decl = {
     fname : string;
     formals : bind list;
     locals : bind list;
-    pipes: pipe_decl list;
     body : stmt list;
 }
 
-type program = bind list * func_decl list
+type program = bind list * stmt list * func_decl list  * pipe_decl list
 
 (* Pretty-printing functions *)
-
-let counter = 0
 
 let string_of_op = function
     Add -> "+"
@@ -101,7 +98,39 @@ let string_of_typ = function
     | MyString -> "string"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
+ 
+let string_of_pdecl pdecl =
+	pdecl.pname ^ 
+	"uv_idle_t idler\n;" ^
+    "uv_idle_init(uv_default_loop(), &idler);\n" ^
+    "uv_idle_start(&idler, idle);\n"
+    String.concat "" (List.map string_of_vdecl pdecl.locals) ^
+    String.concat "" (List.map string_of_stmt pdecl.body)
 
+let string_of_fdecl fdecl =
+    string_of_typ fdecl.typ ^ " " ^
+    fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
+    ")\n{\n" ^
+    String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+    String.concat "" (List.map string_of_stmt fdecl.body) ^
+    "}\n"
+
+let string_of_program (vars, stmts, funcs, pipes) =
+  String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
+  String.concat "\n" (List.map string_of_stmt stmts) ^ "\n" ^
+  String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n" ^
+  String.concat "\n" (List.map string_of_pdecl pipes)
+
+(*
+let string_of_program (vars, funcs) =
+    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n int main(){" ^
+    String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
+    String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n" ^
+    "}"
+*)
+
+
+(*
 let string_of_pdecl pdecl =
     pdecl.pname ^ "\n" ^
     "uv_idle_t idler\n;" ^
@@ -139,3 +168,4 @@ let string_of_program_second (vars, funcs) =
 let string_of_program (vars, funcs) =
     string_of_program_first (vars, funcs) ^ "\n" ^ 
     string_of_program_second (vars, funcs) ^ "\n"
+*)
