@@ -8,6 +8,10 @@ int gcd(int a, int b) {
 
 int main()
 {
+    pipe babyTwo {
+        printf("hello");
+    }
+
   print(gcd(2,14));
   print(gcd(3,15));
   print(gcd(99,121));

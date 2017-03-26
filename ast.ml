@@ -47,6 +47,8 @@ type program = bind list * func_decl list
 
 (* Pretty-printing functions *)
 
+let counter = 0
+
 let string_of_op = function
     Add -> "+"
     | Sub -> "-"
@@ -101,9 +103,18 @@ let string_of_typ = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
 let string_of_pdecl pdecl =
+    pdecl.pname ^ "\n" ^
+    "uv_idle_t idler\n;" ^
+    "uv_idle_init(uv_default_loop(), &idler);\n" ^
+    "uv_idle_start(&idler, idle);\n"
+
+let string_of_pdecl_second pdecl =
+    "void idle(uv_idle_t* handle) {\n" ^
     pdecl.pname ^ 
-    String.concat "" (List.map string_of_vdecl pdecl.locals) ^
-    String.concat "" (List.map string_of_stmt pdecl.body)
+    String.concat "" (List.map string_of_vdecl pdecl.locals) ^ "\n" ^
+    String.concat "" (List.map string_of_stmt pdecl.body) ^ "\n" ^
+    "uv_idle_stop(handle);\n" ^
+    "}\n"
 
 let string_of_fdecl fdecl =
   string_of_typ fdecl.typ ^ " " ^
@@ -114,8 +125,17 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
+let string_of_fdecl_second fdecl =
+  String.concat "" (List.map string_of_pdecl_second fdecl.pipes)
 
-let string_of_program (vars, funcs) =
+let string_of_program_first (vars, funcs) =
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n" ^
     String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
     String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n"
+
+let string_of_program_second (vars, funcs) =
+    String.concat "\n" (List.map string_of_fdecl_second funcs) ^ "\n"
+
+let string_of_program (vars, funcs) =
+    string_of_program_first (vars, funcs) ^ "\n" ^ 
+    string_of_program_second (vars, funcs) ^ "\n"
