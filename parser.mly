@@ -2,6 +2,10 @@
 
 %{
 open Ast
+
+let first (a,_,_) = a;;
+let second (_,b,_) = b;;
+let third (_,_,c) = c;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -34,16 +38,17 @@ program:
   decls EOF { $1 }
 
 decls:
-    /* nothing */ { [], [] }
-    | decls vdecl { ($2 :: fst $1), snd $1 }
-    | decls fdecl { fst $1, ($2 :: snd $1) }
-    | decls pdecl { fst $1, ($2 :: snd $1) }
+    /* nothing */ { [], [], [] }
+    | decls vdecl { ($2 :: first $1), second $1, third $1 }
+    | decls fdecl { first $1, ($2 :: second $1), third $1 }
+    | decls pdecl { first $1, second $1, ($2 :: third $1) }
 
 pdecl:
-    PIPE LBRACE vdecl_list stmt_list RBRACE
+    PIPE ID LBRACE vdecl_list stmt_list RBRACE
     { { 
-        locals = List.rev $3;
-        body = List.rev $4 
+        pname = $2;
+        locals = List.rev $4;
+        body = List.rev $5 
     } }
 
 fdecl:

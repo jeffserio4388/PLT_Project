@@ -29,6 +29,7 @@ type stmt =
     | While of expr * stmt
 
 type pipe_decl = {
+    pname: string;
     locals : bind list;
     body : stmt list;
 }
@@ -107,6 +108,7 @@ let string_of_fdecl fdecl =
   "}\n"
 
 let string_of_pdecl pdecl =
+  pdecl.pname ^
   String.concat "" (List.map string_of_vdecl pdecl.locals) ^
   String.concat "" (List.map string_of_stmt pdecl.body) ^
   "}\n"
