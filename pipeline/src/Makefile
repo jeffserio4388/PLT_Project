@@ -1,7 +1,7 @@
-OBJS = ast.cmo parser.cmo scanner.cmo semant.cmo codegen.cmo pipeline.cmo
+OBJS = ast.cmo parser.cmo scanner.cmo semant.cmo codegen.cmo pipe.cmo
 
-pipeline : $(OBJS)
-	ocamlc -o pipeline $(OBJS)
+pipe : $(OBJS)
+	ocamlc -o pipe $(OBJS)
 
 parser.ml parser.mli:
 	ocamlyacc parser.mly
@@ -27,9 +27,9 @@ semant.cmo: ast.cmo
 semant.cmx: ast.cmx
 codegen.cmo: ast.cmo
 codegen.cmx: ast.cmx
-pipeline.cmo: semant.cmo scanner.cmo parser.cmi codegen.cmo ast.cmo
-	ocamlc -custom unix.cma parser.ml $< -cclib -linux
-pipeline.cmx: semant.cmx scannser.cmx parser.cmx codegen.cmx ast.cmx
+pipe.cmo: semant.cmo scanner.cmo parser.cmi codegen.cmo ast.cmo
+#	ocamlc -custom unix.cma parser.ml $< -cclib -linux
+pipe.cmx: semant.cmx scannser.cmx parser.cmx codegen.cmx ast.cmx
 parser.cmo: parser.cmi
 parser.cmx: ast.cmx
 scanner.cmo : ast.cmo
