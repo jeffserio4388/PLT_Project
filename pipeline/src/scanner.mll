@@ -1,85 +1,71 @@
-{ 
-	open Parser
-	open Lexing
-        let lineno = ref 1
-}
+(* Ocamllex scanner for DaMPL *)
 
-let whitespace = [' ' '\t' '\r']
-let escape = '\\' ['\\' ''' '"' 'n' 'r' 't']
-let escape_char = ''' (escape) '''
-let alpha = ['a'-'z' 'A'-'Z']
-let ascii = ([' '-'!' '#'-'[' ']'-'~'])
-let digit = (['0'-'9'])
-let id = alpha (alpha | digit | '_')*
-let string_t = '"' ( (ascii | escape)*) '"'
-let char_t = ''' (ascii | digit) '''
-let float_t = (digit+)? ['.'] digit+
-let int_t = digit+
+{ open Parser }
+
+
+let digit = ['0'-'9']
+let exponent = ['e' 'E']['+' '-']?digit+
+let decimal = (digit+"."digit*)|(digit*"."digit+)
 
 rule token = parse
-  whitespace    { token lexbuf }
-| '\n'          { incr lineno; token lexbuf }
-| "/*"          { multiLineComment lexbuf }
+  [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
+| "/*"     { comment lexbuf }           (* Comments *)
+| '('      { LPAREN }
+| ')'      { RPAREN }
+| '['      { LBRACK }
+| ']'      { RBRACK }
+| '{'      { LBRACE }
+| '}'      { RBRACE }
+| ':'	   { COLON }
+| ';'      { SEMI }
+| ','      { COMMA }
+| '@'	   { AT }
+| '+'      { PLUS }
+| '-'      { MINUS }
+| '*'      { TIMES }
+| '/'      { DIVIDE }
+| '='      { ASSIGN }
+| "=="     { EQ }
+| "!="     { NEQ }
+| '<'      { LT }
+| "<="     { LEQ }
+| ">"      { GT }
+| ">="     { GEQ }
+| "&&"     { AND }
+| "||"     { OR }
+| "!"      { NOT }
+| "if"     { IF }
+| "else"   { ELSE }
+| "for"    { FOR }
+| "while"  { WHILE }
+| "return" { RETURN }
 
-(*punctuation*)
-| '('   { LPAREN }
-| ')'   { RPAREN }
-| '{'   { LBRACE }
-| '}'   { RBRACE }
-| ','   { COMMA }
-| ';'   { SEMI }
+| "pipe"   { PIPELINE }
 
-(*operators*)
-| '+'   { PLUS } 
-| '-'   { MINUS }
-| '*'   { STAR }
-| '/'   { DIVIDE }
-| '%'   { MOD }
-| ">="  { GEQ }
-| "<="  { LEQ }
-| "=="  { EQ }
-| "!="  { NEQ }
-| '>'   { GT }
-| '<'   { LT }
-| '['   { LBRACK }
-| ']'   { RBRACK }    
-| '='   { ASSIGN }
-| "and" { AND }
-| "or"  { OR }
-| "not" { NOT }
+| "true"   { TRUE }
+| "false"  { FALSE }
 
-(*types*)
-| "int"     { INT }
-| "float"   { FLOAT }
-(*| "char"    { CHAR } *)
-| "string"  { STRING }
-| "void"    { VOID }
 
-(*declarations*)
-| "fun"         { FUNCTION }
-| "pipe"        { PIPELINE }
-| "struct"      { STRUCT }
+| "include"  { INCLUDE }
+| "tuple"    { TUPLE }
+| "$"        { DOLLAR }
+| "break"    { BREAK }
+| "continue" { CONTINUE }
+| "function"      { FUN }
+| "in"       { IN }
 
-(*control sequence*)
-| "if"          { IF }
-| "else"        { ELSE }
-| "for"         { FOR }
-| "while"       { WHILE }
-(*
-| "break"       { BREAK }
-| "continue"    { CONTINUE }
-| "catch"       { CATCH } 
-*)
-| "return"      { RETURN }
+| "real"	 { REAL }
+| "integer"  { INTEGER }
+| "text"	 { TEXT }
 
-| float_t as lxm      { FLOAT_LIT(float_of_string lxm) }
-| int_t as lxm        { INT_LIT(int_of_string lxm) }
-| string_t as str     { STR_LIT(str) }
-(*| char_t as ch        { CHAR_LIT(ch) }*)
-(*| escape_char as es { ESC_CHAR(es) }*)
-| id as i           { ID(i) }
-| eof               { EOF }
+| ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
+| (decimal exponent?)|(digit+exponent) as lxm { FLOAT(float_of_string lxm) }
+| '"'([^'"']|("\\\""))*'"' as lxm { STRING(lxm) }
+| ['a'-'z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
+| ['A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { TID(lxm) }
+| eof { EOF }
+| _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }
 
-and multiLineComment = parse
-|"*/"   { token lexbuf }
-| _     { multiLineComment lexbuf }
+and comment = parse
+  "*/" { token lexbuf }
+| _    { comment lexbuf }
