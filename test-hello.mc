@@ -1,6 +1,16 @@
-
-pipe idle1 {
-    printf("this");
+void hello() {
+    sleep(3);
+    printf("hello\n");
 }
-printf("yo");    
+print("above\n");
+
+pipe hello {
+    hello();
+}
+
+pipe world {
+    print("world\n");
+}
+
+print("below\n");
 
