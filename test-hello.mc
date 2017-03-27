@@ -2,15 +2,15 @@ void hello() {
     sleep(3);
     printf("hello\n");
 }
-print("above\n");
+printf("above\n");
 
 pipe hello {
     hello();
 }
 
 pipe world {
-    print("world\n");
+    printf("world\n");
 }
 
-print("below\n");
+printf("below\n");
 
