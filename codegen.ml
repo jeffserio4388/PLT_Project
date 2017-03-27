@@ -17,7 +17,7 @@ module A = Ast
 
 module StringMap = Map.Make(String)
 *)
-let translate (globals, stmts, functions, pipes) = "Hi"
+let translate ast = Ast.string_of_program ast (*(globals, stmts, functions, pipes )*)
 (*
   let context = L.global_context () in
   let the_module = L.create_module context "MicroC"
