@@ -100,11 +100,16 @@ let string_of_typ = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
  
 let string_of_pdecl pdecl = 
-    pdecl.pname ^
-    "(uv_idle_t* handle) { \n" ^ 
+    "void idle_" ^ pdecl.pname ^
+    " (uv_idle_t* handle) { \n" ^ 
     String.concat "" (List.map string_of_vdecl pdecl.locals) ^
     String.concat "" (List.map string_of_stmt pdecl.body)^
     "uv_idle_stop(handle);\n}"
+
+let string_of_pdecl_main pdecl = 
+	"uv_idle_t idler_" ^ pdecl.pname ^ ";\n" ^
+    "uv_idle_init(uv_default_loop(), &idler_" ^ pdecl.pname ^ ");\n" ^
+    "uv_idle_start(&idler_" ^ pdecl.pname ^ ", idle_" ^ pdecl.pname ^ ");\n"
 
 let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
@@ -119,16 +124,16 @@ let string_of_program (vars, stmts, funcs, pipes) =
   "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
    String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
  
-  String.concat "\n" (List.map string_of_fdecl funcs) ^ "\nvoid " ^
+  String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n " ^
   
   String.concat "\n" (List.map string_of_pdecl pipes) ^ "\n" ^
-  "int main(){\n" ^
-	"uv_idle_t idler;\n" ^
-    "uv_idle_init(uv_default_loop(), &idler);\n" ^
-    "uv_idle_start(&idler, idle1);\n" ^
 
-  String.concat "\n" (List.map string_of_stmt stmts) ^ "\n" ^
+  "int main(){\n" ^
+
+  String.concat "\n" (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
+  String.concat "\n" (List.rev (List.map string_of_pdecl_main pipes)) ^ "\n" ^
+
    "uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n"^
    " uv_loop_close(uv_default_loop());\n"^
    "return 0; }\n"
