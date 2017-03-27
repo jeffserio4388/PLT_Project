@@ -9,7 +9,7 @@ module StringMap = Map.Make(String)
 
    Check each global variable, then check each function *)
 
-let check (globals, functions) =
+let check (globals, stmts, functions, pipes) =
 
   (* Raise an exception if the given list has a duplicate *)
   let report_duplicate exceptf list =
@@ -53,7 +53,6 @@ let check (globals, functions) =
             fname = "print"; 
             formals = [(Int, "x")];
             locals = []; 
-            pipes = [];
             body = [] 
         } (StringMap.add "printf"
             { 
@@ -61,7 +60,6 @@ let check (globals, functions) =
                 fname = "printf"; 
                 formals = [(MyString, "x")];
                 locals = []; 
-                pipes = [];
                 body = [] 
             } (StringMap.singleton "printbig"
                 { 
@@ -69,7 +67,6 @@ let check (globals, functions) =
                     fname = "printbig"; 
                     formals = [(Int, "x")];
                     locals = []; 
-                    pipes = [];
                     body = [] 
                 }))
    in
@@ -82,7 +79,7 @@ let check (globals, functions) =
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
-  let _ = function_decl "main" in (* Ensure "main" is defined *)
+  (*let _ = function_decl "main" in (* Ensure "main" is defined *)*)
 
   let check_function func =
 

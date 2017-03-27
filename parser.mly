@@ -6,7 +6,7 @@ open Ast;;
 let first (a,_,_,_) = a;;
 let second (_,b,_,_) = b;;
 let third (_,_,c,_) = c;;
-let fourth (_,_,_,_,d) = d;;
+let fourth (_,_,_,d) = d;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -40,7 +40,7 @@ program:
 
 decls:
    /* nothing */ 
-   { [], [], [] [] }
+   { [], [], [], [] }
  | decls vdecl { ($2 :: first $1), second $1, third $1, fourth $1 }
  | decls stmt { first $1, ($2 :: second $1), third $1, fourth $1 }
  | decls fdecl { first $1, second $1, ($2 :: third $1), fourth $1 }
