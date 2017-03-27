@@ -11,13 +11,14 @@ http://llvm.moe/
 http://llvm.moe/ocaml/
 
 *)
-
+(*
 module L = Llvm
 module A = Ast
 
 module StringMap = Map.Make(String)
-
-let translate (globals, functions) =
+*)
+let translate (globals, stmts, functions, pipes) = "Hi"
+(*
   let context = L.global_context () in
   let the_module = L.create_module context "MicroC"
   and i32_t  = L.i32_type  context
@@ -186,4 +187,4 @@ let translate (globals, functions) =
   in
 
   List.iter build_function_body functions;
-  the_module
+  the_module*)
