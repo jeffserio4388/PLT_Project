@@ -28,18 +28,16 @@ let _ =
                                         ("-d", Compare) ]   (* Compare output and expected output *)
         else 
             Compile in
-            let split s = Str.split (Str.regexp "/") s in
             let splitFileExt s = Str.split (Str.regexp "\\.p") s in
             let fullName = Sys.argv.(2) in
             let fullNameStub = List.hd (splitFileExt fullName) in
-            let shortName = List.hd (List.rev (split fullName)) in
-            let shortNameStub = List.hd (splitFileExt shortName) in
             let program = open_in fullName in 
             let lexbuf = Lexing.from_channel program in
             let ast = Parser.program Scanner.token lexbuf in
             (* Semant.check ast; *)
             match action with
-                Ast | Translate | Compile | Run | Compare -> print_string (Ast.string_of_program ast);
+                Ast -> print_string (Ast.string_of_program ast);
+                | Translate | Compile | Run | Compare -> ();
             match action with
                 Ast -> ();
                 | Translate | Compile | Run | Compare -> let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;

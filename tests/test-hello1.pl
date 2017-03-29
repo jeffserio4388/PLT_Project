@@ -4,8 +4,8 @@ void world() {
 }
 printf("above\n");
 
-pipe hello {
-    hello();
+pipe world {
+    world);
 }
 
 pipe hello {
