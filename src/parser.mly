@@ -54,9 +54,9 @@ pdecl:
         body = List.rev $5 
     } }
 
-pdecl_list:
-    /* nothing */    { [] }
-  | pdecl_list pdecl { $2 :: $1 }
+/* pdecl_list: */
+    /* nothing    { [] } */
+  /* | pdecl_list pdecl { $2 :: $1 } */
 
 fdecl:
    typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
