@@ -1,7 +1,7 @@
 OBJS = ast.cmo parser.cmo scanner.cmo semant.cmo codegen.cmo pipeline.cmo
 
 pipeline : $(OBJS)
-	ocamlc -o pipeline $(OBJS)
+	ocamlc unix.cma -o pipeline $(OBJS)
 
 parser.ml parser.mli:
 	ocamlyacc parser.mly
