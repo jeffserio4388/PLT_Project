@@ -19,7 +19,7 @@ scanner.ml: scanner.mll
 	ocamllex $<
 
 clean:
-	rm -f pipeline parser.ml parser.mli scanner.ml *.cmo *.cmi out.c a.out *.o
+	rm -f pipeline parser.ml parser.mli scanner.ml *.cmo *.cmi out.c *.out *.o *.diff
 
 ast.cmo:
 ast.cmx:

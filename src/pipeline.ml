@@ -28,10 +28,13 @@ let _ =
                                         ("-d", Compare) ]   (* Compare output and expected output *)
         else 
             Compile in
-            let programName = Sys.argv.(2) in
             let split s = Str.split (Str.regexp "/") s in
-            let fileName = List.hd (List.rev (split programName)) in
-            let program = open_in programName in 
+            let splitFileExt s = Str.split (Str.regexp "\\.p") s in
+            let fullName = Sys.argv.(2) in
+            let fullNameStub = List.hd (splitFileExt fullName) in
+            let shortName = List.hd (List.rev (split fullName)) in
+            let shortNameStub = List.hd (splitFileExt shortName) in
+            let program = open_in fullName in 
             let lexbuf = Lexing.from_channel program in
             let ast = Parser.program Scanner.token lexbuf in
             (* Semant.check ast; *)
@@ -45,11 +48,12 @@ let _ =
                 | Compile | Run | Compare-> ignore(read_process "gcc out.c -luv");
             match action with
                 Ast | Translate | Compile -> ();
-                | Run | Compare -> ignore(print_string (read_process "./a.out > stdout.txt")); 
+                | Run | Compare -> ignore(read_process ("./a.out > " ^ fullNameStub ^ ".out")); 
                 (* ignore(Unix.execv "./a.out" [| "./a.out"; "> stdout.txt" |]); *)
             match action with
                 Ast | Translate | Compile | Run -> ();
-                | Compare -> ignore(Unix.execv "./a.out" [| "./a.out"; "> stdout.txt" |]);
+                | Compare -> let a = "diff " ^ fullNameStub ^ ".out " ^ fullNameStub ^ ".expected > " ^ fullNameStub ^ ".diff" in 
+                    ignore(read_process a);
 
 
 
