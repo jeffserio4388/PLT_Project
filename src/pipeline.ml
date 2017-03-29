@@ -14,7 +14,7 @@ let read_process command =
     	Buffer.add_substring buffer string 0 !chars_read
   	done;
   	ignore (Unix.close_process_in in_channel);
-  	Buffer.contents buffer
+    Buffer.contents buffer
 
 let _ =
     let action = 
@@ -29,6 +29,8 @@ let _ =
         else 
             Compile in
             let programName = Sys.argv.(2) in
+            let split s = Str.split (Str.regexp "/") s in
+            let fileName = List.hd (List.rev (split programName)) in
             let program = open_in programName in 
             let lexbuf = Lexing.from_channel program in
             let ast = Parser.program Scanner.token lexbuf in
