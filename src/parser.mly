@@ -59,8 +59,8 @@ pdecl:
   /* | pdecl_list pdecl { $2 :: $1 } */
 
 fdecl:
-   typ FUNCTION ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
-     { { typ = $1;
+   FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+     { { typ = $2;
 	 fname = $3;
 	 formals = $5;
 	 locals = List.rev $8;
