@@ -13,7 +13,7 @@ let fourth (_,_,_,d) = d;;
 %token PLUS MINUS TIMES DIVIDE ASSIGN NOT
 %token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING
-%token PIPE
+%token PIPE FUNCTION
 %token <int> LITERAL
 %token <string> STR_LIT
 %token <string> ID
@@ -59,7 +59,7 @@ pdecl:
   /* | pdecl_list pdecl { $2 :: $1 } */
 
 fdecl:
-   typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+   FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
      { { typ = $1;
 	 fname = $2;
 	 formals = $4;

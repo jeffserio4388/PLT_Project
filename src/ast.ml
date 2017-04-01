@@ -100,16 +100,17 @@ let string_of_typ = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
  
 let string_of_pdecl pdecl = 
-    "void idle_" ^ pdecl.pname ^
-    " (uv_idle_t* handle) {    " ^ 
+    "void async_" ^ pdecl.pname ^
+    " (uv_async_t* handle) {    " ^ 
     String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
     String.concat "\n    " (List.map string_of_stmt pdecl.body)^
-    "    uv_idle_stop(handle);\n}"
+    (* "    uv_async_stop(handle);\n}" *)
+    "\n}"
 
 let string_of_pdecl_main pdecl = 
-	"    uv_idle_t idler_" ^ pdecl.pname ^ ";\n" ^
-    "    uv_idle_init(uv_default_loop(), &idler_" ^ pdecl.pname ^ ");\n" ^
-    "    uv_idle_start(&idler_" ^ pdecl.pname ^ ", idle_" ^ pdecl.pname ^ ");\n"
+	"    uv_async_t asyncr_" ^ pdecl.pname ^ ";\n" ^
+    "    uv_async_init(uv_default_loop(), &asyncr_" ^ pdecl.pname ^ ", async_" ^ pdecl.pname ^ ");\n"
+    (* "    uv_async_start(&asyncr_" ^ pdecl.pname ^ ", async_" ^ pdecl.pname ^ ");\n" *)
 
 let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
@@ -150,16 +151,16 @@ let string_of_program (vars, funcs) =
 (*
 let string_of_pdecl pdecl =
     pdecl.pname ^ "\n" ^
-    "uv_idle_t idler\n;" ^
-    "uv_idle_init(uv_default_loop(), &idler);\n" ^
-    "uv_idle_start(&idler, idle);\n"
+    "uv_async_t asyncr\n;" ^
+    "uv_async_init(uv_default_loop(), &asyncr);\n" ^
+    "uv_async_start(&asyncr, async);\n"
 
 let string_of_pdecl_second pdecl =
-    "void idle(uv_idle_t* handle) {\n" ^
+    "void async(uv_async_t* handle) {\n" ^
     pdecl.pname ^ 
     String.concat "" (List.map string_of_vdecl pdecl.locals) ^ "\n" ^
     String.concat "" (List.map string_of_stmt pdecl.body) ^ "\n" ^
-    "uv_idle_stop(handle);\n" ^
+    "uv_async_stop(handle);\n" ^
     "}\n"
 
 let string_of_fdecl fdecl =
