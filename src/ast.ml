@@ -100,17 +100,17 @@ let string_of_typ = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
  
 let string_of_pdecl pdecl = 
-    "void async_" ^ pdecl.pname ^
-    " (uv_async_t* handle) {    " ^ 
+    "void work_" ^ pdecl.pname ^
+    "(uv_work_t *req) {    " ^ 
     String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
     String.concat "\n    " (List.map string_of_stmt pdecl.body)^
-    (* "    uv_async_stop(handle);\n}" *)
     "\n}"
 
 let string_of_pdecl_main pdecl = 
-	"    uv_async_t asyncr_" ^ pdecl.pname ^ ";\n" ^
-    "    uv_async_init(uv_default_loop(), &asyncr_" ^ pdecl.pname ^ ", async_" ^ pdecl.pname ^ ");\n"
-    (* "    uv_async_start(&asyncr_" ^ pdecl.pname ^ ", async_" ^ pdecl.pname ^ ");\n" *)
+	"    int data_" ^ pdecl.pname ^ ";\n" ^
+    "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
+    "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
+    "    uv_queue_work(uv_default_loop(), &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
 
 let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
@@ -122,68 +122,19 @@ let string_of_fdecl fdecl =
 
 let string_of_program (vars, stmts, funcs, pipes) =
  
-  "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
+    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
     String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
  
-  String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
+  	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
+	
+	"void after(uv_work_t *req, int status) { }\n\n" ^
   
-  String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
+  	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
 
-  "int main() {\n    " ^
+  	"int main() {\n    " ^
 
-  String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
+  	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
-  String.concat "\n" (List.rev (List.map string_of_pdecl_main pipes)) ^ "\n" ^
+  	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
-   "    uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n"^
-   "    uv_loop_close(uv_default_loop());\n\n"^
-   "    return 0;\n}\n"
-
-(*
-let string_of_program (vars, funcs) =
-    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n int main(){" ^
-    String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
-    String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n" ^
-    "}"
-*)
-
-
-(*
-let string_of_pdecl pdecl =
-    pdecl.pname ^ "\n" ^
-    "uv_async_t asyncr\n;" ^
-    "uv_async_init(uv_default_loop(), &asyncr);\n" ^
-    "uv_async_start(&asyncr, async);\n"
-
-let string_of_pdecl_second pdecl =
-    "void async(uv_async_t* handle) {\n" ^
-    pdecl.pname ^ 
-    String.concat "" (List.map string_of_vdecl pdecl.locals) ^ "\n" ^
-    String.concat "" (List.map string_of_stmt pdecl.body) ^ "\n" ^
-    "uv_async_stop(handle);\n" ^
-    "}\n"
-
-let string_of_fdecl fdecl =
-  string_of_typ fdecl.typ ^ " " ^
-  fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
-  ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
-  String.concat "" (List.map string_of_pdecl fdecl.pipes) ^
-  String.concat "" (List.map string_of_stmt fdecl.body) ^
-  "}\n"
-
-let string_of_fdecl_second fdecl =
-  String.concat "" (List.map string_of_pdecl_second fdecl.pipes)
-
-let string_of_program_first (vars, funcs) =
-    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n" ^
-    String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
-    String.concat "\n" (List.map string_of_fdecl funcs) ^ "\n"
-
-let string_of_program_second (vars, funcs) =
-    String.concat "\n" (List.map string_of_fdecl_second funcs) ^ "\n"
-
-let string_of_program (vars, funcs) =
-    string_of_program_first (vars, funcs) ^ "\n" ^ 
-    string_of_program_second (vars, funcs) ^ "\n"
-*)
+   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n"

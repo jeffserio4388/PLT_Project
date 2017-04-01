@@ -1,4 +1,4 @@
-void hello() {
+void function hello() {
     sleep(3);
     printf("hello\n");
 }
