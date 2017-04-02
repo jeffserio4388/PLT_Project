@@ -3,10 +3,11 @@
 %{
 open Ast;;
 
-let first (a,_,_,_) = a;;
-let second (_,b,_,_) = b;;
-let third (_,_,c,_) = c;;
-let fourth (_,_,_,d) = d;;
+let first (a,_,_,_,_) = a;;
+let second (_,b,_,_,_) = b;;
+let third (_,_,c,_,_) = c;;
+let fourth (_,_,_,d,_) = d;;
+let fifth (_,_,_,_,e) = e;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -40,12 +41,19 @@ program:
 
 decls:
    /* nothing */ 
-   { [], [], [], [] }
+   { [], [], [], [], []}
  | decls vdecl { ($2 :: first $1), second $1, third $1, fourth $1 }
  | decls stmt { first $1, ($2 :: second $1), third $1, fourth $1 }
  | decls fdecl { first $1, second $1, ($2 :: third $1), fourth $1 }
  | decls pdecl { first $1, second $1, third $1, ($2::fourth $1) }
+ | decls sdecl {first $1, second $1, third$1, forth $1, ($2::fifth $1)}
 
+sdecl:
+    STRUCT ID LBRACE vdecl_list RBRACE
+    { {
+        sname = $2;
+        vars = $4;
+    } }
 pdecl:
     PIPE ID LBRACE vdecl_list stmt_list RBRACE
     { { 
