@@ -42,7 +42,13 @@ type func_decl = {
     body : stmt list;
 }
 
-type program = bind list * stmt list * func_decl list  * pipe_decl list
+type struct_decl = {
+  sname : string;
+  vars : bind list;
+}
+
+type program = bind list * stmt list * func_decl list  * pipe_decl list * struct_decl list
+
 
 (* Pretty-printing functions *)
 
@@ -120,13 +126,20 @@ let string_of_fdecl fdecl =
     String.concat "    " (List.map string_of_stmt fdecl.body) ^
     "}\n"
 
-let string_of_program (vars, stmts, funcs, pipes) =
+let string_of_sdecl sdecl =
+    sdecl.sname ^ "{"^
+    String.concat "\n    " (List.map string_of_vdecl sdecl.vars)^
+    "};"
+
+let string_of_program (vars, stmts, funcs, pipes, structs) =
  
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
     String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
- 
+    
   	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
 	
+    String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
+ 
 	"void after(uv_work_t *req, int status) { }\n\n" ^
   
   	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^

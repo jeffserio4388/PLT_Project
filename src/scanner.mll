@@ -43,6 +43,7 @@ rule token = parse
 | "false"               { FALSE }
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
+| "struct"              { STRUCT }
 | string_t as str       { STR_LIT(str) }
 | ['0'-'9']+ as lxm     { LITERAL(int_of_string lxm) }
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
