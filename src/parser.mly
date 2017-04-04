@@ -14,7 +14,7 @@ let fifth (_,_,_,_,e) = e;;
 %token PLUS MINUS TIMES DIVIDE ASSIGN NOT
 %token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT
-%token PIPE FUNCTION
+%token PIPE FUNCTION LIST
 %token <int> LITERAL
 %token <string> STR_LIT
 %token <string> ID
@@ -62,10 +62,6 @@ pdecl:
         locals = List.rev $4;
         body = List.rev $5 
     } }
-
-/* pdecl_list: */
-    /* nothing    { [] } */
-  /* | pdecl_list pdecl { $2 :: $1 } */
 
 fdecl:
    FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
