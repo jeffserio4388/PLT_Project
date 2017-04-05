@@ -9,6 +9,8 @@ type typ = Int | Bool | Void | MyString
 
 type bind = typ * string
 
+type literal = Literal of int | MyStringLit of string | BoolLit of bool
+
 type expr =
     Literal of int
     | MyStringLit of string
@@ -28,26 +30,32 @@ type stmt =
     | For of expr * expr * expr * stmt
     | While of expr * stmt
 
+type list_decl = {
+    lname   :   string;
+    ltype   :   typ;
+    data    :   literal list;
+}
+
 type pipe_decl = {
-    pname: string;
-    locals : bind list;
-    body : stmt list;
+    pname   :   string;
+    locals  :   bind list;
+    body    :   stmt list;
 }
 
 type func_decl = {
-    typ : typ;
-    fname : string;
-    formals : bind list;
-    locals : bind list;
-    body : stmt list;
+    typ     :   typ;
+    fname   :   string;
+    formals :   bind list;
+    locals  :   bind list;
+    body    :   stmt list;
 }
 
 type struct_decl = {
-  sname : string;
-  vars : bind list;
+    sname   :   string;
+    vars    :   bind list;
 }
 
-type program = bind list * stmt list * func_decl list  * pipe_decl list * struct_decl list
+type program = bind list * stmt list * func_decl list  * pipe_decl list * struct_decl list * list_decl list
 
 
 (* Pretty-printing functions *)
@@ -127,11 +135,11 @@ let string_of_fdecl fdecl =
     "}\n"
 
 let string_of_sdecl sdecl =
-    sdecl.sname ^ "{"^
-    String.concat "\n    " (List.map string_of_vdecl sdecl.vars)^
-    "};"
+    "struct " ^ sdecl.sname ^ " {\n    " ^
+    String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
+    "};\n"
 
-let string_of_program (vars, stmts, funcs, pipes, structs) =
+let string_of_program (vars, stmts, funcs, pipes, structs, lists) =
  
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
     String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^

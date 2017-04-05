@@ -3,11 +3,12 @@
 %{
 open Ast;;
 
-let first (a,_,_,_,_) = a;;
-let second (_,b,_,_,_) = b;;
-let third (_,_,c,_,_) = c;;
-let fourth (_,_,_,d,_) = d;;
-let fifth (_,_,_,_,e) = e;;
+let first   (a,_,_,_,_,_) = a;;
+let second  (_,b,_,_,_,_) = b;;
+let third   (_,_,c,_,_,_) = c;;
+let fourth  (_,_,_,d,_,_) = d;;
+let fifth   (_,_,_,_,e,_) = e;;
+let sixth   (_,_,_,_,_,f) = f;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -41,12 +42,31 @@ program:
 
 decls:
    /* nothing */ 
-   { [], [], [], [], []}
- | decls vdecl { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
- | decls stmt { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1 }
- | decls fdecl { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1 }
- | decls pdecl { first $1, second $1, third $1, ($2::fourth $1), fifth $1 }
- | decls sdecl {first $1, second $1, third $1, fourth $1, ($2::fifth $1)}
+   { [], [], [], [], [], []}
+ | decls vdecl  { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1, sixth $1 }
+ | decls stmt   { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1, sixth $1 }
+ | decls fdecl  { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1, sixth $1 }
+ | decls pdecl  { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1, sixth $1 }
+ | decls sdecl  { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1), sixth $1 }
+ | decls ldecl  { first $1, second $1, third $1, fourth $1, fifth $1, ($2 :: sixth $1) }
+
+ldecl: 
+    LIST ID ASSIGN typ LPAREN literal_list RPAREN
+    { { 
+        lname = $2;
+        ltype = $4;
+        data = List.rev $6;
+    } }
+
+literal_list:
+    literal                         { [$1] }
+    | literal_list COMMA literal    { $3 :: $1 }
+
+literal:
+    LITERAL     { Literal($1) }
+    | TRUE      { BoolLit(true) }
+    | FALSE     { BoolLit(false) }
+    | STR_LIT   { MyStringLit($1) }
 
 sdecl:
     STRUCT ID LBRACE vdecl_list RBRACE
@@ -60,16 +80,18 @@ pdecl:
     { { 
         pname = $2;
         locals = List.rev $4;
-        body = List.rev $5 
+        body = List.rev $5;
     } }
 
 fdecl:
    FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
-     { { typ = $2;
-	 fname = $3;
-	 formals = $5;
-	 locals = List.rev $8;
-	 body = List.rev $9 } }
+     { { 
+         typ = $2;
+	    fname = $3;
+	    formals = $5;
+	    locals = List.rev $8;
+	    body = List.rev $9 
+    } }
 
 formals_opt:
     /* nothing */ { [] }
@@ -80,10 +102,10 @@ formal_list:
   | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 typ:
-    INT { Int }
-    | BOOL { Bool }
-    | VOID { Void }
-    | STRING { MyString }
+    INT         { Int }
+    | BOOL      { Bool }
+    | VOID      { Void }
+    | STRING    { MyString }
 
 
 vdecl_list:
@@ -98,16 +120,15 @@ stmt_list:
   | stmt_list stmt { $2 :: $1 }
 
 stmt:
-    expr SEMI { Expr $1 }
-  | RETURN SEMI { Return Noexpr }
-  | RETURN expr SEMI { Return $2 }
-  | LBRACE stmt_list RBRACE { Block(List.rev $2) }
-  /*| LBRACE stmt_list RBRACE { Block($2) }*/
-  | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
-  | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
-  | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
-     { For($3, $5, $7, $9) }
-  | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+    expr SEMI                                                   { Expr $1 }
+  | RETURN SEMI                                                 { Return Noexpr }
+  | RETURN expr SEMI                                            { Return $2 }
+  | LBRACE stmt_list RBRACE                                     { Block(List.rev $2) }
+  /*| LBRACE stmt_list RBRACE                                   { Block($2) }*/
+  | IF LPAREN expr RPAREN stmt %prec NOELSE                     { If($3, $5, Block([])) }
+  | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
+  | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
+  | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
 
 expr_opt:
     /* nothing */ { Noexpr }
