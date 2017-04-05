@@ -38,17 +38,15 @@ let sixth   (_,_,_,_,_,f) = f;;
 %%
 
 program:
-  decls EOF { $1 }
+    decls EOF           { $1 }
 
 decls:
-   /* nothing */ 
-   { [], [], [], [], [], []}
- | decls vdecl  { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1, sixth $1 }
- | decls stmt   { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1, sixth $1 }
- | decls fdecl  { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1, sixth $1 }
- | decls pdecl  { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1, sixth $1 }
- | decls sdecl  { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1), sixth $1 }
- | decls ldecl  { first $1, second $1, third $1, fourth $1, fifth $1, ($2 :: sixth $1) }
+    /* nothing */       { [], [], [], [], [] }
+    | decls vdecl       { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
+    | decls stmt        { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1 }
+    | decls fdecl       { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1 }
+    | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
+    | decls sdecl       { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1) }
 
 ldecl: 
     LIST ID ASSIGN typ LPAREN literal_list RPAREN
@@ -154,6 +152,7 @@ expr:
     | expr OR     expr              { Binop($1, Or,    $3) }
     | MINUS expr %prec NEG          { Unop(Neg, $2) }
     | NOT expr                      { Unop(Not, $2) }
+    | ldecl                         { List_decl(second $1, fourth $1, sixth $1) }
     | ID ASSIGN expr                { Assign($1, $3) }
     | ID LPAREN actuals_opt RPAREN  { Call($1, $3) }
     | LPAREN expr RPAREN            { $2 }
