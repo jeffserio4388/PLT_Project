@@ -3,12 +3,11 @@
 %{
 open Ast;;
 
-let first   (a,_,_,_,_,_) = a;;
-let second  (_,b,_,_,_,_) = b;;
-let third   (_,_,c,_,_,_) = c;;
-let fourth  (_,_,_,d,_,_) = d;;
-let fifth   (_,_,_,_,e,_) = e;;
-let sixth   (_,_,_,_,_,f) = f;;
+let first   (a,_,_,_,_) = a;;
+let second  (_,b,_,_,_) = b;;
+let third   (_,_,c,_,_) = c;;
+let fourth  (_,_,_,d,_) = d;;
+let fifth   (_,_,_,_,e) = e;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -48,6 +47,7 @@ decls:
     | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
     | decls sdecl       { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1) }
 
+/*
 ldecl: 
     LIST ID ASSIGN typ LPAREN literal_list RPAREN
     { { 
@@ -56,16 +56,21 @@ ldecl:
         data = List.rev $6;
     } }
 
+*/
+
+/*
 literal_list:
     literal                         { [$1] }
     | literal_list COMMA literal    { $3 :: $1 }
+*/
 
+/*
 literal:
     LITERAL     { Literal($1) }
     | TRUE      { BoolLit(true) }
     | FALSE     { BoolLit(false) }
     | STR_LIT   { MyStringLit($1) }
-
+*/
 sdecl:
     STRUCT ID LBRACE vdecl_list RBRACE
     { {
@@ -127,7 +132,7 @@ stmt:
   | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
-  | ldecl                                                       { List_decl(second $1,fourth $1, sixth $1)}
+  | LIST ID ASSIGN typ LPAREN expr RPAREN                         { List_decl($2, $4, $6)}
 
 expr_opt:
     /* nothing */ { Noexpr }

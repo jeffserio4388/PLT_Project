@@ -18,7 +18,6 @@ type expr =
     | Id of string
     | Binop of expr * op * expr
     | Unop of uop * expr
-    | List_decl of string * typ * literal list
     | Assign of string * expr
     | Call of string * expr list
     | Noexpr
@@ -30,6 +29,7 @@ type stmt =
     | If of expr * stmt * stmt
     | For of expr * expr * expr * stmt
     | While of expr * stmt
+    | List_decl of string * typ * expr
 
 
 type pipe_decl = {
@@ -83,7 +83,6 @@ let rec string_of_expr = function
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
-    | List_decl(a, b, c) -> "list"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Noexpr ->             ""
 
@@ -95,6 +94,7 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | List_decl(a, b, c) ->   "list"
 
 let string_of_typ = function
     Int -> "int"
