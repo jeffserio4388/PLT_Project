@@ -58,19 +58,14 @@ ldecl:
 
 */
 
-/*
 literal_list:
-    literal                         { [$1] }
-    | literal_list COMMA literal    { $3 :: $1 }
-*/
+    LITERAL                         { [$1] }
+    | LITERAL COMMA literal_list    { $1 :: $3 }
 
-/*
-literal:
-    LITERAL     { Literal($1) }
-    | TRUE      { BoolLit(true) }
-    | FALSE     { BoolLit(false) }
-    | STR_LIT   { MyStringLit($1) }
-*/
+stringlit_list:
+    STR_LIT                         { [$1] }
+    | STR_LIT COMMA stringlit_list    { $1 :: $3 }
+
 sdecl:
     STRUCT ID LBRACE vdecl_list RBRACE
     { {
@@ -132,7 +127,9 @@ stmt:
   | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
-  | LIST ID ASSIGN typ LPAREN expr RPAREN                         { List_decl($2, $4, $6)}
+  | LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6)}
+  | LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6)} 
+
 
 expr_opt:
     /* nothing */ { Noexpr }

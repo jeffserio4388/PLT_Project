@@ -41,6 +41,7 @@ rule token = parse
 | "void"                { VOID }
 | "true"                { TRUE }
 | "false"               { FALSE }
+| "string"				{ STRING }
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
 | "struct"              { STRUCT }
