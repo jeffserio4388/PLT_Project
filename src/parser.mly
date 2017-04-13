@@ -127,6 +127,7 @@ stmt:
   | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
+  | ldecl                                                       { List_decl(second $1,fourth $1, sixth $1)}
 
 expr_opt:
     /* nothing */ { Noexpr }
@@ -152,7 +153,6 @@ expr:
     | expr OR     expr              { Binop($1, Or,    $3) }
     | MINUS expr %prec NEG          { Unop(Neg, $2) }
     | NOT expr                      { Unop(Not, $2) }
-    | ldecl                         { List_decl(second $1, fourth $1, sixth $1) }
     | ID ASSIGN expr                { Assign($1, $3) }
     | ID LPAREN actuals_opt RPAREN  { Call($1, $3) }
     | LPAREN expr RPAREN            { $2 }
