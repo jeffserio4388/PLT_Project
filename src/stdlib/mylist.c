@@ -144,3 +144,28 @@ struct Node *addRight(struct List *list, void *data)
     return node;
 }
 
+struct Node *initialize(int list[]){
+    int length = (int)( sizeof(list) / sizeof(list[0]));
+
+    struct Node *head = addLeft(NULL, &list[0]);
+    struct Node *curr = head;
+
+    for (int i = 1; i<length; i++){
+        curr = addRight(curr, &list[i]);
+    }
+    return head;
+}
+
+struct Node *initialize(char* list[]){
+    int length = (int)( sizeof(list) / sizeof(list[0]));
+
+    struct Node *head = addLeft(NULL, &list[0]);
+    struct Node *curr = head;
+
+    for (int i = 1; i<length; i++){
+        curr = addRight(curr, &list[i]);
+    }
+
+    return head;
+}
+
