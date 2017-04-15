@@ -1,13 +1,12 @@
 (* Abstract Syntax Tree and functions for printing it *)
 
 type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq |
-          And | Or
+          And | Or | Dot
 
 type uop = Neg | Not
 
 type typ = Int | Bool | Void | MyString
 
-type bind = typ * string
 
 type expr =
     Literal of int
@@ -18,7 +17,11 @@ type expr =
     | Unop of uop * expr
     | Assign of string * expr
     | Call of string * expr list
+    | Dot of string * string
     | Noexpr
+
+type bind = typ * string * expr
+(* type bind = Dec of typ * string | Dec_init of typ * string * expr *)
 
 type stmt =
     Block of stmt list
@@ -27,10 +30,10 @@ type stmt =
     | If of expr * stmt * stmt
     | For of expr * expr * expr * stmt
     | While of expr * stmt
+    | Local of bind
 
 type pipe_decl = {
     pname: string;
-    locals : bind list;
     body : stmt list;
 }
 
@@ -38,7 +41,7 @@ type func_decl = {
     typ : typ;
     fname : string;
     formals : bind list;
-    locals : bind list;
+    (* locals : bind list; *)
     body : stmt list;
 }
 
@@ -49,7 +52,7 @@ type struct_decl = {
 
 type program = bind list * stmt list * func_decl list  * pipe_decl list * struct_decl list
 
-
+(*
 (* Pretty-printing functions *)
 
 let string_of_op = function
@@ -115,7 +118,7 @@ let string_of_pdecl pdecl =
 let string_of_pdecl_main pdecl = 
 	"    int data_" ^ pdecl.pname ^ ";\n" ^
     "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
-    "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
+    "    req_" ^ pdecl.pname ^ ".data = (void * ) &data_" ^ pdecl.pname ^ ";\n" ^
     "    uv_queue_work(uv_default_loop(), &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
 
 let string_of_fdecl fdecl =
@@ -150,4 +153,4 @@ let string_of_program (vars, stmts, funcs, pipes, structs) =
    
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
-   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n"
+   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n" *)
