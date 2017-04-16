@@ -32,6 +32,8 @@ type stmt =
     | Add_right of expr * expr
     | Find_node of expr * expr * expr
     | Listen of expr * expr
+    | Http_put of expr * expr
+    | Http_get of expr * expr
     | For of expr * expr * expr * stmt
     | While of expr * stmt
     | Int_list_decl of string * int list
@@ -107,7 +109,9 @@ let rec string_of_stmt = function
   | Add_left(e1, e2) -> "void *a7858585765 =" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 =" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 =" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
-  | Listen(e1, e2) -> 
+  | Listen(e1, e2) -> "listen"
+  | Http_put (e1, e2) -> "put"
+  | Http_get (e1, e2) -> "get"
 
 let string_of_typ = function
     Int -> "int"
