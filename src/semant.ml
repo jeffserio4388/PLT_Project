@@ -3,13 +3,13 @@
 open Ast
 
 module StringMap = Map.Make(String)
-(*
+
 (* Semantic checking of a program. Returns void if successful,
    throws an exception if something is wrong.
 
    Check each global variable, then check each function *)
 
-let check (globals, stmts, functions, pipes) =
+let check (globals, stmts, functions, pipes, structs) =
 
   (* Raise an exception if the given list has a duplicate *)
   let report_duplicate exceptf list =
@@ -51,8 +51,7 @@ let check (globals, stmts, functions, pipes) =
             { 
                 typ = Void; 
                 fname = "printf"; 
-                formals = [(MyString, "x")];
-                locals = []; 
+                formals = [(MyString, "x")]; 
                 body = [] 
             }
    in
@@ -74,16 +73,16 @@ let check (globals, stmts, functions, pipes) =
 
     report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
       (List.map snd func.formals);
-
+    (*
     List.iter (check_not_void (fun n -> "illegal void local " ^ n ^
-      " in " ^ func.fname)) func.locals;
-
+      " in " ^ func.fname)) func.body;
+    *)(*
     report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
       (List.map snd func.locals);
-
+    *)
     (* Type of each variable (global, formal, or local *)
     let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
-	StringMap.empty (globals @ func.formals @ func.locals )
+	StringMap.empty (globals @ func.formals)
     in
 
     let type_of_identifier s =
@@ -130,6 +129,7 @@ let check (globals, stmts, functions, pipes) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
+
     in
 
     let check_bool_expr e = if expr e != Bool
@@ -154,10 +154,12 @@ let check (globals, stmts, functions, pipes) =
       | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
+      | Local(t,n,e) -> check_not_void (fun n-> "illigal void var type" ^ n ^ func.fname) (t,n); let tp 
+        = expr e in if tp = t then () else raise(Failure ("can't assign " ^ string_of_typ t ^ "to" ^ string_of_typ tp ))   
     in
 
     stmt (Block func.body)
    
   in
   List.iter check_function functions
-  *)
+  
