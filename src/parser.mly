@@ -43,24 +43,24 @@ program:
 decls:
    /* nothing */ 
    { [], [], [], [], []}
- | decls vdecl { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
+ | decls global { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
  | decls stmt { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1 }
  | decls fdecl { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1 }
  | decls pdecl { first $1, second $1, third $1, ($2::fourth $1), fifth $1 }
  | decls sdecl {first $1, second $1, third $1, fourth $1, ($2::fifth $1)}
 
 sdecl:
-    STRUCT ID LBRACE vdecl_list RBRACE
+    STRUCT ID LBRACE stmt_list RBRACE
     { {
         sname = $2;
         vars = List.rev $4;
     } }
 
 pdecl:
-    PIPE ID LBRACE vdecl_list stmt_list RBRACE
+    PIPE ID LBRACE stmt_list RBRACE
     { { 
         pname = $2;
-        body = List.rev $5 
+        body = List.rev $4 
     } }
 
 /* pdecl_list: */
@@ -68,19 +68,19 @@ pdecl:
   /* | pdecl_list pdecl { $2 :: $1 } */
 
 fdecl:
-   FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+   FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE stmt_list RBRACE
      { { typ = $2;
 	 fname = $3;
 	 formals = $5;
-	 body = List.rev $9 } }
+	 body = List.rev $8 } }
 
 formals_opt:
     /* nothing */ { [] }
   | formal_list   { List.rev $1 }
 
 formal_list:
-    typ ID                   { [($1,$2, Noexpr)] }
-  | formal_list COMMA typ ID { ($3,$4, Noexpr) :: $1 }
+    typ ID                   { [($1,$2)] }
+  | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 typ:
     INT { Int }
@@ -88,12 +88,13 @@ typ:
     | VOID { Void }
     | STRING { MyString }
 
-
+/*
 vdecl_list:
-    /* nothing */    { [] }
+     nothing     { [] }
   | vdecl_list vdecl { $2 :: $1 }
+*/
 
-vdecl:
+global:
    GLOBAL typ ID SEMI { ($2, $3, Noexpr) }
    | GLOBAL typ ID ASSIGN expr SEMI { ($2, $3, $5) }
 
