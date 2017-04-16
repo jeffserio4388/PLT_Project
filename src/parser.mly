@@ -14,7 +14,7 @@ let fifth   (_,_,_,_,e) = e;;
 %token PLUS MINUS TIMES DIVIDE ASSIGN NOT
 %token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT
-%token PIPE FUNCTION LIST ADDLEFT ADDRIGHT FINDNODE LISTEN HTTPGET HTTPPUT DELETE POST
+%token PIPE FUNCTION LIST ADDLEFT ADDRIGHT FINDNODE LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
 %token <int> LITERAL 
 %token <string> STR_LIT
 %token <string> ID
@@ -132,11 +132,12 @@ stmt:
   | ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
   | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
   | FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
-  | LISTEN expr COMMA expr SEMI									{ Listen($2) }
-  | HTTPGET expr COMMA expr SEMI 								{ Http_get($2, $4)}
-  | HTTPPUT expr COMMA expr SEMI								{ Http_put($2, $4)}
-  | DELETE expr COMMA expr SEMI								    { Delete($2, $4)}
-  | POST expr COMMA expr SEMI								    { Post($2, $4)}
+  | LISTEN expr COMMA expr SEMI									{ Listen($2, $4) }
+  | HTTPGET expr COMMA expr SEMI 								{ Http_get($2, $4) }
+  | HTTPPUT expr COMMA expr SEMI								{ Http_put($2, $4) }
+  | HTTPDELETE expr COMMA expr SEMI								{ Http_delete($2, $4) }
+  | HTTPPOST expr COMMA expr SEMI								{ Http_post($2, $4) }
+
 expr_opt:
     /* nothing */ { Noexpr }
   | expr          { $1 }

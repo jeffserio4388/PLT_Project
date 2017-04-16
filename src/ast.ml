@@ -34,6 +34,8 @@ type stmt =
     | Listen of expr * expr
     | Http_put of expr * expr
     | Http_get of expr * expr
+    | Http_post of expr * expr
+    | Http_delete of expr * expr
     | For of expr * expr * expr * stmt
     | While of expr * stmt
     | Int_list_decl of string * int list
@@ -112,6 +114,8 @@ let rec string_of_stmt = function
   | Listen(e1, e2) -> "listen"
   | Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
+  | Http_post (e1, e2) -> "post"
+  | Http_delete (e1, e2) -> "delete"
 
 let string_of_typ = function
     Int -> "int"
