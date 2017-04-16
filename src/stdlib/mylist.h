@@ -151,9 +151,13 @@ struct Node *addAfter(struct List *list,
  */
 void reverseList(struct List *list);
 
+/*
 struct Node *initialize(int list[]);
 
 struct Node *initialize(char* list[]);
+*/
+
+struct List *initialize(void *list, int length, int type);
 
 
 #endif /* #ifndef _MYLIST_H_ */

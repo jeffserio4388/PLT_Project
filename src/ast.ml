@@ -96,8 +96,10 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  | Int_list_decl(listid, intlist) ->   "void *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "});"
-  | Str_list_decl(listid, strlist) ->   "void *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "});"
+  | Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
+                                        ^ (string_of_int (List.length intlist)) ^ ", 1);"
+  | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
+                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
 
 
 let string_of_typ = function
@@ -136,7 +138,7 @@ let string_of_sdecl sdecl =
 
 let string_of_program (vars, stmts, funcs, pipes, structs) =
  
-    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
+    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
     String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
     
   	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
