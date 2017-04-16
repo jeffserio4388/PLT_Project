@@ -35,7 +35,7 @@ let _ =
             let lexbuf = Lexing.from_channel program in
             let ast = try Parser.program Scanner.token lexbuf 
                       with _ -> raise (Failure "Syntax Error")  in
-            (*Semant.check ast;*)
+            Semant.check ast;
             match action with
                 Ast -> print_string (Ast.string_of_program ast);
                 | Translate | Compile | Run | Compare -> ();
