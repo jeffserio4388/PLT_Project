@@ -43,9 +43,14 @@ let check (globals, stmts, functions, pipes, structs) =
   report_duplicate (fun n -> "duplicate global " ^ n) (List.map (fun (_,s,_) -> s) globals);
 
   (**** Checking Functions ****)
+  (** Checking predefined names **)
 
   if List.mem "print" (List.map (fun fd -> fd.fname) functions)
   then raise (Failure ("function print may not be defined")) else ();
+  
+  if List.mem "sleep" (List.map(fun fd -> fd.fname) functions)
+  then raise (Failure ("function sleep may not be defined")) else ();
+
 
   report_duplicate (fun n -> "duplicate function " ^ n)
     (List.map (fun fd -> fd.fname) functions);
