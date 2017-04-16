@@ -144,7 +144,8 @@ struct Node *addRight(struct List *list, void *data)
     return node;
 }
 
-struct Node *initialize(int list[]){
+/*
+struct Node *initialize_int(int list[]){
     int length = (int)( sizeof(list) / sizeof(list[0]));
 
     struct Node *head = addLeft(NULL, &list[0]);
@@ -155,17 +156,43 @@ struct Node *initialize(int list[]){
     }
     return head;
 }
+*/
 
-struct Node *initialize(char* list[]){
-    int length = (int)( sizeof(list) / sizeof(list[0]));
+struct List *initialize(void* list, int length, int type){
+    int *intList;
+    char **charList;
 
-    struct Node *head = addLeft(NULL, &list[0]);
+	if (type) {
+        intList = (int *) list;
+    } else {
+        charList = (char **) list;
+	}
+
+    struct List *lst = (struct List *) malloc(sizeof(struct List));
+
+    struct Node *head;
+    if (type) head = addLeft(lst, &intList[0]);
+    else head = addLeft(lst, &charList[0]);
+
+    lst->head = head;
+
     struct Node *curr = head;
 
-    for (int i = 1; i<length; i++){
-        curr = addRight(curr, &list[i]);
+    for (int i = 1; i < length; i++){
+        struct Node *node = (struct Node *) malloc(sizeof(struct Node));
+        if (node == NULL)
+        return NULL;
+
+        curr->next = node;
+
+        if (type) node->data = &intList[i];
+        else node->data = &charList[i];
+        
+        node->next = NULL;
+
+        curr = node;
     }
 
-    return head;
+    return lst;
 }
 
