@@ -7,6 +7,7 @@ type uop = Neg | Not
 
 type typ = Int | Bool | Void | MyString
 
+type bind = typ * string
 
 type expr =
     Literal of int
@@ -17,10 +18,9 @@ type expr =
     | Unop of uop * expr
     | Assign of string * expr
     | Call of string * expr list
-    | Dot of string * string
     | Noexpr
 
-type bind = typ * string * expr
+type var_init = typ * string * expr
 (* type bind = Dec of typ * string | Dec_init of typ * string * expr *)
 
 type stmt =
@@ -30,7 +30,7 @@ type stmt =
     | If of expr * stmt * stmt
     | For of expr * expr * expr * stmt
     | While of expr * stmt
-    | Local of bind
+    | Local of typ * string * expr
 
 type pipe_decl = {
     pname: string;
@@ -41,7 +41,6 @@ type func_decl = {
     typ : typ;
     fname : string;
     formals : bind list;
-    (* locals : bind list; *)
     body : stmt list;
 }
 
@@ -50,9 +49,9 @@ type struct_decl = {
   vars : bind list;
 }
 
-type program = bind list * stmt list * func_decl list  * pipe_decl list * struct_decl list
+type program = var_init list * stmt list * func_decl list  * pipe_decl list * struct_decl list
 
-(*
+
 (* Pretty-printing functions *)
 
 let string_of_op = function
@@ -68,6 +67,13 @@ let string_of_op = function
     | Geq -> ">="
     | And -> "&&"
     | Or -> "||"
+    | Dot -> "."
+
+let string_of_typ = function
+    Int -> "int"
+    | Bool -> "bool"
+    | Void -> "void"
+    | MyString -> "string"
 
 let string_of_uop = function
     Neg -> "-"
@@ -99,19 +105,19 @@ let rec string_of_stmt = function
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | Local(t, id, e) -> if e = Noexpr then 
+        string_of_typ t ^ " " ^ id ^ ";\n" else
+        string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr e ^";\n"
 
-let string_of_typ = function
-    Int -> "int"
-    | Bool -> "bool"
-    | Void -> "void"
-    | MyString -> "string"
-
-let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
+let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n" 
+(* let string_of_vdecl (t, id, e) = if e = Noexpr then
+    string_of_typ t ^ " " ^ id ^ ";\n" else
+    string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr e ^";\n" *)
  
 let string_of_pdecl pdecl = 
     "void work_" ^ pdecl.pname ^
     "(uv_work_t *req) {    " ^ 
-    String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
+    (* String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^ *)
     String.concat "\n    " (List.map string_of_stmt pdecl.body)^
     "\n}"
 
@@ -125,7 +131,7 @@ let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
     fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
     ") {\n" ^
-    String.concat "    " (List.map string_of_vdecl fdecl.locals) ^ "    " ^ 
+(*    String.concat "    " (List.map string_of_vdecl fdecl.locals) ^ "    " ^ *)
     String.concat "    " (List.map string_of_stmt fdecl.body) ^
     "}\n"
 
@@ -153,4 +159,4 @@ let string_of_program (vars, stmts, funcs, pipes, structs) =
    
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
-   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n" *)
+   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n"
