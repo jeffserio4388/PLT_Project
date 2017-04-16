@@ -28,6 +28,7 @@ type stmt =
     | Expr of expr
     | Return of expr
     | If of expr * stmt * stmt
+    | Add_left of expr * expr
     | For of expr * expr * expr * stmt
     | While of expr * stmt
     | Int_list_decl of string * int list
@@ -100,6 +101,7 @@ let rec string_of_stmt = function
                                         ^ (string_of_int (List.length intlist)) ^ ", 1);"
   | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
                                         ^ (string_of_int (List.length strlist))  ^ ", 0);"
+  | Add_left(e1,e2) -> "void *a7858585765 =" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
 
 
 let string_of_typ = function

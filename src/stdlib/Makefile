@@ -7,7 +7,7 @@ CC  = gcc
 CXX = g++
 
 INCLUDES =
-CFLAGS   = -g -Wall $(INCLUDES)
+CFLAGS   = -g -Wall -std=c99 $(INCLUDES)
 CXXFLAGS = -g -Wall $(INCLUDES)
 
 LDFLAGS = -g
