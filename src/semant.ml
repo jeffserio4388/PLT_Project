@@ -25,6 +25,10 @@ let check (globals, stmts, functions, pipes, structs) =
       (Void, n) -> raise (Failure (exceptf n))
     | _ -> ()
   in
+  let check_global_void exceptf = function
+      (Void, n, _) -> raise (Failure (exceptf n))
+    | _ -> ()
+  in
   
   (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
@@ -34,9 +38,9 @@ let check (globals, stmts, functions, pipes, structs) =
    
   (**** Checking Global Variables ****)
 
-  List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
+  List.iter (check_global_void (fun n -> "illegal void global " ^ n)) globals;
    
-  report_duplicate (fun n -> "duplicate global " ^ n) (List.map snd globals);
+  report_duplicate (fun n -> "duplicate global " ^ n) (List.map (fun (_,s,_) -> s) globals);
 
   (**** Checking Functions ****)
 
@@ -80,9 +84,11 @@ let check (globals, stmts, functions, pipes, structs) =
     report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
       (List.map snd func.locals);
     *)
-    (* Type of each variable (global, formal, or local *)
-    let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
-	StringMap.empty (globals @ func.formals)
+    (* Type of each variable (global, formal, or local *) 
+    let symbols = 
+        let global_pair = List.map (fun (a,b,_) -> (a,b)) globals in
+    List.fold_left (fun m (t, n) -> StringMap.add n t m)
+	StringMap.empty ( global_pair @ func.formals)
     in
 
     let type_of_identifier s =
