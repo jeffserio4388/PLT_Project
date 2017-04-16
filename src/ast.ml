@@ -46,7 +46,7 @@ type func_decl = {
 
 type struct_decl = {
   sname : string;
-  vars : bind list;
+  vars : stmt list;
 }
 
 type program = var_init list * stmt list * func_decl list  * pipe_decl list * struct_decl list
@@ -109,10 +109,10 @@ let rec string_of_stmt = function
         string_of_typ t ^ " " ^ id ^ ";\n" else
         string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr e ^";\n"
 
-let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n" 
-(* let string_of_vdecl (t, id, e) = if e = Noexpr then
+(* let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n" *)
+let string_of_globals (t, id, e) = if e = Noexpr then
     string_of_typ t ^ " " ^ id ^ ";\n" else
-    string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr e ^";\n" *)
+    string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr e ^";\n"
  
 let string_of_pdecl pdecl = 
     "void work_" ^ pdecl.pname ^
@@ -137,17 +137,17 @@ let string_of_fdecl fdecl =
 
 let string_of_sdecl sdecl =
     sdecl.sname ^ "{"^
-    String.concat "\n    " (List.map string_of_vdecl sdecl.vars)^
+    String.concat "\n    " (List.map string_of_stmt sdecl.vars)^
     "};"
 
-let string_of_program (vars, stmts, funcs, pipes, structs) =
+let string_of_program (globals, stmts, funcs, pipes, structs) =
  
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n"^ 
-    String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
+    String.concat "\n" (List.map string_of_globals globals) ^ "\n" ^
     
-  	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
-	
     String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
+
+  	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
  
 	"void after(uv_work_t *req, int status) { }\n\n" ^
   
