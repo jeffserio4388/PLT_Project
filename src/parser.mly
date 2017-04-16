@@ -127,8 +127,8 @@ stmt:
   | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
-  | LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6)}
-  | LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6)} 
+  | LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6) }
+  | LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) } 
   | ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
   | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
   | FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
