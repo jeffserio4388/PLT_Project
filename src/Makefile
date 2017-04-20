@@ -34,3 +34,4 @@ parser.cmx: ast.cmx
 scanner.cmo : ast.cmo
 scanner.cmx: parser.cmx
 parser.cmi: ast.cmo
+
