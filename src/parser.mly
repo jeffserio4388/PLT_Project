@@ -132,11 +132,11 @@ stmt:
   | ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
   | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
   | FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
-  | LISTEN expr COMMA expr SEMI									{ Listen($2, $4) }
-  | HTTPGET expr COMMA expr SEMI 								{ Http_get($2, $4) }
-  | HTTPPUT expr COMMA expr SEMI								{ Http_put($2, $4) }
-  | HTTPDELETE expr COMMA expr SEMI								{ Http_delete($2, $4) }
-  | HTTPPOST expr COMMA expr SEMI								{ Http_post($2, $4) }
+  | LISTEN LPAREN expr COMMA expr RPAREN SEMI					{ Listen($3, $5) }
+  | HTTPGET LPAREN expr COMMA expr RPAREN SEMI 					{ Http_get($3, $5) }
+  | HTTPPUT LPAREN expr COMMA expr RPAREN SEMI					{ Http_put($3, $5) }
+  | HTTPDELETE LPAREN expr COMMA expr RPAREN SEMI				{ Http_delete($3, $5) }
+  | HTTPPOST LPAREN expr COMMA expr RPAREN SEMI					{ Http_post($3, $5) }
 
 expr_opt:
     /* nothing */ { Noexpr }
