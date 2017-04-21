@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <uv.h>
+#include <stdlib.h>
+#include "stdlib/mylist.h"
+
+uv_loop_t *loop;
+uv_work_t req_nested;
+
+void world() {
+    sleep(3);
+    printf("World\n");
+}
+
+void work_nested(uv_work_t *req) {
+    printf("I'm nested\n");
+}
+
+void after(uv_work_t *req, int status) { }
+
+void work_world(uv_work_t *req) {    
+    req_nested.data = req->data;
+    uv_queue_work(loop, &req_nested, work_nested, after);
+
+    world();
+}
+
+int main() {
+    loop = uv_default_loop();
+
+
+    printf("Hello\n");
+
+    uv_work_t req_world;
+    req_world.data = (void *) loop;
+    uv_queue_work(loop, &req_world, work_world, after);
+
+    return uv_run(loop, UV_RUN_DEFAULT);
+}
