@@ -11,7 +11,6 @@ type bind = typ * string
 
 type literal = Literal of int | MyStringLit of string | BoolLit of bool
 
-
 type expr =
     Literal of int
     | MyStringLit of string
@@ -31,7 +30,6 @@ type stmt =
     | Add_left of expr * expr
     | Add_right of expr * expr
     | Find_node of expr * expr * expr
-    | Listen of expr * expr
     | Http_put of expr * expr
     | Http_get of expr * expr
     | Http_post of expr * expr
@@ -42,10 +40,19 @@ type stmt =
     | Str_list_decl of string * string list
 
 
+
+type listen = {
+    arg1    : string;
+    arg2    : int;
+}
+
 type pipe_decl = {
     pname   :   string;
     locals  :   bind list;
-    body    :   stmt list;
+    prebody :   stmt list;
+    listen  :   listen;
+    postbody:   stmt list;
+
 }
 
 type func_decl = {
@@ -111,7 +118,6 @@ let rec string_of_stmt = function
   | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
-  | Listen(e1, e2) -> "listen"
   | Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
@@ -129,7 +135,7 @@ let string_of_pdecl pdecl =
     "void work_" ^ pdecl.pname ^
     "(uv_work_t *req) {    " ^ 
     String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
-    String.concat "\n    " (List.map string_of_stmt pdecl.body)^
+    String.concat "\n    " (List.map string_of_stmt pdecl.prebody)^
     "\n}"
 
 let string_of_pdecl_main pdecl = 

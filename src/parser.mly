@@ -47,16 +47,6 @@ decls:
 | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
 | decls sdecl       { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1) }
 
-/*
-ldecl: 
-LIST ID ASSIGN typ LPAREN literal_list RPAREN
-{ { 
-lname = $2;
-ltype = $4;
-data = List.rev $6;
-} }
-
- */
 
 literal_list:
 LITERAL                         { [$1] }
@@ -74,6 +64,12 @@ STRUCT ID LBRACE vdecl_list RBRACE
   } }
 
 
+listen:
+LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI
+{
+	arg1 = $3;
+	arg2 = $5;
+}
 
 pdecl:
 PIPE ID LBRACE vdecl_list stmt_list listen stmt_list RBRACE
@@ -83,23 +79,10 @@ PIPE ID LBRACE vdecl_list stmt_list listen stmt_list RBRACE
 	prebody = $5;
 	listen = $6;
 	postbody = List.rev $7;
-  } }
-
-
-
-pdecl:
-PIPE ID LBRACE listen RBRACE
-{ { 
-	pname = $2;
-	listenn = $4;
 } }
 
-listen:
-LISTEN LPAREN STR_LIT COMMA STR_LIT RPAREN SEMI
-{
-	arg1 = $3;
-	arg2 = $5;
-}
+
+
 
 fdecl:
 FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
