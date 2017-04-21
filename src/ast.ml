@@ -44,6 +44,7 @@ type stmt =
 type listen = {
     arg1    : string;
     arg2    : int;
+    exists    : bool;
 }
 
 type pipe_decl = {
@@ -130,16 +131,23 @@ let string_of_typ = function
     | MyString -> "string"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
+
+let string_of_pdecl_listen =  "\nLISTEN!!\n"
  
 let string_of_pdecl pdecl = 
-    "void work_" ^ pdecl.pname ^
+    "uv_tcp_t server_"^ pdecl.pname ^";\n"^ 
+    "struct sockaddr_in addr_"^ pdecl.pname ^";\n"^ 
+    "uv_work_t req_listen_"^ pdecl.pname ^";\n"^
+    (if pdecl.listen.exists then string_of_pdecl_listen else "\n" ) ^ "\n"^
+    "void work_" ^ pdecl.pname ^";\n" ^
     "(uv_work_t *req) {    " ^ 
     String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
     String.concat "\n    " (List.map string_of_stmt pdecl.prebody)^
     "\n}"
 
+
 let string_of_pdecl_main pdecl = 
-	"    int data_" ^ pdecl.pname ^ ";\n" ^
+    "    int data_" ^ pdecl.pname ^ ";\n" ^
     "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
     "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
     "    uv_queue_work(uv_default_loop(), &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"

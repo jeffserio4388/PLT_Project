@@ -66,10 +66,11 @@ STRUCT ID LBRACE vdecl_list RBRACE
 
 listen:
 LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI
-{
+{{
 	arg1 = $3;
 	arg2 = $5;
-}
+        exists = true;
+}}
 
 pdecl:
 PIPE ID LBRACE vdecl_list stmt_list listen stmt_list RBRACE
@@ -80,8 +81,6 @@ PIPE ID LBRACE vdecl_list stmt_list listen stmt_list RBRACE
 	listen = $6;
 	postbody = List.rev $7;
 } }
-
-
 
 
 fdecl:
