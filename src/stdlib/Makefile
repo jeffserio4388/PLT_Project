@@ -8,7 +8,7 @@ CXX = g++
 
 INCLUDES =
 CFLAGS   = -g -Wall -std=c99 $(INCLUDES)
-CXXFLAGS = -g -Wall $(INCLUDES)
+CXXFLAGS = -g -Wall -std=c99 $(INCLUDES)
 
 LDFLAGS = -g
 LDLIBS = 
