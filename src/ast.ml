@@ -44,14 +44,14 @@ type stmt =
 type listen = {
     arg1    : string;
     arg2    : int;
-    exists    : bool;
 }
+
 
 type pipe_decl = {
     pname   :   string;
     locals  :   bind list;
     prebody :   stmt list;
-    listen  :   listen;
+    listen  :   listen list;
     postbody:   stmt list;
 
 }
@@ -138,7 +138,7 @@ let string_of_pdecl pdecl =
     "uv_tcp_t server_"^ pdecl.pname ^";\n"^ 
     "struct sockaddr_in addr_"^ pdecl.pname ^";\n"^ 
     "uv_work_t req_listen_"^ pdecl.pname ^";\n"^
-    (if pdecl.listen.exists then string_of_pdecl_listen else "\n" ) ^ "\n"^
+    (if ((List.length pdecl.listen) != 0) then string_of_pdecl_listen else "\n" ) ^ "\n" ^
     "void work_" ^ pdecl.pname ^";\n" ^
     "(uv_work_t *req) {    " ^ 
     String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
