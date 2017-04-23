@@ -20,6 +20,8 @@ let check (globals, stmts, functions, pipes, structs) =
     in helper (List.sort compare list)
   in
 
+
+
   (* Raise an exception if a given binding is to a void type *)
   let check_not_void exceptf = function
       (Void, n) -> raise (Failure (exceptf n))
@@ -73,8 +75,6 @@ let check (globals, stmts, functions, pipes, structs) =
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
-  (*let _ = function_decl "main" in (* Ensure "main" is defined *)*)
-
   let check_function func =
 
     List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^
@@ -82,20 +82,12 @@ let check (globals, stmts, functions, pipes, structs) =
 
     report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
       (List.map snd func.formals);
-    (*
-    List.iter (check_not_void (fun n -> "illegal void local " ^ n ^
-      " in " ^ func.fname)) func.body;
-    *)(*
-    report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
-      (List.map snd func.locals);
-    *)
-    (* Type of each variable (global, formal, or local *) 
+ 
     let symbols = 
         let global_pair = List.map (fun (a,b,_) -> (a,b)) globals in
     List.fold_left (fun m (t, n) -> StringMap.add n t m)
 	StringMap.empty ( global_pair @ func.formals)
     in
-
     let type_of_identifier s =
       try StringMap.find s symbols
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
@@ -166,11 +158,14 @@ let check (globals, stmts, functions, pipes, structs) =
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
       | Local(t,n,e) -> check_not_void (fun n-> "illigal void var type" ^ n ^ func.fname) (t,n); let tp 
-        = expr e in if tp = t then () else raise(Failure ("can't assign " ^ string_of_typ t ^ "to" ^ string_of_typ tp ))   
+        = expr e in if tp = t then () else raise(Failure ("can't assign " ^ string_of_typ t ^ " to " ^ string_of_typ tp ))   
     in
 
     stmt (Block func.body)
    
   in
   List.iter check_function functions
+ 
+  (***checking structs ***) 
+
   
