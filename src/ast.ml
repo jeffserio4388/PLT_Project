@@ -136,7 +136,7 @@ let string_of_pdecl_listen pdecl =
 "uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
 
 "void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
-    fprintf(stderr, \"%s\", req->data);
+    // fprintf(stderr, \"%s\", req->data);
     " ^ String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
     " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
 }
