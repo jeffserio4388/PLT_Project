@@ -13,7 +13,7 @@ CXXFLAGS = -g -Wall -std=c99 $(INCLUDES)
 LDFLAGS = -g
 LDLIBS = 
 
-mylist-test: libmylist.a
+# mylist-test: libmylist.a
 
 libmylist.a: mylist.o
 	ar rc libmylist.a mylist.o
