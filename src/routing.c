@@ -7,6 +7,12 @@
 #define DEFAULT_PORT 7000
 #define DEFAULT_BACKLOG 128
 
+
+struct Backpack {
+    uv_stream_t *client;
+    char *data;
+};
+
 uv_loop_t *loop;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
@@ -21,13 +27,15 @@ uv_tcp_t tcp_server2;
 struct sockaddr_in addr_server2;
 uv_work_t req_listen_server2;
 
-void processData(char *data) {
+void post_listen_server2(uv_work_t *req) {
+    // fprintf(stderr, "%s", req->data);
+
     char *token;
     char *method;
     char *route;
     char *protocol;
 
-    token = strtok(data, "\n");
+    token = strtok(((struct Backpack*) (req->data))->data, "\n");
     fprintf(stderr, "%s\n", token);
 
     method = strtok(token, " ");
@@ -39,15 +47,13 @@ void processData(char *data) {
     protocol = strtok(NULL, " ");
     fprintf(stderr, "protocol: %s\n", protocol);
 
+    /*
+    switch():
+        function1(sfs)
+        function2(sdfd)
 
-
-}
-
-
-void post_listen_server2(uv_work_t *req) {
-    // fprintf(stderr, "%s", req->data);
-
-    processData(req->data);
+        function1 (body
+    */
 
 
     int a;
@@ -58,11 +64,19 @@ void post_listen_server2(uv_work_t *req) {
 
     fprintf(stderr, "Hi, i'm on port 8081!\n");
 
+    // free(req->data->data);
+    // free(req->data);
+
 }
 
 void onread_server2(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
     if (nread > 0) {
-        req_listen_server2.data = (void *) buf->base;
+
+        struct Backpack *backpack = (struct Backpack*) malloc(sizeof(struct Backpack));
+        backpack->data = buf->base;
+        backpack->client = client;
+
+        req_listen_server2.data = (void *) backpack;
         uv_queue_work(loop, &req_listen_server2, post_listen_server2, after);
         return;
     }
@@ -72,7 +86,6 @@ void onread_server2(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
         uv_close((uv_handle_t*) client, NULL);
     }
 
-    // free(buf->base);
 }
 
 void on_new_connection_server2(uv_stream_t *server, int status) {
@@ -112,8 +125,22 @@ void work_server2(uv_work_t *req) {    listen_server2("127.0.0.1", 8081);
 uv_tcp_t tcp_server;
 struct sockaddr_in addr_server;
 uv_work_t req_listen_server;
+
+
 void post_listen_server(uv_work_t *req) {
     fprintf(stderr, "%s", req->data);
+
+    // put the switch statement here for method+route concatenated
+    /*
+    switch (case) {
+    
+
+
+
+    }
+    */
+
+
     int a;
 
     a = 5;
