@@ -5,7 +5,7 @@ type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq |
 
 type uop = Neg | Not
 
-type typ = Int | Bool | Void | MyStrin | Float | Double 
+type typ = Int | Bool | Void | MyString | Float | Double 
            
 
 type bind = typ * string
