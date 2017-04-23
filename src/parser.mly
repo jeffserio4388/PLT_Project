@@ -77,13 +77,12 @@ listen_opt:
 
 
 pdecl:
-PIPE ID LBRACE vdecl_list stmt_list listen_opt stmt_list RBRACE
+PIPE ID LBRACE listen_opt vdecl_list stmt_list RBRACE
 { { 
 	pname = $2;
-	locals = List.rev $4;
-	prebody = $5;
-	listen = $6;
-	postbody = List.rev $7;
+	locals = List.rev $5;
+	listen = $4;
+	body = List.rev $6;
 } }
 
 

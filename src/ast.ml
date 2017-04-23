@@ -50,10 +50,8 @@ type listen = {
 type pipe_decl = {
     pname   :   string;
     locals  :   bind list;
-    prebody :   stmt list;
     listen  :   listen list;
-    postbody:   stmt list;
-
+    body:   stmt list;
 }
 
 type func_decl = {
@@ -132,17 +130,73 @@ let string_of_typ = function
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
-let string_of_pdecl_listen =  "\nLISTEN!!\n"
+let string_of_pdecl_listen pdecl = 
+"uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
+"struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
+"uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
+    fprintf(stderr, \"%s\", req->data);
+    " ^ String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
+    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
+}
+
+void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
+    if (nread > 0) {
+        req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
+        uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
+        return;
+    }
+    if (nread < 0) {
+        if (nread != UV_EOF)
+            fprintf(stderr, \"Read error %s\", uv_err_name(nread));
+        uv_close((uv_handle_t*) client, NULL);
+    }
+
+    // free(buf->base);
+}
+
+void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
+    if (status < 0) {
+        fprintf(stderr, \"New connection error %s\", uv_strerror(status));
+        // error!
+        return;
+    }
+
+    uv_tcp_t *client = (uv_tcp_t*) malloc(sizeof(uv_tcp_t));
+    uv_tcp_init(loop, client);
+    if (uv_accept(server, (uv_stream_t*) client) == 0) {
+        uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
+    }
+    else {
+        uv_close((uv_handle_t*) client, NULL);
+    }
+}
+
+
+void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
+    uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
+
+    uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
+
+    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
+    int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
+    if (r) {
+        fprintf(stderr, \"Listen error %s\", uv_strerror(r));
+    }
+}\n"
+
+let string_of_pdecl_no_listen pdecl = 
+    "int 3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
+    String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
+    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body)
+
  
 let string_of_pdecl pdecl = 
-    "uv_tcp_t server_"^ pdecl.pname ^";\n"^ 
-    "struct sockaddr_in addr_"^ pdecl.pname ^";\n"^ 
-    "uv_work_t req_listen_"^ pdecl.pname ^";\n"^
-    (if ((List.length pdecl.listen) != 0) then string_of_pdecl_listen else "\n" ) ^ "\n" ^
-    "void work_" ^ pdecl.pname ^";\n" ^
+    (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
+    "void work_" ^ pdecl.pname ^
     "(uv_work_t *req) {    " ^ 
-    String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "\n    " ^
-    String.concat "\n    " (List.map string_of_stmt pdecl.prebody)^
+    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
     "\n}"
 
 
@@ -150,7 +204,7 @@ let string_of_pdecl_main pdecl =
     "    int data_" ^ pdecl.pname ^ ";\n" ^
     "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
     "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
-    "    uv_queue_work(uv_default_loop(), &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
+    "    uv_queue_work(loop, &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
 
 let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
@@ -168,6 +222,17 @@ let string_of_sdecl sdecl =
 let string_of_program (vars, stmts, funcs, pipes, structs) =
  
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
+
+"#define DEFAULT_PORT 7000
+#define DEFAULT_BACKLOG 128
+
+uv_loop_t *loop;
+
+void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
+    buf->base = (char*) malloc(suggested_size);
+    buf->len = suggested_size;
+}" ^
+
     String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
     
   	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
@@ -179,9 +244,10 @@ let string_of_program (vars, stmts, funcs, pipes, structs) =
   	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
 
   	"int main() {\n    " ^
+    "    loop = uv_default_loop();" ^
 
   	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
-   	"    return uv_run(uv_default_loop(), UV_RUN_DEFAULT);\n}\n"
+   	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"

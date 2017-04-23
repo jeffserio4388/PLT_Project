@@ -8,9 +8,6 @@
 #define DEFAULT_BACKLOG 128
 
 uv_loop_t *loop;
-uv_tcp_t server;
-struct sockaddr_in addr;
-uv_work_t req_listen_server;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*) malloc(suggested_size);
@@ -24,6 +21,14 @@ void two() {}
 void one() {}
 
 void after(uv_work_t *req, int status) { }
+
+
+// _____________________________________
+
+
+uv_tcp_t tcp_server;
+struct sockaddr_in addr_server;
+uv_work_t req_listen_server;
 
 void post_listen_server(uv_work_t *req) {
     fprintf(stderr, "%s\n", req->data);
@@ -64,13 +69,13 @@ void on_new_connection_server(uv_stream_t *server, int status) {
 
 
 void listen_server(char *ip_addr, int port) {
-    uv_tcp_init(loop, &server);
+    uv_tcp_init(loop, &tcp_server);
 
-    uv_ip4_addr(ip_addr, port, &addr);
+    uv_ip4_addr(ip_addr, port, &addr_server);
 
-    uv_tcp_bind(&server, (const struct sockaddr*) &addr, 0);
+    uv_tcp_bind(&tcp_server, (const struct sockaddr*) &addr_server, 0);
     printf("before uvrun before uvlisten");
-    int r = uv_listen((uv_stream_t*) &server, DEFAULT_BACKLOG, on_new_connection_server);
+    int r = uv_listen((uv_stream_t*) &tcp_server, DEFAULT_BACKLOG, on_new_connection_server);
     if (r) {
         fprintf(stderr, "Listen error %s\n", uv_strerror(r));
     }
