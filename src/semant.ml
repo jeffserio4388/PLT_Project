@@ -1,4 +1,4 @@
-(* Semantic checking for the MicroC compiler *)
+(* Semantic checker for Pipe*)
 
 open Ast
 
@@ -95,7 +95,7 @@ let check (globals, stmts, functions, pipes, structs) =
 
     (* Return the type of an expression or throw an exception *)
     let rec expr = function
-	Literal _ -> Int
+	    Literal _ -> Int
       | BoolLit _ -> Bool
       | MyStringLit _ -> MyString
       | Id s -> type_of_identifier s
@@ -157,15 +157,14 @@ let check (globals, stmts, functions, pipes, structs) =
       | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
-      | Local(t,n,e) -> check_not_void (fun n-> "illigal void var type" ^ n ^ func.fname) (t,n); let tp 
-        = expr e in if tp = t then () else raise(Failure ("can't assign " ^ string_of_typ t ^ " to " ^ string_of_typ tp ))   
+      | Local(t,n,e) -> check_not_void (fun n-> "illigal void var type" ^ n ^ func.fname) (t,n);let tp 
+        = expr e in if tp = t || tp = Void then () else raise(Failure ("can't assign " ^ string_of_typ t ^ " to " ^ string_of_typ tp ))   
     in
 
     stmt (Block func.body)
    
   in
-  List.iter check_function functions
- 
-  (***checking structs ***) 
+  List.iter check_function functions 
 
-  
+
+
