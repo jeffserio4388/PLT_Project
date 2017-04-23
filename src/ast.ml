@@ -75,7 +75,8 @@ let string_of_typ = function
     | Bool -> "bool"
     | Void -> "void"
     | MyString -> "string"
-
+    | Float -> "float"
+    | Double -> "double"
 let string_of_uop = function
     Neg -> "-"
     | Not -> "!"
