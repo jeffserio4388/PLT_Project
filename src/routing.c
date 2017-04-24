@@ -8,10 +8,36 @@
 #define DEFAULT_BACKLOG 128
 
 
+char *dat = 
+"HTTP/1.0 200 OK\n"
+"Date: Fri, 31 Dec 1999 23:59:59 GMT\n"
+"Content-Type: text/html\n"
+"Content-Length: 1354\n"
+"\n"
+"<html>\n"
+"<body>\n"
+"<h1>Happy New Millennium!</h1>\n"
+"(more file contents)\n"
+"</body>\n"
+"</html>\n";
+
 struct Backpack {
     uv_stream_t *client;
     char *data;
 };
+
+typedef struct {
+    uv_write_t req;
+    uv_buf_t buf;
+} write_req_t;
+
+void echo_write(uv_write_t *req, int status) {
+    fprintf(stderr, "I did print\n");
+    if (status) {
+        fprintf(stderr, "Write error %s\n", uv_strerror(status));
+    }
+    // free_write_req(req);
+}
 
 uv_loop_t *loop;
 
@@ -54,6 +80,12 @@ void post_listen_server2(uv_work_t *req) {
 
         function1 (body
     */
+	
+	write_req_t *req_send = (write_req_t*) malloc(sizeof(write_req_t));
+	req_send->buf = uv_buf_init(dat, strlen(dat));
+	// fprintf(stderr, "buf base: %s\n", req->buf.base);
+	// fprintf(stderr, "buf len: %d\n", req->buf.len);
+	uv_write((uv_write_t*) req_send, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
 
 
     int a;
