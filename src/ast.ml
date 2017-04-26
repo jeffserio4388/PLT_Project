@@ -74,7 +74,7 @@ let string_of_typ = function
     Int -> "int"
     | Bool -> "bool"
     | Void -> "void"
-    | MyString -> "string"
+    | MyString -> "char *"
     | Float -> "float"
     | Double -> "double"
 
@@ -85,7 +85,7 @@ let string_of_uop = function
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
-    | MyStringLit(s) -> s
+    | MyStringLit(s) ->  s
     | BoolLit(true) -> "true"
     | BoolLit(false) -> "false"
     | Id(s) -> s
