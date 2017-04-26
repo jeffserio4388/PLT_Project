@@ -8,6 +8,7 @@ let second (_,b,_,_,_) = b;;
 let third (_,_,c,_,_) = c;;
 let fourth (_,_,_,d,_) = d;;
 let fifth (_,_,_,_,e) = e;;
+let pnm = ref 0;;
 %}
 
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
@@ -57,9 +58,9 @@ sdecl:
     } }
 
 pdecl:
-    PIPE ID LBRACE stmt_list RBRACE
-    { { 
-        pname = $2;
+    PIPE LBRACE stmt_list RBRACE
+    { pnm := !pnm + 1; { 
+        pname = "pipe" ^ string_of_int !pnm;
         body = List.rev $4 
     } }
 
