@@ -1,4 +1,38 @@
 pipe {
+    struct Server server = listen("127.0.0.1", 8080);
+    http_get(server, "/user", func);
+    http_put(server, "/user", func1);
+    http_get(server, "/user", func);
+    http_get(server, "/user", func);
+    http_get(server, "/user", func);
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pipe {
     f = process(a);
     g = sendResultToUser(b);
     // a = listen(80);

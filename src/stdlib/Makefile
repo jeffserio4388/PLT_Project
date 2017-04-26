@@ -13,12 +13,13 @@ CXXFLAGS = -g -Wall -std=c99 $(INCLUDES)
 LDFLAGS = -g
 LDLIBS = 
 
-libstd.a: std.o
-	ar rc libstd.a std.o
-	ranlib libstd.a
+
+# libstd.a: std.o
+# 	ar rc libstd.a std.o
+#	ranlib libstd.a
 
 # header dependency
-std.o: std.h
+# std.o: std.h
 
 libmylist.a: mylist.o
 	ar rc libmylist.a mylist.o
