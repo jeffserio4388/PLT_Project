@@ -72,8 +72,8 @@ let string_of_typ = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
 let string_of_global (t , id, e) = if e = Noexpr then
-    string_of_typ t ^ " " ^ id ^";\n" else
-    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
+   string_of_typ t ^ " " ^ id ^";\n" else
+   string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
 let string_of_pdecl_listen pdecl = 
 "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
@@ -175,7 +175,7 @@ uv_loop_t *loop;
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*) malloc(suggested_size);
     buf->len = suggested_size;
-}" ^
+}\n" ^
 
     String.concat "\n" (List.map string_of_global globals) ^ "\n" ^
     
