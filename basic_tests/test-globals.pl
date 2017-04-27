@@ -1,2 +1,1 @@
-global int a = 10;
-global int a = 11;
+global float x = 1.1;

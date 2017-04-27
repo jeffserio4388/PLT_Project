@@ -37,26 +37,28 @@ rule token = parse
 | "while"               { WHILE }
 | "return"              { RETURN }
 | "int"                 { INT }
+| "float"               { FLOAT }
 | "bool"                { BOOL }
 | "void"                { VOID }
 | "true"                { TRUE }
 | "false"               { FALSE }
-| "string"		{ STRING }
+| "string"		        { STRING }
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
 | "struct"              { STRUCT }
 | "list"                { LIST }
-| "addLeft"		{ ADDLEFT }
-| "addRight"		{ ADDLEFT }
-| "findNode"		{ FINDNODE }
-| "listen"		{ LISTEN }
-| "httpGet" 		{ HTTPGET }
-| "httpPut" 		{ HTTPPUT }
-| "httpPost" 		{ HTTPPOST }
-| "httpDelete" 		{ HTTPDELETE}
-| "global"          { GLOBAL }
+| "addLeft"		        { ADDLEFT }
+| "addRight"		    { ADDLEFT }
+| "findNode"		    { FINDNODE }
+| "listen"		        { LISTEN }
+| "httpGet" 		    { HTTPGET }
+| "httpPut" 		    { HTTPPUT }
+| "httpPost" 		    { HTTPPOST }
+| "httpDelete" 		    { HTTPDELETE}
+| "global"              { GLOBAL }
 | string_t as str       { STR_LIT(str) }
 | ['0'-'9']+ as lxm     { LITERAL(int_of_string lxm) }
+| ['0'-'9']+ ['.']['0'-'9'] as lxm {FLOAT_LIT(float_of_string lxm)}
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
 | eof { EOF }
 | _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }

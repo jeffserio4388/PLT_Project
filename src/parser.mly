@@ -13,10 +13,11 @@
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
-	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL
+	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT
 	%token PIPE FUNCTION LIST ADDLEFT ADDRIGHT FINDNODE LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
 	%token <int> LITERAL 
-	%token <string> STR_LIT
+	%token <float> FLOAT_LIT
+    %token <string> STR_LIT
 	%token <string> ID
 	%token EOF
 
@@ -112,7 +113,7 @@ INT         { Int }
 | BOOL      { Bool }
 | VOID      { Void }
 | STRING    { MyString }
-
+| FLOAT     { Float }
 
 vdecl_list:
 /* nothing */    { [] }
@@ -162,6 +163,7 @@ LITERAL                         { Literal($1) }
 | TRUE                          { BoolLit(true) }
 | FALSE                         { BoolLit(false) }
 | ID                            { Id($1) }
+| FLOAT_LIT                     { FloatLit($1) }
 | STR_LIT                       { MyStringLit($1) }
 | expr PLUS   expr              { Binop($1, Add,   $3) }
 | expr MINUS  expr              { Binop($1, Sub,   $3) }

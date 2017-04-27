@@ -30,6 +30,7 @@ let string_of_uop = function
 let rec string_of_expr = function
     Literal(l) ->           string_of_int l
     | MyStringLit(s) ->     s
+    | FloatLit(l) ->        string_of_float l
     | BoolLit(true) ->      "true"
     | BoolLit(false) ->     "false"
     | Id(s) ->              s
@@ -64,6 +65,7 @@ let rec string_of_stmt = function
 
 let string_of_typ = function
     Int -> "int"
+    | Float -> "float"
     | Bool -> "bool"
     | Void -> "void"
     | MyString -> "string"

@@ -5,15 +5,16 @@ type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq |
 
 type uop = Neg | Not
 
-type typ = Int | Bool | Void | MyString
+type typ = Int | Bool | Void | MyString | Float
 
 type bind = typ * string  
 
-type literal = Literal of int | MyStringLit of string | BoolLit of bool
+type literal = Literal of int | MyStringLit of string | BoolLit of bool | FloatLit of float
 
 
 type expr =
     Literal of int
+    | FloatLit of float
     | MyStringLit of string
     | BoolLit of bool
     | Id of string
