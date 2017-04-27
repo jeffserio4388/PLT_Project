@@ -1,7 +1,6 @@
 (* Semantic checking for the MicroC compiler *)
 
 open Ast
-
 module StringMap = Map.Make(String)
 
 (* Semantic checking of a program. Returns void if successful,
@@ -21,11 +20,16 @@ let check (globals, stmts, functions, pipes, structs) =
   in
 
   (* Raise an exception if a given binding is to a void type *)
-  let check_not_void exceptf = function
-      (Void, n) -> raise (Failure (exceptf n))
+  let check_not_void_global exceptf = function
+      (Void, n, _) -> raise (Failure (exceptf n))
     | _ -> ()
   in
+
+  let check_not_void exceptf = function
+    _ -> ()  
+    | (Void,n)-> raise (Failure (exceptf n))
   
+  in
   (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
   let check_assign lvaluet rvaluet err =
@@ -34,9 +38,9 @@ let check (globals, stmts, functions, pipes, structs) =
    
   (**** Checking Global Variables ****)
 
-  List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
+  List.iter (check_not_void_global (fun n -> "illegal void global " ^ n)) globals;
    
-  report_duplicate (fun n -> "duplicate global " ^ n) (List.map snd globals);
+  report_duplicate (fun n -> "duplicate global " ^ n) (List.map (fun (a,b,c) -> b ) globals);
 
   (**** Checking Functions ****)
 
@@ -51,8 +55,7 @@ let check (globals, stmts, functions, pipes, structs) =
             { 
                 typ = Void; 
                 fname = "printf"; 
-                formals = [(MyString, "x")];
-                locals = []; 
+                formals = [(MyString, "x")]; 
                 body = [] 
             }
    in
@@ -75,15 +78,20 @@ let check (globals, stmts, functions, pipes, structs) =
     report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
       (List.map snd func.formals);
 
+    (*  
     List.iter (check_not_void (fun n -> "illegal void local " ^ n ^
       " in " ^ func.fname)) func.locals;
+    *)
 
+    (*
     report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
       (List.map snd func.locals);
-
+    *)
     (* Type of each variable (global, formal, or local *)
-    let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
-	StringMap.empty (globals @ func.formals @ func.locals )
+    let symbols =  
+        let global_pair  = List.map (fun (a,b,c) -> (a,b)) globals in 
+        List.fold_left (fun m (t, n) -> StringMap.add n t m) 
+	StringMap.empty (global_pair @ func.formals)
     in
 
     let type_of_identifier s =
@@ -154,6 +162,7 @@ let check (globals, stmts, functions, pipes, structs) =
       | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
+      | Local(t,n,e) -> ()
     in
 
     stmt (Block func.body)

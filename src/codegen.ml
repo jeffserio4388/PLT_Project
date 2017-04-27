@@ -59,6 +59,7 @@ let rec string_of_stmt = function
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
   | Http_delete (e1, e2) -> "delete"
+  | Local(t,n,e) -> string_of_typ t ^ n ^ string_of_expr e ^ ";"
 
 
 let string_of_typ = function
@@ -70,7 +71,9 @@ let string_of_typ = function
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
-
+let string_of_global (t , id, e) = if e = Noexpr then
+    string_of_typ t ^ " " ^ id ^";\n" else
+    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
 let string_of_pdecl_listen pdecl = 
 "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
@@ -79,7 +82,6 @@ let string_of_pdecl_listen pdecl =
 
 "void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
     // fprintf(stderr, \"%s\", req->data);
-    " ^ String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
     " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
 }
 
@@ -132,8 +134,7 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
 
 let string_of_pdecl_no_listen pdecl = 
     "int 3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
-    String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
-    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body)
+    String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
  
 let string_of_pdecl pdecl = 
@@ -154,7 +155,6 @@ let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
     fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
     ") {\n" ^
-    String.concat "    " (List.map string_of_vdecl fdecl.locals) ^ "    " ^ 
     String.concat "    " (List.map string_of_stmt fdecl.body) ^
     "}\n"
 
@@ -163,7 +163,7 @@ let string_of_sdecl sdecl =
     String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
     "};\n"
 
-let translate (vars, stmts, funcs, pipes, structs) =
+let translate (globals, stmts, funcs, pipes, structs) =
  
     "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
 
@@ -177,7 +177,7 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->len = suggested_size;
 }" ^
 
-    String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
+    String.concat "\n" (List.map string_of_global globals) ^ "\n" ^
     
   	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
 	

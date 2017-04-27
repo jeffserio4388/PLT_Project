@@ -36,7 +36,7 @@ let _ =
             let ast = Parser.program Scanner.token lexbuf in
             Semant.check ast;
             match action with
-                Ast -> print_string (Ast.string_of_program ast);
+                Ast -> print_string (Codegen.translate ast);
                 | Translate | Compile | Run | Compare -> ();
             match action with
                 Ast -> ();
