@@ -60,7 +60,8 @@ let rec string_of_stmt = function
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
   | Http_delete (e1, e2) -> "delete"
-  | Local(t,n,e) -> string_of_typ t ^ n ^ string_of_expr e ^ ";"
+  | Local(t,n,e) ->if e != Noexpr then string_of_typ t ^" "^ n ^" = "^ string_of_expr e ^ ";\n"
+                    else string_of_typ t ^" " ^ n ^";\n"
 
 
 let string_of_typ = function
