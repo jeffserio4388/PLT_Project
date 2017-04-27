@@ -13,7 +13,7 @@
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
-	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT
+	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL
 	%token PIPE FUNCTION LIST ADDLEFT ADDRIGHT FINDNODE LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
 	%token <int> LITERAL 
 	%token <string> STR_LIT
@@ -41,7 +41,7 @@
 
 decls:
 /* nothing */       { [], [], [], [], [] }
-| decls vdecl       { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
+| decls global     { ($2 :: first $1), second $1, third $1, fourth $1, fifth $1 }
 | decls stmt        { first $1, ($2 :: second $1), third $1, fourth $1, fifth $1 }
 | decls fdecl       { first $1, second $1, ($2 :: third $1), fourth $1, fifth $1 }
 | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
@@ -77,17 +77,21 @@ listen_opt:
 
 
 pdecl:
-PIPE ID LBRACE listen_opt vdecl_list stmt_list RBRACE
+PIPE ID LBRACE listen_opt stmt_list RBRACE
 { { 
 	pname = $2;
-	locals = List.rev $5;
 	listen = $4;
-	body = List.rev $6;
+	body = List.rev $5;
 } }
+
+vdecl:
+    typ ID {($1,$2)}
+
+
 
 
 fdecl:
-FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE  stmt_list RBRACE
+FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE stmt_list RBRACE
 { { 
 	typ = $2;
 	fname = $3;
@@ -114,13 +118,15 @@ vdecl_list:
 /* nothing */    { [] }
 | vdecl_list vdecl { $2 :: $1 }
 
-globals:
-GLOBAL typ ID SEMI { ($1, $2, Noexpr) }
-| GLOBAL typ ID ASSIGN expr SEMI {($2,$3,$5)}
+global:
+  GLOBAL typ ID SEMI { ($2, $3, Noexpr) }
+| GLOBAL typ ID ASSIGN expr SEMI { ($2,$3,$5) }
+
 
 stmt_list:
 /* nothing */  { [] }
 | stmt_list stmt { $2 :: $1 }
+
 
 stmt:
 expr SEMI                                                     { Expr $1 }
@@ -142,7 +148,11 @@ expr SEMI                                                     { Expr $1 }
 | HTTPDELETE LPAREN expr COMMA expr RPAREN SEMI		      { Http_delete($3, $5) }
 | HTTPPOST LPAREN expr COMMA expr RPAREN SEMI		      { Http_post($3, $5) }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
-| typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}  
+| typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
+
+
+
+
 expr_opt:
 /* nothing */ { Noexpr }
 | expr          { $1 }
