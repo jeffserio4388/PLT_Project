@@ -1,190 +1,204 @@
-(* Code generation: translate takes a semantically checked AST and
-produces LLVM IR
+(*codegen for Pipeline*)
 
-LLVM tutorial: Make sure to read the OCaml version of the tutorial
 
-http://llvm.org/docs/tutorial/index.html
 
-Detailed documentation on the OCaml LLVM library:
-
-http://llvm.moe/
-http://llvm.moe/ocaml/
-
-*)
-(*
-module L = Llvm
-module A = Ast
+open Ast
 
 module StringMap = Map.Make(String)
-*)
-let translate ast = Ast.string_of_program ast (*(globals, stmts, functions, pipes )*)
-(*
-  let context = L.global_context () in
-  let the_module = L.create_module context "MicroC"
-  and i32_t  = L.i32_type  context
-  and i8_t   = L.i8_type   context
-  and i1_t   = L.i1_type   context
-  and void_t = L.void_type context in
 
-  let ltype_of_typ = function
-      A.Int -> i32_t
-    | A.Bool -> i1_t
-    | A.Void -> void_t in
 
-  (* Declare each global variable; remember its value in a map *)
-  let global_vars =
-    let global_var m (t, n) =
-      let init = L.const_int (ltype_of_typ t) 0
-      in StringMap.add n (L.define_global n init the_module) m in
-    List.fold_left global_var StringMap.empty globals in
+let string_of_op = function
+    Add -> "+"
+    | Sub -> "-"
+    | Mult -> "*"
+    | Div -> "/"
+    | Equal -> "=="
+    | Neq -> "!="
+    | Less -> "<"
+    | Leq -> "<="
+    | Greater -> ">"
+    | Geq -> ">="
+    | And -> "&&"
+    | Or -> "||"
 
-  (* Declare printf(), which the print built-in function will call *)
-  let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
-  let printf_func = L.declare_function "printf" printf_t the_module in
 
-  (* Declare the built-in printbig() function *)
-  let printbig_t = L.function_type i32_t [| i32_t |] in
-  let printbig_func = L.declare_function "printbig" printbig_t the_module in
+let string_of_uop = function
+    Neg -> "-"
+    | Not -> "!"
 
-  (* Define each function (arguments and return type) so we can call it *)
-  let function_decls =
-    let function_decl m fdecl =
-      let name = fdecl.A.fname
-      and formal_types =
-	Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) fdecl.A.formals)
-      in let ftype = L.function_type (ltype_of_typ fdecl.A.typ) formal_types in
-      StringMap.add name (L.define_function name ftype the_module, fdecl) m in
-    List.fold_left function_decl StringMap.empty functions in
-  
-  (* Fill in the body of the given function *)
-  let build_function_body fdecl =
-    let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
-    let builder = L.builder_at_end context (L.entry_block the_function) in
 
-    let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder in
+let rec string_of_expr = function
+    Literal(l) ->           string_of_int l
+    | MyStringLit(s) ->     s
+    | BoolLit(true) ->      "true"
+    | BoolLit(false) ->     "false"
+    | Id(s) ->              s
+    | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
+    | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
+    | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
+    | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+    | Noexpr ->             ""
+
+
+let rec string_of_stmt = function
+    Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
+  | Expr(expr) ->           string_of_expr expr ^ ";\n";
+  | Return(expr) ->         "return " ^ string_of_expr expr ^ ";\n";
+  | If(e, s, Block([])) ->  "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
+  | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
+  | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
+  | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
+                                        ^ (string_of_int (List.length intlist)) ^ ", 1);"
+  | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
+                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
+  | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
+  | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
+  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
+  | Http_put (e1, e2) -> "put"
+  | Http_get (e1, e2) -> "get"
+  | Http_post (e1, e2) -> "post"
+  | Http_delete (e1, e2) -> "delete"
+
+
+let string_of_typ = function
+    Int -> "int"
+    | Bool -> "bool"
+    | Void -> "void"
+    | MyString -> "string"
+
+
+let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
+
+
+
+let string_of_pdecl_listen pdecl = 
+"uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
+"struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
+"uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
+    // fprintf(stderr, \"%s\", req->data);
+    " ^ String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
+    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
+}
+
+void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
+    if (nread > 0) {
+        req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
+        uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
+        return;
+    }
+    if (nread < 0) {
+        if (nread != UV_EOF)
+            fprintf(stderr, \"Read error %s\", uv_err_name(nread));
+        uv_close((uv_handle_t*) client, NULL);
+    }
+
+    // free(buf->base);
+}
+
+void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
+    if (status < 0) {
+        fprintf(stderr, \"New connection error %s\", uv_strerror(status));
+        // error!
+        return;
+    }
+
+    uv_tcp_t *client = (uv_tcp_t*) malloc(sizeof(uv_tcp_t));
+    uv_tcp_init(loop, client);
+    if (uv_accept(server, (uv_stream_t*) client) == 0) {
+        uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
+    }
+    else {
+        uv_close((uv_handle_t*) client, NULL);
+    }
+}
+
+
+
+
+void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
+    uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
+
+    uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
+
+    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
+    int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
+    if (r) {
+        fprintf(stderr, \"Listen error %s\", uv_strerror(r));
+    }
+}\n"
+
+let string_of_pdecl_no_listen pdecl = 
+    "int 3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
+    String.concat "\n    " (List.map string_of_vdecl pdecl.locals) ^ "
+    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body)
+
+ 
+let string_of_pdecl pdecl = 
+    (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
+    "void work_" ^ pdecl.pname ^
+    "(uv_work_t *req) {    " ^ 
+    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
+    "\n}"
+
+
+let string_of_pdecl_main pdecl = 
+    "    int data_" ^ pdecl.pname ^ ";\n" ^
+    "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
+    "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
+    "    uv_queue_work(loop, &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
+
+let string_of_fdecl fdecl =
+    string_of_typ fdecl.typ ^ " " ^
+    fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
+    ") {\n" ^
+    String.concat "    " (List.map string_of_vdecl fdecl.locals) ^ "    " ^ 
+    String.concat "    " (List.map string_of_stmt fdecl.body) ^
+    "}\n"
+
+let string_of_sdecl sdecl =
+    "struct " ^ sdecl.sname ^ " {\n    " ^
+    String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
+    "};\n"
+
+let translate (vars, stmts, funcs, pipes, structs) =
+ 
+    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
+
+"#define DEFAULT_PORT 7000
+#define DEFAULT_BACKLOG 128
+
+uv_loop_t *loop;
+
+void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
+    buf->base = (char*) malloc(suggested_size);
+    buf->len = suggested_size;
+}" ^
+
+    String.concat "\n" (List.map string_of_vdecl vars) ^ "\n" ^
     
-    (* Construct the function's "locals": formal arguments and locally
-       declared variables.  Allocate each on the stack, initialize their
-       value, if appropriate, and remember their values in the "locals" map *)
-    let local_vars =
-      let add_formal m (t, n) p = L.set_value_name n p;
-	let local = L.build_alloca (ltype_of_typ t) n builder in
-	ignore (L.build_store p local builder);
-	StringMap.add n local m in
-
-      let add_local m (t, n) =
-	let local_var = L.build_alloca (ltype_of_typ t) n builder
-	in StringMap.add n local_var m in
-
-      let formals = List.fold_left2 add_formal StringMap.empty fdecl.A.formals
-          (Array.to_list (L.params the_function)) in
-      List.fold_left add_local formals fdecl.A.locals in
-
-    (* Return the value for a variable or formal argument *)
-    let lookup n = try StringMap.find n local_vars
-                   with Not_found -> StringMap.find n global_vars
-    in
-
-    (* Construct code for an expression; return its value *)
-    let rec expr builder = function
-	A.Literal i -> L.const_int i32_t i
-      | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
-      | A.Noexpr -> L.const_int i32_t 0
-      | A.Id s -> L.build_load (lookup s) s builder
-      | A.Binop (e1, op, e2) ->
-	  let e1' = expr builder e1
-	  and e2' = expr builder e2 in
-	  (match op with
-	    A.Add     -> L.build_add
-	  | A.Sub     -> L.build_sub
-	  | A.Mult    -> L.build_mul
-          | A.Div     -> L.build_sdiv
-	  | A.And     -> L.build_and
-	  | A.Or      -> L.build_or
-	  | A.Equal   -> L.build_icmp L.Icmp.Eq
-	  | A.Neq     -> L.build_icmp L.Icmp.Ne
-	  | A.Less    -> L.build_icmp L.Icmp.Slt
-	  | A.Leq     -> L.build_icmp L.Icmp.Sle
-	  | A.Greater -> L.build_icmp L.Icmp.Sgt
-	  | A.Geq     -> L.build_icmp L.Icmp.Sge
-	  ) e1' e2' "tmp" builder
-      | A.Unop(op, e) ->
-	  let e' = expr builder e in
-	  (match op with
-	    A.Neg     -> L.build_neg
-          | A.Not     -> L.build_not) e' "tmp" builder
-      | A.Assign (s, e) -> let e' = expr builder e in
-	                   ignore (L.build_store e' (lookup s) builder); e'
-      | A.Call ("print", [e]) | A.Call ("printb", [e]) ->
-	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
-	    "printf" builder
-      | A.Call ("printbig", [e]) ->
-	  L.build_call printbig_func [| (expr builder e) |] "printbig" builder
-      | A.Call (f, act) ->
-         let (fdef, fdecl) = StringMap.find f function_decls in
-	 let actuals = List.rev (List.map (expr builder) (List.rev act)) in
-	 let result = (match fdecl.A.typ with A.Void -> ""
-                                            | _ -> f ^ "_result") in
-         L.build_call fdef (Array.of_list actuals) result builder
-    in
-
-    (* Invoke "f builder" if the current block doesn't already
-       have a terminal (e.g., a branch). *)
-    let add_terminal builder f =
-      match L.block_terminator (L.insertion_block builder) with
-	Some _ -> ()
-      | None -> ignore (f builder) in
+  	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
 	
-    (* Build the code for the given statement; return the builder for
-       the statement's successor *)
-    let rec stmt builder = function
-	A.Block sl -> List.fold_left stmt builder sl
-      | A.Expr e -> ignore (expr builder e); builder
-      | A.Return e -> ignore (match fdecl.A.typ with
-	  A.Void -> L.build_ret_void builder
-	| _ -> L.build_ret (expr builder e) builder); builder
-      | A.If (predicate, then_stmt, else_stmt) ->
-         let bool_val = expr builder predicate in
-	 let merge_bb = L.append_block context "merge" the_function in
+    String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
+ 
+	"void after(uv_work_t *req, int status) { }\n\n" ^
+  
+  	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
 
-	 let then_bb = L.append_block context "then" the_function in
-	 add_terminal (stmt (L.builder_at_end context then_bb) then_stmt)
-	   (L.build_br merge_bb);
+  	"int main() {\n    " ^
+    "    loop = uv_default_loop();" ^
 
-	 let else_bb = L.append_block context "else" the_function in
-	 add_terminal (stmt (L.builder_at_end context else_bb) else_stmt)
-	   (L.build_br merge_bb);
+  	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
+   
+  	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
-	 ignore (L.build_cond_br bool_val then_bb else_bb builder);
-	 L.builder_at_end context merge_bb
+   	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
 
-      | A.While (predicate, body) ->
-	  let pred_bb = L.append_block context "while" the_function in
-	  ignore (L.build_br pred_bb builder);
 
-	  let body_bb = L.append_block context "while_body" the_function in
-	  add_terminal (stmt (L.builder_at_end context body_bb) body)
-	    (L.build_br pred_bb);
 
-	  let pred_builder = L.builder_at_end context pred_bb in
-	  let bool_val = expr pred_builder predicate in
 
-	  let merge_bb = L.append_block context "merge" the_function in
-	  ignore (L.build_cond_br bool_val body_bb merge_bb pred_builder);
-	  L.builder_at_end context merge_bb
 
-      | A.For (e1, e2, e3, body) -> stmt builder
-	    ( A.Block [A.Expr e1 ; A.While (e2, A.Block [body ; A.Expr e3]) ] )
-    in
 
-    (* Build the code for each statement in the function *)
-    let builder = stmt builder (A.Block fdecl.A.body) in
 
-    (* Add a return if the last block falls off the end *)
-    add_terminal builder (match fdecl.A.typ with
-        A.Void -> L.build_ret_void
-      | t -> L.build_ret (L.const_int (ltype_of_typ t) 0))
-  in
-
-  List.iter build_function_body functions;
-  the_module*)
