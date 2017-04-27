@@ -87,13 +87,12 @@ PIPE ID LBRACE listen_opt vdecl_list stmt_list RBRACE
 
 
 fdecl:
-FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+FUNCTION typ ID LPAREN formals_opt RPAREN LBRACE  stmt_list RBRACE
 { { 
 	typ = $2;
 	fname = $3;
 	formals = $5;
-	locals = List.rev $8;
-	body = List.rev $9 
+	body = List.rev $8 
 } }
 
 formals_opt:
@@ -115,8 +114,9 @@ vdecl_list:
 /* nothing */    { [] }
 | vdecl_list vdecl { $2 :: $1 }
 
-vdecl:
-typ ID SEMI { ($1, $2) }
+globals:
+GLOBAL typ ID SEMI { ($1, $2, Noexpr) }
+| GLOBAL typ ID ASSIGN expr SEMI {($2,$3,$5)}
 
 stmt_list:
 /* nothing */  { [] }
@@ -141,7 +141,8 @@ expr SEMI                                                     { Expr $1 }
 | HTTPPUT LPAREN expr COMMA expr RPAREN SEMI		      { Http_put($3, $5) }
 | HTTPDELETE LPAREN expr COMMA expr RPAREN SEMI		      { Http_delete($3, $5) }
 | HTTPPOST LPAREN expr COMMA expr RPAREN SEMI		      { Http_post($3, $5) }
-
+| typ ID SEMI                                             {Local($1,$2, Noexpr)}
+| typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}  
 expr_opt:
 /* nothing */ { Noexpr }
 | expr          { $1 }
@@ -169,6 +170,9 @@ LITERAL                         { Literal($1) }
 | ID ASSIGN expr                { Assign($1, $3) }
 | ID LPAREN actuals_opt RPAREN  { Call($1, $3) }
 | LPAREN expr RPAREN            { $2 }
+
+
+
 
 actuals_opt:
 /* nothing */ { [] }
