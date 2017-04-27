@@ -68,7 +68,7 @@ let string_of_typ = function
     | Float -> "float"
     | Bool -> "int"
     | Void -> "void"
-    | MyString -> "string"
+    | MyString -> "char *"
 
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
