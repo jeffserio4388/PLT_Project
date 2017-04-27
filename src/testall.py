@@ -6,7 +6,7 @@ if len(sys.argv)>1:
 	testFiles = sys.argv[1:]
 else:
 	#Get all the files in the tests dir
-	testFiles = os.listdir('tests/')
+	testFiles = os.listdir('../tests/')
 	testFiles = [ x for x in testFiles if ( x[-2:]=='pl' and x[:4]=='test')]
 
 nof = len(testFiles)
@@ -19,19 +19,19 @@ print 'Starting the tests..'
 #Proceed if make succeeds
 
 for file in testFiles:
-	print file 
+	print file
 
 	#For each test file perform the test. And print pass or failure
-	runStr = './pipeline -d tests/' + file 
+	runStr = './pipeline -d ../tests/' + file
 
 	diff_file = file[:-2]+'diff'
-	string = 'tests/'+diff_file
+	string = '../tests/'+diff_file
 	print string
 	#print 'Running for file : '+file +'\n'
-	
+
 	os.system(runStr)
 
-	
+
 
 	print string
 	if os.path.exists(string):
@@ -46,7 +46,7 @@ for file in testFiles:
 	else :
 		failed.append('**** FAILED for file '+file+'\n')
 	i = i+1
-	
+
 #Printing the results
 
 print '\n---------- PASSED TESTS ------------'
