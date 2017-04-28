@@ -26,6 +26,12 @@ let string_of_uop = function
     Neg -> "-"
     | Not -> "!"
 
+let string_of_typ = function
+    Int -> "int"
+    | Float -> "float"
+    | Bool -> "int"
+    | Void -> "void"
+    | MyString -> "char *"
 
 let rec string_of_expr = function
       Literal(l) ->           string_of_int l
@@ -63,17 +69,9 @@ let rec string_of_stmt = function
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
   | Http_delete (e1, e2) -> "delete"
-  | Local(t,n,e) -> if e = Noexpr then string_of_typ t ^ n ^ ";\n"
-                    else string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
+  | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
+  | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct List " ^ n ^ ";\n" ^ "initList(&"^ n ^ ");\n"
-
-let string_of_typ = function
-    Int -> "int"
-    | Float -> "float"
-    | Bool -> "int"
-    | Void -> "void"
-    | MyString -> "char *"
-
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 

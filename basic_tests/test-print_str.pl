@@ -1,2 +1,2 @@
-global string a = "hello";
+string a = "hello";
 print_str(a);
