@@ -62,7 +62,7 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local(t,n,e) ->if e != Noexpr then string_of_typ t ^" "^ n ^" = "^ string_of_expr e ^ ";\n"
                     else string_of_typ t ^" " ^ n ^";\n"
-  | List(t,n) -> "struct List " ^ n ^ ";" ^ "initlist(&"^ n ^ ");\n"
+  | List(t,n) -> "struct List " ^ n ^ ";" ^ "initList(&"^ n ^ ");\n"
 
 let string_of_typ = function
     Int -> "int"

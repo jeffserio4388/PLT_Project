@@ -26,10 +26,8 @@ let check (globals, stmts, functions, pipes, structs) =
   in
 
   let check_not_void exceptf = function
-    
      (Void,n)-> raise (Failure (exceptf n))
-    |_ -> ()  
-  
+    | _ -> () 
   in
   (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
@@ -103,6 +101,7 @@ let check (globals, stmts, functions, pipes, structs) =
     (* Return the type of an expression or throw an exception *)
     let rec expr = function
 	Literal _ -> Int
+      | FloatLit _ -> Float
       | BoolLit _ -> Bool
       | MyStringLit _ -> MyString
       | Id s -> type_of_identifier s
@@ -164,7 +163,17 @@ let check (globals, stmts, functions, pipes, structs) =
       | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
-      | Local(t,n,e) -> ()
+      | Local(t,n,e) -> ignore(expr e)
+      | Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
+                                 ignore(expr e3)
+      | Http_put(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Http_get(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Http_post(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Http_delete(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Int_list_decl(_,_) -> ()
+      | Str_list_decl(_,_) -> ()
     in
 
     stmt (Block func.body)
