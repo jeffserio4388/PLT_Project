@@ -44,9 +44,9 @@ let rec string_of_expr = function
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
-    | Call("print_int",e) ->"printf(\"%d\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
-    | Call("print_str",e)-> "printf(\"%s\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
-    | Call("print_float",e)->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call("Addfront",e)   ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call("Addback",e)    ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ");\n"
