@@ -34,9 +34,9 @@ let _ =
             let program = open_in fullName in 
             let lexbuf = Lexing.from_channel program in
             let ast = Parser.program Scanner.token lexbuf in
-            (*Semant.check ast;*)
+            Semant.check ast;
             match action with
-                Ast -> print_string (Ast.string_of_program ast);
+                Ast -> print_string (Codegen.translate ast);
                 | Translate | Compile | Run | Compare -> ();
             match action with
                 Ast -> ();
