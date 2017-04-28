@@ -26,8 +26,9 @@ let check (globals, stmts, functions, pipes, structs) =
   in
 
   let check_not_void exceptf = function
-    _ -> ()  
-    | (Void,n)-> raise (Failure (exceptf n))
+    
+     (Void,n)-> raise (Failure (exceptf n))
+    |_ -> ()  
   
   in
   (* Raise an exception of the given rvalue type cannot be assigned to
@@ -138,6 +139,7 @@ let check (globals, stmts, functions, pipes, structs) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
+       | FloatLit(l) -> Float
     in
 
     let check_bool_expr e = if expr e != Bool
