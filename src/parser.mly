@@ -8,7 +8,8 @@
 	let third   (_,_,c,_,_) = c;;
 	let fourth  (_,_,_,d,_) = d;;
 	let fifth   (_,_,_,_,e) = e;;
-	%}
+    let pipe_name = ref 0;;
+%}
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
@@ -78,12 +79,15 @@ listen_opt:
 
 
 pdecl:
-PIPE ID LBRACE listen_opt stmt_list RBRACE
-{ { 
-	pname = $2;
-	listen = $4;
-	body = List.rev $5;
-} }
+PIPE LBRACE listen_opt stmt_list RBRACE
+{ 
+    pipe_name := !pipe_name + 1;
+    { 
+    	pname = "pipe_" ^ string_of_int !pipe_name;
+    	listen = $3;
+    	body = List.rev $4;
+    }
+}
 
 vdecl:
     typ ID {($1,$2)}
