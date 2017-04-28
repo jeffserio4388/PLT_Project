@@ -41,6 +41,7 @@ type stmt =
     | Int_list_decl of string * int list
     | Str_list_decl of string * string list
     | Local of typ * string * expr
+    | List of typ * string
 
 type var_init = typ * string * expr
 
@@ -124,7 +125,8 @@ let rec string_of_stmt = function
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
   | Http_delete (e1, e2) -> "delete"
-  | Local(t,n,e) -> "" 
+  | Local(t,n,e) -> ""
+  | List(t,e) -> ""
 
 let string_of_typ = function
     Int -> "int"

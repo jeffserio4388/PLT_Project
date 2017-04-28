@@ -15,6 +15,8 @@ rule token = parse
 | ')'                   { RPAREN }
 | '{'                   { LBRACE }
 | '}'                   { RBRACE }
+| '['                   { LSBRACE }
+| ']'                   { RSBRACE }
 | ';'                   { SEMI }
 | ','                   { COMMA }
 | '+'                   { PLUS }

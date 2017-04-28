@@ -49,10 +49,10 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  | Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
+  (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
                                         ^ (string_of_int (List.length intlist)) ^ ", 1);"
   | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
-                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
+                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
   | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
@@ -62,7 +62,7 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local(t,n,e) ->if e != Noexpr then string_of_typ t ^" "^ n ^" = "^ string_of_expr e ^ ";\n"
                     else string_of_typ t ^" " ^ n ^";\n"
-
+  | List(t,n) -> "struct List " ^ n ^ ";" ^ "initlist(&"^ n ^ ");\n"
 
 let string_of_typ = function
     Int -> "int"
