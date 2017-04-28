@@ -138,7 +138,6 @@ let check (globals, stmts, functions, pipes, structs) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
-       | FloatLit(l) -> Float
     in
 
     let check_bool_expr e = if expr e != Bool
@@ -172,8 +171,9 @@ let check (globals, stmts, functions, pipes, structs) =
       | Http_get(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Http_post(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Http_delete(e1, e2) -> ignore(expr e1); ignore(expr e2)
-      | Int_list_decl(_,_) -> ()
-      | Str_list_decl(_,_) -> ()
+      (*| Int_list_decl(_,_) -> ()
+      | Str_list_decl(_,_) -> ()*)
+      | List(t,n) -> ()
     in
 
     stmt (Block func.body)
