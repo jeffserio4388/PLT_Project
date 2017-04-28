@@ -47,6 +47,7 @@ let rec string_of_expr = function
     | Call("print_int",e) ->"printf(\"%d\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call("print_str",e)-> "printf(\"%s\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call("print_float",e)->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("Addfront",e)   ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ");\n"
     | Noexpr ->             ""
 

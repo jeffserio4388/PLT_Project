@@ -43,7 +43,7 @@ let _ =
                 | Translate | Compile | Run | Compare -> let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;
             match action with
                 Ast | Translate -> ();
-                | Compile | Run | Compare-> ignore(read_process "gcc stdlib/libmylist.a out.c -luv");
+                | Compile | Run | Compare-> ignore(read_process "gcc -g -Wall -I stdlib/ -g -L stdlib/ out.c -lmylist -luv");
             match action with
                 Ast | Translate | Compile -> ();
                 | Run | Compare -> ignore(read_process ("./a.out > " ^ fullNameStub ^ ".out")); 
