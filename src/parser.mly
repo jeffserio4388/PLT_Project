@@ -59,10 +59,13 @@ sdecl:
 
 pdecl:
     PIPE LBRACE stmt_list RBRACE
-    { pnm := !pnm + 1; { 
-        pname = "pipe" ^ string_of_int !pnm;
-        body = List.rev $4 
-    } }
+    { 
+        pnm := !pnm + 1; 
+        { 
+            pname = "pipe" ^ string_of_int !pnm;
+            body = List.rev $4 
+        }
+    }
 
 /* pdecl_list: */
     /* nothing    { [] } */
