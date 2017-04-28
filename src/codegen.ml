@@ -191,7 +191,7 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
 
   	"int main() {\n    " ^
-    "    loop = uv_default_loop();" ^
+    "    loop = uv_default_loop();\n" ^
 
   	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
