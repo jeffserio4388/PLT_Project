@@ -29,9 +29,10 @@ type stmt =
     | Expr of expr
     | Return of expr
     | If of expr * stmt * stmt
-    | Add_left of expr * expr
+    (*| Add_left of expr * expr
     | Add_right of expr * expr
     | Find_node of expr * expr * expr
+    *)
     | Http_put of expr * expr
     | Http_get of expr * expr
     | Http_post of expr * expr
@@ -118,9 +119,10 @@ let rec string_of_stmt = function
                                         ^ (string_of_int (List.length intlist)) ^ ", 1);"
   | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
                                         ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
-  | Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
+  (*| Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 = (void * )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 = (void * )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
+  *)
   | Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"

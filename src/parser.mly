@@ -145,9 +145,10 @@ expr SEMI                                                     { Expr $1 }
 | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
 /*| LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6) }*/
 /*| LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) }*/ 
-| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
+/*| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
 | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
 | FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
+*/
 | HTTPGET LPAREN expr COMMA expr RPAREN SEMI 		      { Http_get($3, $5) }
 | HTTPPUT LPAREN expr COMMA expr RPAREN SEMI		      { Http_put($3, $5) }
 | HTTPDELETE LPAREN expr COMMA expr RPAREN SEMI		      { Http_delete($3, $5) }

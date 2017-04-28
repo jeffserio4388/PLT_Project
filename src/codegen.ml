@@ -48,6 +48,7 @@ let rec string_of_expr = function
     | Call("print_str",e)-> "printf(\"%s\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call("print_float",e)->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call("Addfront",e)   ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^");\n"
+    | Call("Addback",e)    ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ");\n"
     | Noexpr ->             ""
 
@@ -64,9 +65,9 @@ let rec string_of_stmt = function
                                         ^ (string_of_int (List.length intlist)) ^ ", 1);"
   | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
                                         ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
-  | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
-  | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
-  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
+  (*| Add_left(e1, e2) -> "void *a7858585765 = (void* )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
+  | Add_right(e1, e2) -> "void *a782345765 = (void* )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
+  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void* )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
   | Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"

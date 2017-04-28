@@ -163,10 +163,11 @@ let check (globals, stmts, functions, pipes, structs) =
                                ignore (expr e3); stmt st
       | While(p, s) -> check_bool_expr p; stmt s
       | Local(t,n,e) -> ignore(expr e)
-      | Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
                                  ignore(expr e3)
+      *)
       | Http_put(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Http_get(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Http_post(e1, e2) -> ignore(expr e1); ignore(expr e2)
