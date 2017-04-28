@@ -102,6 +102,8 @@ let rec string_of_expr = function
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Noexpr ->             ""
+    | FloatLit(l) ->           string_of_float l 
+     
 
 let rec string_of_stmt = function
     Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
@@ -129,6 +131,7 @@ let string_of_typ = function
     | Bool -> "bool"
     | Void -> "void"
     | MyString -> "string"
+    | Float -> "float"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
