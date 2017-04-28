@@ -37,7 +37,9 @@ let rec string_of_expr = function
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
-    | Call("print_int",e) ->"printf(\"%d\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n" 
+    | Call("print_int",e) ->"printf(\"%d\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("print_str",e)-> "printf(\"%s\" ," ^ String.concat ","  (List.map string_of_expr e)^");\n"
+    | Call("print_float",e)->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^");\n"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ");\n"
     | Noexpr ->             ""
 
@@ -61,8 +63,8 @@ let rec string_of_stmt = function
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
   | Http_delete (e1, e2) -> "delete"
-  | Local(t,n,e) ->if e != Noexpr then string_of_typ t ^" "^ n ^" = "^ string_of_expr e ^ ";\n"
-                    else string_of_typ t ^" " ^ n ^";\n"
+  | Local(t,n,e) -> if e = Noexpr then string_of_typ t ^ n ^ ";\n"
+                    else string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct List " ^ n ^ ";\n" ^ "initList(&"^ n ^ ");\n"
 
 let string_of_typ = function
