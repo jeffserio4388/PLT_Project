@@ -1,0 +1,219 @@
+\documentclass[./LRM_main.tex]{subfiles}
+\begin{comment}
+If you want a box around your answer and that answer is an
+equation then use \boxed{$$ equation $$} 
+
+if you want to indent a block of text:
+\begin{adjustwidth}{cm of right indent}{cm of left indent}
+% paragraph to be indented
+\end{adjustwidth}
+
+if you just want one indent for one line 
+use \indent per intended indent per line
+
+A sections numbers automatically, so if the number of 
+the problem is out of order it would be easier to 
+just indent and bold the sections and subsections
+and not use the \section{} kind of commands
+
+\newpage makes a new page
+
+$normal math mode$
+$$Special math mode$$
+
+to include an image use
+\includegraphics{image_name}
+image_name is the file name (.png) without the extension. The file
+name cannot have any spaces or any periods other than the one before
+the file extension.
+
+To include a codeblock use
+\begin{lstlisting}
+ExampleCode(blah, blah)
+{
+	it does tabbing and everything;
+	for (coloring of major languages like java){
+		add the folloing to the \lstset tuple:
+			language=<name_of_language>;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+\end{comment}
+
+
+\begin{document}
+
+%\tableofcontents
+
+%\thispagestyle{empty}
+%\newpage
+% If you want to change how the subsubsection's are numbered
+%\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
+
+%\setcounter{page}{0}
+\chapter{Declarations and Statements}
+\section{Declaration}
+A declaration specifies the interpretation of a given identifier. The declaration allows for the programmer to create anything that has a unique identifier and a type, i.e. function, variable, etc. Declarations have the form:
+\begin{lstlisting}
+declaration:
+	declaration-specifiers;
+	declaration-specifiers init-declarator-list;
+\end{lstlisting}
+The init-delarator-list and declaration-specifiers have the following grammar:
+\begin{lstlisting}
+declaration-specifiers:
+	storage-specifier; | storage-specifier declaration-specifiers
+	type-specifier | type-specifier declaration-specifiers
+	type-qualifier | type-qualifier declaration-specifiers
+	
+declaration-list:
+	declaration
+	declaration-list declaration
+struct-declaration-list:
+	struct { struct-declaration-list }
+	struct id { struct-declaration-list }
+
+struct-declaration:
+	spec-qualifier-list struct-decl-list ;
+
+init-declarator-list:
+	init-declarator
+	init-declarator-list, init-declarator
+	
+init-declarator:
+	declarator
+	declarator = initializer
+
+initializer:
+	assignment-expression
+	{ initializer-list }
+	{ initializer-list , }
+
+initializer-list:
+	initializer
+	initializer-list , initializer
+
+spec-qualifier-list:
+	type-specifier
+	type-specifier spec-qualifier-list
+	type-qualifier
+	type-qualifier spec-qualifier-list
+
+struct-declarator-list:
+	struct-declarator
+	struct-declarator-list, struct-declarator
+\end{lstlisting}
+Every declaration must have a declarator, any declaration without a specific declarator (explained below) will not be counted as a valid function.
+\subsection{Declarators}
+each declarator declares a unique identifier, and asserts that when that identifier appears again in any expression the result must be of the same form. Meaning that given a declarator, such as an int, any expression that involves the identifier must result in a value that is of the same type.
+\subsubsection{Grammar:}
+\begin{lstlisting}
+declarator:
+	pointer direct-declarator
+	direct-declarator
+
+direct-declarator:
+	identifier
+	(declarator)
+	direct-declarator [ lit ]
+	direct-declarator [ ]
+	direct-declarator ( param-list )
+	direct-declarator ()
+	direct-declarator ( identifier-list )
+	
+
+pointer:
+	@ type-qualifier-list
+	@ type-qualifier-list pointer
+	@ type-qualifier-list
+
+type-qualifier-list:
+	type-qualifier
+	type-qualifier-list type-qualifier
+\end{lstlisting}
+\section{Statements}
+Statements make up the bulk of the code, and they comprise of declarations and expressions. There are several kinds of statements, which fall into 4 distinct categories: expression, compound, selection, and iteration.
+\subsubsection{Grammar:}
+\begin{lstlisting}
+statement:
+	expression-statement
+	compound-statement
+	selection-statement
+	loop-statement
+
+statement-list:
+	statement
+	statement-list statement
+
+compound-statement:
+	{ declaration-list statement-list }
+	{ declaration-list }
+	{ }
+
+expression-statement:
+	expression ;
+	;
+
+\end{lstlisting}
+\section{Control Flow}
+As with any imperative programming language, Pipeline has control flow mechanisms. Control flow mechanisms control the order in which statements are executed within a program. Although this definition does not fully apply to Pipeline by design, control flow mechanisms in Pipeline still control the order in which statements are executed both inside of and, to an extent, outside of pipelines.
+\subsection{Selection-statements}
+A conditional is a way to decide what action you wish to take based on the given situation. A conditional relies on some given expression that can be evaluated to true or false, or rather in Pipeline, like in C, any expression that can be evaluated to an integer. Pipeline uses the conventions established in C for evaluating an integer as true or false, where ANY non-zero value evaluates to true and only zero(0) evaluates to false.\\
+A conditional statement is written with the \texttt{if} statement followed by the aforementioned conditional statement and encloses the body of its text in curly braces ('\{' and '\}').
+\begin{lstlisting}
+if <conditional expression> { <body_of_statements> }
+\end{lstlisting}
+It can then be followed by the optional \texttt{else if} statement, which executes its body if the if statement evaluates to false and the \texttt{else if} condition evaluates to true, and/or the \texttt{else} statement which acts as a catch all and executes when no previous condition was true.
+\begin{lstlisting}
+if <conditional expression> {
+	<body_of_statements>
+} else if {
+	<body_of_statements>
+} else {
+	<body_of_statements>
+}
+\end{lstlisting}
+\subsubsection{Grammars}
+\begin{lstlisting}
+selection-statements:
+	if expression compound-statement
+	if expression compound-statement else statement
+\end{lstlisting}
+\subsection{Loops}
+Loops are exactly what they sound like; they execute a body of code repeatedly. They are one of the most important tools in an imperative language for they allow the user to automate repetitive processes in an intuitive manner.\\
+Pipeline uses the two most standard types of loops, while and for loops. The while loop works exactly like the conditional if statement, except after it executes its body of code it re-evaluates the expression and if it remains true (non-zero) it repeats the block of code. This continues until the condition becomes false, at which point the program continues past the loop. The loop is constructed with the \texttt{while} keyword as follows:
+\begin{lstlisting}
+while <conditional expression> {
+	<body_of_statements>
+}
+\end{lstlisting}
+For loops work in a similar fashion, and are really just an extension on a while loop. They initialize a variable, then have a conditional statement with that variable, and if that statement is true it continues else it goes to the code after the loop body. If it is iterated, upon each iteration the variable is updated. The syntax is as follows:
+\begin{lstlisting}
+for <assignment-expression>; <conditional-expression>; expression {
+	<body_of_statements>
+}
+\end{lstlisting}
+\subsubsection{Grammar}
+\begin{lstlisting}
+loop-statement:
+	while expression statement
+	for expr_opt expr_opt expression statement
+	for expr_opt expr_opt statement
+
+expr_opt:
+	expression;
+	;	
+\end{lstlisting}
+For clarification, here is the explicit order of evaluation for the loop-statements:\\
+For the \texttt{while} loop, the expression that is the test expression, is evaluated. If that expression is non-zero the program then executes the subsequent statement or statements. After executing them, it re-evaluates the expression, and if still non-zero it repeats the statements.\\
+For the \texttt{for} loop, the first expression is evaluated only once, when the loop is first encountered. Then it evaluates the second expression upon each iteration, if it is non-zero, then it will execute the code. The 3rd expression is evaluated after each iteration, before it re-evaluates the second instruction.
+%\subsection{subsection}
+%\subsubsection{subsubsection}
+
+\end{document}
+
