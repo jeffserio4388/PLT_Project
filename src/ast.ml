@@ -22,6 +22,7 @@ type expr =
     | Unop of uop * expr
     | Assign of string * expr
     | Call of string * expr list
+    | Access of string * int
     | Noexpr
 
 type stmt =
@@ -105,7 +106,7 @@ let rec string_of_expr = function
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Noexpr ->             ""
     | FloatLit(l) ->           string_of_float l 
-     
+    | Access(l,n) ->        "element" ^ string_of_int n ^ "of list" ^ l
 
 let rec string_of_stmt = function
     Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"

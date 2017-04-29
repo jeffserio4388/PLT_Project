@@ -36,7 +36,10 @@ int main()
     }
     traverseList(&list, &printDouble);
     printf("\n");
-
+    // test access()
+    double * k; 
+    k = (double*)access(&list,3);
+    printf("%f\n",*k);
     // test flipSignDouble()
     printf("testing flipSignDouble(): ");
     traverseList(&list, &flipSignDouble);

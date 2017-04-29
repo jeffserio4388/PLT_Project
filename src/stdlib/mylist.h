@@ -60,6 +60,10 @@ struct Node *addRight(struct List *list, void *data);
  */
 void traverseList(struct List *list, void (*f)(void *));
 
+
+
+void* access(struct List *list, int n);
+
 /*
  * Traverse the list, comparing each data item with 'dataSought' using
  * 'compar' function.  ('compar' returns 0 if the data pointed to by

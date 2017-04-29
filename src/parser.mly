@@ -155,8 +155,7 @@ expr SEMI                                                     { Expr $1 }
 | HTTPPOST LPAREN expr COMMA expr RPAREN SEMI		      { Http_post($3, $5) }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
-| typ ID LSBRACE RSBRACE SEMI                               {List($1,$2)}
-
+| typ ID LSBRACE RSBRACE SEMI                             {List($1,$2)}
 
 
 expr_opt:
@@ -187,7 +186,7 @@ LITERAL                         { Literal($1) }
 | ID ASSIGN expr                { Assign($1, $3) }
 | ID LPAREN actuals_opt RPAREN  { Call($1, $3) }
 | LPAREN expr RPAREN            { $2 }
-
+| ID LSBRACE LITERAL RSBRACE   { Access($1,$3) } 
 
 
 

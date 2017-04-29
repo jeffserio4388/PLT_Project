@@ -28,6 +28,20 @@ void traverseList(struct List *list, void (*f)(void *))
     }
 }
 
+
+
+void* access(struct List *list, int n)
+{
+    struct Node *node = list->head;
+    int i = 0;
+    while (i<n) {
+	node = node->next;
+    i+=1;
+    }
+    return node->data;
+}
+
+
 void flipSignDouble(void *data)
 {
     *(double *)data = *(double *)data * -1;

@@ -138,6 +138,7 @@ let check (globals, stmts, functions, pipes, structs) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
+       | Access(list_name, number) -> Int(*need to check the list type*)  
     in
 
     let check_bool_expr e = if expr e != Bool

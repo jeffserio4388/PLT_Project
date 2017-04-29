@@ -50,6 +50,7 @@ let rec string_of_expr = function
     | Call("Addfront",e)   ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call("Addback",e)    ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^");\n"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ");\n"
+    | Access(n,e) ->        ""
     | Noexpr ->             ""
 
 
