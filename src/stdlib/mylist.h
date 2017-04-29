@@ -62,7 +62,7 @@ void traverseList(struct List *list, void (*f)(void *));
 
 
 
-void* access(struct List *list, int n);
+void* accessL(struct List *list, int n);
 
 /*
  * Traverse the list, comparing each data item with 'dataSought' using

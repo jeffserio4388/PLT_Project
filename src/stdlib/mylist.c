@@ -30,7 +30,7 @@ void traverseList(struct List *list, void (*f)(void *))
 
 
 
-void* access(struct List *list, int n)
+void* accessL(struct List *list, int n)
 {
     struct Node *node = list->head;
     int i = 0;

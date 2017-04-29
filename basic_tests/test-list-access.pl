@@ -1,5 +1,6 @@
 int a [];
-int b = 1;
+int b = 5;
 int c;
-addfront(a,b);
+Addfront(a,b);
 c = a[0];
+print_int(c);
