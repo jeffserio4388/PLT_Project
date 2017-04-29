@@ -47,11 +47,6 @@ rule token = parse
 | "string"		        { STRING }
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
-| "struct"              { STRUCT }
-| "list"                { LIST }
-| "addLeft"		        { ADDLEFT }
-| "addRight"		    { ADDLEFT }
-| "findNode"		    { FINDNODE }
 | "listen"		        { LISTEN }
 | "httpGet" 		    { HTTPGET }
 | "httpPut" 		    { HTTPPUT }
