@@ -6,7 +6,7 @@ if len(sys.argv)>1:
 	testFiles = sys.argv[1:]
 else:
 	#Get all the files in the tests dir
-	testFiles = os.listdir('../tests/')
+	testFiles = os.listdir('../basic_tests/')
 	testFiles = [ x for x in testFiles if ( x[-2:]=='pl' and x[:4]=='test')]
 
 nof = len(testFiles)
@@ -22,10 +22,10 @@ for file in testFiles:
 	print file
 
 	#For each test file perform the test. And print pass or failure
-	runStr = './pipeline -d ../tests/' + file
+	runStr = './pipeline -d ../basic_tests/' + file
 
 	diff_file = file[:-2]+'diff'
-	string = '../tests/'+diff_file
+	string = '../basic_tests/'+diff_file
 	print string
 	#print 'Running for file : '+file +'\n'
 
