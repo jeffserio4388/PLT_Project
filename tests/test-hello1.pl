@@ -5,7 +5,7 @@ void world() {
 printf("above\n");
 
 pipe world {
-    world);
+    world();
 }
 
 pipe hello {
