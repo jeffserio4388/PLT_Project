@@ -23,6 +23,10 @@ type expr =
     | Assign of string * expr
     | Call of string * expr list
     | Access of string * int
+    | Addleft of string * expr
+    | Addright of string * expr
+    | Popleft of string
+    | Popright of string
     | Noexpr
 
 type stmt =
@@ -107,7 +111,10 @@ let rec string_of_expr = function
     | Noexpr ->             ""
     | FloatLit(l) ->           string_of_float l 
     | Access(l,n) ->        "element" ^ string_of_int n ^ "of list" ^ l
-
+    | Addleft(l,e) ->       "add" ^ string_of_expr e ^ " to the left of list" ^ l 
+    | Addright(l,e) ->      "add" ^ string_of_expr e ^ " to the right of list" ^ l
+    | Popleft(n) ->         "popleft of " ^ n
+    | Popright(n)->         "popright of " ^ n
 let rec string_of_stmt = function
     Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) ->           string_of_expr expr ^ ";\n";
