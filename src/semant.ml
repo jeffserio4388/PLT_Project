@@ -1,7 +1,102 @@
 (* Semantic checking for the MicroC compiler *)
 
 open Ast
+
 module StringMap = Map.Make(String)
+
+module StringSet = Set.Make(String)
+
+type env = 
+    {
+        env_name        : string;
+        env_funcs       : func_decl StringMap.t;
+        env_structs     : struct_decl StringMap.t;
+        env_pipes       : pipe_decl StringMap.t;
+        env_locals      : typ StringMap.t;
+        env_parameters  : typ StringMap.t;
+        env_globals     : typ StringMap.t;
+        env_in_block    : bool;
+        env_reserved    : func_decl StringMap.t;
+    }
+
+let reserved_funcs = 
+    StringMap.add "print_str" {
+        typ = Void;
+        fname = "print_str";
+        formals = [(MyString, "x")];
+        body = [];
+        }(
+    StringMap.add "print_int" {
+            typ     = Void;
+            fname   = "print_int";
+            formals = [(Int, "x")];
+            body    = [];
+        }(
+    StringMap.add "print_float" {
+            typ     = Void;
+            fname   = "print_float";
+            formals = [(Float, "x")];
+            body    = [];
+        }(
+    StringMap.add "print_bool" {
+            typ     = Void;
+            fname   = "print_bool";
+            formals = [(Bool, "x")];
+            body    = [];
+        }(
+    StringMap.add "addLeft" {
+            typ     = Void;
+            fname   = "addLeft";
+            formals = [(List, "x")];
+            body = [];
+        }(
+    StringMap.add "addRight" {
+            typ     = Void;
+            fname   = "addRight";
+            formals = [(List, "x")];
+            body = [];
+        }(
+    StringMap.add "popLeft" {
+            typ     = Void;
+            fname   = "popLeft";
+            formals = [(List, "x")];
+            body = [];
+        }(
+    StringMap.singleton "popRight" {
+            typ     = Void;
+            fname   = "popRight";
+            formals = [(List, "x")];
+            body = [];
+        }
+    )))))))
+
+let update_env_name env new_name = 
+    {
+        env_name        = new_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = reserved_funcs;
+    }
+
+let update_env_stack env in_block = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+
+
 
 (* Semantic checking of a program. Returns void if successful,
    throws an exception if something is wrong.
