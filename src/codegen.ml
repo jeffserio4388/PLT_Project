@@ -47,12 +47,17 @@ let rec string_of_expr = function
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("addLeft",e)    ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^")"
+  (*| Call("addLeft",e)    ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^")"
     | Call("addRight",e)   ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^")"
     | Call("popLeft",e)    ->"removeLeft(&"^ String.concat "," (List.map string_of_expr e)^")"
     | Call("popRight",e)   ->"removeRight(&" ^String.concat "," (List.map string_of_expr e)^")"
-    | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  *)| Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->        "*(int *)accessL(&"^ ln ^ "," ^ string_of_int n ^")"
+    | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^ string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^",(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
+                            ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
+    | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^",(void *)&TEMP_FOR_ADD_RIGHT)"
+    | Popleft(n) ->        "removeLeft(&"^n^")"
+    | Popright(n) ->       "removeRight(&"^n^")"
     | Noexpr ->             ""
 
 
@@ -77,7 +82,8 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
-  | List(t,n) -> "struct List " ^ n ^ ";\n" ^ "initList(&"^ n ^ ");\n"
+  | List(t,n) -> "struct List " ^ n ^ ";\n" ^ "initList(&"^ n ^ ");\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
+                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
@@ -181,6 +187,8 @@ let translate (globals, stmts, funcs, pipes, structs) =
 #define DEFAULT_BACKLOG 128
 
 uv_loop_t *loop;
+int TEMP_FOR_ADD_LEFT;
+int TEMP_FOR_ADD_RIGHT;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*) malloc(suggested_size);

@@ -44,6 +44,10 @@ rule token = parse
 | "void"                { VOID }
 | "true"                { TRUE }
 | "false"               { FALSE }
+| "addleft"             {ADDLEFT}
+| "addright"            {ADDRIGHT}
+| "popleft"             {POPLEFT}
+| "popright"            {POPRIGHT}
 | "string"		        { STRING }
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
