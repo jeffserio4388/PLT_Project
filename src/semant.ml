@@ -148,14 +148,10 @@ let find_var env id =
     then StringMap.find id env.env_globals
     else raise Not_found
 
-
-(* Semantic checking of a program. Returns void if successful,
-   throws an exception if something is wrong.
-
-   Check each global variable, then check each function *)
-
-let check (globals, stmts, functions, pipes, structs) =
-
+let check (globals, stmts, functions, pipes, structs) = 
+(*    if List.length stmts < 1 
+    then raise (Failure ("You must have at least 1 statement."))
+    else ();*)
   (* Raise an exception if the given list has a duplicate *)
   let report_duplicate exceptf list =
     let rec helper = function
@@ -237,6 +233,7 @@ let check (globals, stmts, functions, pipes, structs) =
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
   let find_fdecl env s = try StringMap.find s env.env_funcs
+       with Not_found -> try StringMap.find s env.env_reserved
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
@@ -261,26 +258,36 @@ let check (globals, stmts, functions, pipes, structs) =
     report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
       (List.map snd func.locals);
     *)
-    (* Type of each variable (global, formal, or local *)
+    (* Type of each variable (global, formal, or local) *)
     let symbols =  
         let global_pair  = List.map (fun (a,b,c) -> (a,b)) globals in 
         List.fold_left (fun m (t, n) -> StringMap.add n t m) 
 	StringMap.empty (global_pair @ func.formals)
     in
-
+    
     let type_of_identifier s =
       try StringMap.find s symbols
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
     in
 
+    let get_ID_typ env s =
+        print_string "in get_ID_typ\n";
+        if StringMap.mem s env.env_locals then print_string "true\n" else print_string "false\n";
+        if StringMap.mem s env.env_parameters then print_string "true" else print_string "false\n";
+        if StringMap.mem s env.env_globals then print_string "true" else print_string "false\n";
+      try find_var env s
+      with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+    in
+
     (* Return the type of an expression or throw an exception *)
-    let rec expr = function
+    let rec expr env = 
+        function
 	Literal _ -> Int
       | FloatLit _ -> Float
       | BoolLit _ -> Bool
       | MyStringLit _ -> MyString
-      | Id s -> type_of_identifier s
-      | Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
+      | Id s -> print_string "in ID"; get_ID_typ env s
+      | Binop(e1, op, e2) as e -> let t1 = expr env e1 and t2 = expr env e2 in
 	(match op with
           Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int
 	| Equal | Neq when t1 = t2 -> Bool
@@ -290,70 +297,103 @@ let check (globals, stmts, functions, pipes, structs) =
               string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
               string_of_typ t2 ^ " in " ^ string_of_expr e))
         )
-      | Unop(op, e) as ex -> let t = expr e in
+      | Unop(op, e) as ex -> let t = expr env e in
 	 (match op with
 	   Neg when t = Int -> Int
 	 | Not when t = Bool -> Bool
          | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
 	  		   string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
-      | Assign(var, e) as ex -> let lt = type_of_identifier var
-                                and rt = expr e in
+      | Assign(var, e) as ex -> let lt = get_ID_typ env var (*type_of_identifier var*)
+                                and rt = expr env e in
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 				     " = " ^ string_of_typ rt ^ " in " ^ 
 				     string_of_expr ex))
-      | Call(fname, actuals) as call -> let fd = function_decl fname in
+      | Call(fname, actuals) as call -> 
+              let fd = find_fdecl env fname (*function_decl fname*) in
          if List.length actuals != List.length fd.formals then
            raise (Failure ("expecting " ^ string_of_int
              (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
          else
-           List.iter2 (fun (ft, _) e -> let et = expr e in
+           List.iter2 (fun (ft, _) e -> let et = expr env e in
               ignore (check_assign ft et
                 (Failure ("illegal actual argument found " ^ string_of_typ et ^
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
     in
-
-    let check_bool_expr e = if expr e != Bool
+    let check_bool_expr env e = if expr env e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
      else () in
+    
+    let duplicate_env env = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+    in 
+    let curr_env = ref env
+    in
 
     (* Verify a statement or throw an exception *)
-    let rec stmt = function
-	Block sl -> let rec check_block = function
-           [Return _ as s] -> stmt s
-         | Return _ :: _ -> raise (Failure "nothing may follow a return")
-         | Block sl :: ss -> check_block (sl @ ss)
-         | s :: ss -> stmt s ; check_block ss
-         | [] -> ()
-        in check_block sl
-      | Expr e -> ignore (expr e)
-      | Return e -> let t = expr e in if t = func.typ then () else
+    let rec stmt env =        
+        function
+    	Block sl -> let rec check_block block_env old_env=
+            function
+               [Return _ as s] -> stmt block_env s
+             | Return _ :: _ -> raise (Failure "nothing may follow a return")
+             | Block sl::ss -> check_block block_env old_env (sl @ ss)
+             | s :: ss -> stmt block_env s; 
+                          check_block block_env old_env ss
+             | [] -> ignore(curr_env := old_env)
+        in 
+        let block_env = update_call_stack !curr_env true in
+        check_block block_env !curr_env sl
+
+      | Expr e -> print_string "Expr_stmt\n"; 
+                  if StringMap.mem "i" !curr_env.env_locals then print_string "true" else print_string "false";
+                  ignore(expr !curr_env e)
+      | Return e -> let t = expr !curr_env e in if t = func.typ then () else
          raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                          string_of_typ func.typ ^ " in " ^ string_of_expr e))
            
-      | If(p, b1, b2) -> check_bool_expr p; stmt b1; stmt b2
-      | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
-                               ignore (expr e3); stmt st
-      | While(p, s) -> check_bool_expr p; stmt s
-      | Local(t,n,e) -> ignore(expr e)
+      | If(p, b1, b2) -> let block_env = update_call_stack !curr_env true in
+                        check_bool_expr block_env p; 
+                        stmt block_env b1; 
+                        stmt block_env b2
+      | For(e1, e2, e3, st) -> let block_env = update_call_stack env true in
+                               ignore (expr !curr_env e1); 
+                               check_bool_expr !curr_env e2;
+                               ignore (expr !curr_env e3); stmt block_env st
+      | While(p, s) -> let block_env = update_call_stack !curr_env true in
+                                       check_bool_expr !curr_env p;
+                                       stmt block_env s
+      | Local(t,id,e) -> print_string "in local\n";
+                         curr_env := update_locals !curr_env t id;
+                         if StringMap.mem id !curr_env.env_locals
+                         then print_string "true\n" else print_string "false\n";
+                         ignore(expr !curr_env e)
       (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
                                  ignore(expr e3)
       *)
-      | Http_put(e1, e2) -> ignore(expr e1); ignore(expr e2)
-      | Http_get(e1, e2) -> ignore(expr e1); ignore(expr e2)
-      | Http_post(e1, e2) -> ignore(expr e1); ignore(expr e2)
-      | Http_delete(e1, e2) -> ignore(expr e1); ignore(expr e2)
+      | Http_put(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
+      | Http_get(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
+      | Http_post(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
+      | Http_delete(e1, e2) -> expr !curr_env e1; ignore(expr env e2)
       (*| Int_list_decl(_,_) -> ()
       | Str_list_decl(_,_) -> ()*)
-      | List(t,n) -> ()
+      | List(t,id) -> ignore(update_locals !curr_env t id)
     in
-
-    stmt (Block func.body)
-   
+    stmt env (Block func.body)
   in
   let main = 
       {
