@@ -80,10 +80,23 @@ let update_env_name env new_name =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
-        env_reserved    = reserved_funcs;
+        env_reserved    = env.env_reserved;
     }
 
-let update_env_stack env in_block = 
+let update_call_stack env in_block = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = in_block;
+        env_reserved    = env.env_reserved;
+    }
+
+let update_globals env global_map = 
     {
         env_name        = env.env_name;
         env_funcs       = env.env_funcs;
@@ -96,6 +109,44 @@ let update_env_stack env in_block =
         env_reserved    = env.env_reserved;
     }
 
+let update_locals env typ_t id_t = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = StringMap.add id_t typ_t env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+
+let update_formals env formals = 
+    let formal_map = List.fold_left 
+                         (fun map (t, id) -> StringMap.add id t map)
+                             StringMap.empty formals
+    in
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = formal_map;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+
+let find_var env id = 
+    if StringMap.mem id env.env_parameters 
+    then StringMap.find id env.env_parameters
+    else if StringMap.mem id env.env_locals 
+    then StringMap.find id env.env_locals
+    else if StringMap.mem id env.env_globals
+    then StringMap.find id env.env_globals
+    else raise Not_found
 
 
 (* Semantic checking of a program. Returns void if successful,
@@ -136,8 +187,10 @@ let check (globals, stmts, functions, pipes, structs) =
    
   report_duplicate (fun n -> "duplicate global " ^ n) (List.map (fun (a,b,c) -> b ) globals);
 
+
   (**** Checking Functions ****)
 
+  
   if List.mem "print" (List.map (fun fd -> fd.fname) functions)
   then raise (Failure ("function print may not be defined")) else ();
 
@@ -157,14 +210,41 @@ let check (globals, stmts, functions, pipes, structs) =
   let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
                          built_in_decls functions
   in
+   
+    let init_env = 
+        let fdecls = List.fold_left 
+                            (fun m fd -> StringMap.add fd.fname fd m) 
+                                StringMap.empty functions
+        in
+        let global_map = List.fold_left
+                         (fun map (t, id, _) -> StringMap.add id t map)
+                            StringMap.empty globals
+        in
+        {
+            env_name        = "global";
+            env_funcs       = fdecls;
+            env_structs     = StringMap.empty;
+            env_pipes       = StringMap.empty;
+            env_locals      = StringMap.empty;
+            env_parameters  = StringMap.empty;
+            env_globals     = global_map;
+            env_in_block    = false;
+            env_reserved    = reserved_funcs;
+        }
+    in
 
   let function_decl s = try StringMap.find s function_decls
+       with Not_found -> raise (Failure ("unrecognized function " ^ s))
+  in
+  let find_fdecl env s = try StringMap.find s env.env_funcs
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
   (*let _ = function_decl "main" in (* Ensure "main" is defined *)*)
 
-  let check_function func =
+  let check_function env func =
+      let old_env = env in
+      let cur_env = (fun e -> update_formals e func.formals) (update_call_stack env false) in
 
     List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^
       " in " ^ func.fname)) func.formals;
@@ -275,4 +355,12 @@ let check (globals, stmts, functions, pipes, structs) =
     stmt (Block func.body)
    
   in
-  List.iter check_function functions
+  let main = 
+      {
+          typ = Int;
+          fname = "main";
+          formals = [(Int, "argc"); (List, "argv")];
+          body = stmts;
+      }
+  in
+  List.iter (fun f -> check_function init_env f) (functions @ [main])
