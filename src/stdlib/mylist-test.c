@@ -38,7 +38,7 @@ int main()
     printf("\n");
     // test access()
     double * k; 
-    k = (double*)access(&list,3);
+    k = (double*)accessL(&list,3);
     printf("%f\n",*k);
     // test flipSignDouble()
     printf("testing flipSignDouble(): ");
