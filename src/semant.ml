@@ -19,6 +19,7 @@ type env =
         env_reserved    : func_decl StringMap.t;
     }
 
+(* Makes a list of fdecls for all reserved functions *)
 let reserved_funcs = 
     StringMap.add "print_str" {
         typ = Void;
@@ -153,6 +154,9 @@ let check (globals, stmts, functions, pipes, structs) =
     then raise (Failure ("You must have at least 1 statement."))
     else ();*)
   (* Raise an exception if the given list has a duplicate *)
+  let stmt_strings = List.fold_left (fun l s -> string_of_stmt (s) :: l) ["*********\n"] stmts in
+  print_string "\n************\n";
+  List.iter print_string stmt_strings;
   let report_duplicate exceptf list =
     let rec helper = function
 	n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
@@ -206,8 +210,16 @@ let check (globals, stmts, functions, pipes, structs) =
   let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
                          built_in_decls functions
   in
+    let main = 
+          {
+              typ = Int;
+              fname = "main";
+              formals = [(Int, "argc"); (List, "argv")];
+              body = stmts;
+          }
+    in
    
-    let init_env = 
+    let init_env name = 
         let fdecls = List.fold_left 
                             (fun m fd -> StringMap.add fd.fname fd m) 
                                 StringMap.empty functions
@@ -217,7 +229,7 @@ let check (globals, stmts, functions, pipes, structs) =
                             StringMap.empty globals
         in
         {
-            env_name        = "global";
+            env_name        = name;
             env_funcs       = fdecls;
             env_structs     = StringMap.empty;
             env_pipes       = StringMap.empty;
@@ -277,6 +289,13 @@ let check (globals, stmts, functions, pipes, structs) =
         if StringMap.mem s env.env_globals then print_string "true" else print_string "false\n";
       try find_var env s
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+    in
+
+    let is_defined env s =
+        if StringMap.mem s env.env_parameters then true
+        else if StringMap.mem s env.env_locals then true
+        else if StringMap.mem s env.env_globals then true
+        else false
     in
 
     (* Return the type of an expression or throw an exception *)
@@ -342,7 +361,8 @@ let check (globals, stmts, functions, pipes, structs) =
     in 
     let curr_env = ref env
     in
-
+(*    let check_dup_var env s = if StringMap.find *)
+    
     (* Verify a statement or throw an exception *)
     let rec stmt env =        
         function
@@ -376,32 +396,42 @@ let check (globals, stmts, functions, pipes, structs) =
       | While(p, s) -> let block_env = update_call_stack !curr_env true in
                                        check_bool_expr !curr_env p;
                                        stmt block_env s
-      | Local(t,id,e) -> print_string "in local\n";
-                         curr_env := update_locals !curr_env t id;
-                         if StringMap.mem id !curr_env.env_locals
-                         then print_string "true\n" else print_string "false\n";
-                         ignore(expr !curr_env e)
+      | Local(t,id,e) -> if is_defined !curr_env id then raise 
+                                    (Failure("variable "^ id ^ " is a duplicate in scope "
+                                     ^ env.env_name ^ "."))
+                         else
+                            print_string "in local\n";
+                             curr_env := update_locals !curr_env t id;
+                             if StringMap.mem id !curr_env.env_locals
+                             then print_string "true\n" else print_string "false\n";
+                             ignore(expr !curr_env e)
       (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
                                  ignore(expr e3)
       *)
-      | Http_put(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
-      | Http_get(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
-      | Http_post(e1, e2) -> expr !curr_env e1; ignore(expr !curr_env e2)
-      | Http_delete(e1, e2) -> expr !curr_env e1; ignore(expr env e2)
+      | Http_put(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
+      | Http_get(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
+      | Http_post(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
+      | Http_delete(e1, e2) -> ignore(expr !curr_env e1); ignore(expr env e2)
       (*| Int_list_decl(_,_) -> ()
       | Str_list_decl(_,_) -> ()*)
       | List(t,id) -> ignore(update_locals !curr_env t id)
     in
     stmt env (Block func.body)
   in
-  let main = 
+  let pdecl_to_fdecl p =
       {
-          typ = Int;
-          fname = "main";
-          formals = [(Int, "argc"); (List, "argv")];
-          body = stmts;
+          typ = Void;
+          fname = p.pname;
+          formals = [];
+          body = p.body;
       }
   in
-  List.iter (fun f -> check_function init_env f) (functions @ [main])
+  let pipe_list = List.fold_left (fun l p -> pdecl_to_fdecl(p) :: l) [] pipes in
+  let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: l) ["*********\n"] stmts in
+  print_string "\n************\n";
+  List.iter print_string stmt_strings;
+(*  let printme = print_string "\n\n*****************\n\n" in*)
+  List.iter (fun f -> check_function (init_env f.fname) f) (functions @ [main] @ pipe_list)
+  (* List -> check the elements in a list *)
