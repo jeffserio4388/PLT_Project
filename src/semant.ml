@@ -154,9 +154,9 @@ let check (globals, stmts, functions, pipes, structs) =
     then raise (Failure ("You must have at least 1 statement."))
     else ();*)
   (* Raise an exception if the given list has a duplicate *)
-  let stmt_strings = List.fold_left (fun l s -> string_of_stmt (s) :: l) ["*********\n"] stmts in
+  (* let stmt_strings = List.fold_left (fun l s -> string_of_stmt (s) :: l) ["*********\n"] stmts in
   print_string "\n************\n";
-  List.iter print_string stmt_strings;
+  List.iter print_string stmt_strings; *)
   let report_duplicate exceptf list =
     let rec helper = function
 	n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
@@ -283,10 +283,10 @@ let check (globals, stmts, functions, pipes, structs) =
     in
 
     let get_ID_typ env s =
-        print_string "in get_ID_typ\n";
+        (*print_string "in get_ID_typ\n"; 
         if StringMap.mem s env.env_locals then print_string "true\n" else print_string "false\n";
         if StringMap.mem s env.env_parameters then print_string "true" else print_string "false\n";
-        if StringMap.mem s env.env_globals then print_string "true" else print_string "false\n";
+        if StringMap.mem s env.env_globals then print_string "true" else print_string "false\n"; *)
       try find_var env s
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
     in
@@ -305,7 +305,7 @@ let check (globals, stmts, functions, pipes, structs) =
       | FloatLit _ -> Float
       | BoolLit _ -> Bool
       | MyStringLit _ -> MyString
-      | Id s -> print_string "in ID"; get_ID_typ env s
+      | Id s -> (*print_string "in ID";*) get_ID_typ env s
       | Binop(e1, op, e2) as e -> let t1 = expr env e1 and t2 = expr env e2 in
 	(match op with
           Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int
@@ -378,9 +378,10 @@ let check (globals, stmts, functions, pipes, structs) =
         let block_env = update_call_stack !curr_env true in
         check_block block_env !curr_env sl
 
-      | Expr e -> print_string "Expr_stmt\n"; 
-                  if StringMap.mem "i" !curr_env.env_locals then print_string "true" else print_string "false";
-                  ignore(expr !curr_env e)
+      | Expr e -> (*print_string "Expr_stmt\n"; 
+                  if StringMap.mem "i" !curr_env.env_locals 
+                  then print_string "true" else print_string "false";*)
+                  ignore(expr !curr_env e) 
       | Return e -> let t = expr !curr_env e in if t = func.typ then () else
          raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                          string_of_typ func.typ ^ " in " ^ string_of_expr e))
@@ -400,10 +401,10 @@ let check (globals, stmts, functions, pipes, structs) =
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else
-                            print_string "in local\n";
+                            (*print_string "in local\n";*)
                              curr_env := update_locals !curr_env t id;
-                             if StringMap.mem id !curr_env.env_locals
-                             then print_string "true\n" else print_string "false\n";
+                             (*if StringMap.mem id !curr_env.env_locals
+                             then print_string "true\n" else print_string "false\n";*)
                              ignore(expr !curr_env e)
       (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
@@ -429,9 +430,11 @@ let check (globals, stmts, functions, pipes, structs) =
       }
   in
   let pipe_list = List.fold_left (fun l p -> pdecl_to_fdecl(p) :: l) [] pipes in
+  (*
   let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: l) ["*********\n"] stmts in
   print_string "\n************\n";
   List.iter print_string stmt_strings;
+  *)
 (*  let printme = print_string "\n\n*****************\n\n" in*)
   List.iter (fun f -> check_function (init_env f.fname) f) (functions @ [main] @ pipe_list)
   (* List -> check the elements in a list *)
