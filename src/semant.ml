@@ -1,4 +1,10 @@
-(* Semantic checking for the MicroC compiler *)
+(* Semantic checker for the Pipeline language *)
+(* TODO:
+ *      Struct checking
+ *      List checking
+ *      Figure how to check them as types in typ
+ *      Listen, Http stuff
+ * *)
 
 open Ast
 
@@ -411,13 +417,25 @@ let check (globals, stmts, functions, pipes, structs) =
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
                                  ignore(expr e3)
       *)
-      | Http_put(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_get(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_post(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_delete(e1, e2) -> ignore(expr !curr_env e1); ignore(expr env e2)
+     (* | Http(e1, e2, e3) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
+      | Http(e1, e2, e3) -> let t1 = expr !curr_env e1 
+                            and t2 = expr !curr_env e2
+                            and t3 = expr !curr_env e3
+                            in
+                (match (t1, t3, t3) with
+                    (MyString, MyString, MyString) -> ()
+     *)
+                    
       (*| Int_list_decl(_,_) -> ()
       | Str_list_decl(_,_) -> ()*)
       | List(t,id) -> ignore(update_locals !curr_env t id)
+      (* listen takes a string and int -> check if positive and under max
+       * http takes e1) string -> http method 'get' post' 'put' 'delete'
+       *            e2) route -> string start with the "/"
+       *            e3) string and translate to a func pointer -> name of a function
+       * 
+       * 
+       * *)
     in
     stmt env (Block func.body)
   in
