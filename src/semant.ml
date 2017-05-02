@@ -1,4 +1,10 @@
-(* Semantic checking for the MicroC compiler *)
+(* Semantic checker for the Pipeline language *)
+(* TODO:
+ *      Struct checking
+ *      List checking
+ *      Figure how to check them as types in typ
+ *      Listen, Http stuff
+ * *)
 
 open Ast
 
@@ -300,21 +306,37 @@ let check (globals, stmts, functions, pipes, structs) =
 
     (* Return the type of an expression or throw an exception *)
     let rec expr env = 
+        let match_helper (t1,t2) = 
+            match (t1,t2) with
+            (Int, Int) -> Int
+            | (Float, Float) -> Float
+            | (Int, Float) -> Float
+            | (Float, Int) -> Float
+        in
         function
 	Literal _ -> Int
       | FloatLit _ -> Float
       | BoolLit _ -> Bool
       | MyStringLit _ -> MyString
       | Id s -> (*print_string "in ID";*) get_ID_typ env s
-      | Binop(e1, op, e2) as e -> let t1 = expr env e1 and t2 = expr env e2 in
-	(match op with
-          Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int
-	| Equal | Neq when t1 = t2 -> Bool
-	| Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
-	| And | Or when t1 = Bool && t2 = Bool -> Bool
+      | Binop(e1, op, e2) as e -> 
+              let t1 = expr env e1 and t2 = expr env e2 in
+    	(match op with
+(*          Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int*)
+        | Add -> if t1 = MyString && t2 = MyString then MyString
+                 else match_helper (t1,t2) 
+                (*if t1 = Int && t2 = Int then Int
+                 else if (t1 = Int || t1 = Float) && (t2 = Int || t2 = Float) then Float
+                 else raise Not_found*)
+        | Sub -> match_helper (t1,t2)
+        | Mult -> match_helper (t1,t2)
+        | Div -> match_helper (t1,t2)
+    	| Equal | Neq when t1 = t2 -> Bool
+	    | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
+    	| And | Or when t1 = Bool && t2 = Bool -> Bool
         | _ -> raise (Failure ("illegal binary operator " ^
-              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
-              string_of_typ t2 ^ " in " ^ string_of_expr e))
+                      string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                      string_of_typ t2 ^ " in " ^ string_of_expr e))
         )
       | Unop(op, e) as ex -> let t = expr env e in
 	 (match op with
@@ -411,13 +433,25 @@ let check (globals, stmts, functions, pipes, structs) =
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
                                  ignore(expr e3)
       *)
-      | Http_put(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_get(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_post(e1, e2) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
-      | Http_delete(e1, e2) -> ignore(expr !curr_env e1); ignore(expr env e2)
+     (* | Http(e1, e2, e3) -> ignore(expr !curr_env e1); ignore(expr !curr_env e2)
+      | Http(e1, e2, e3) -> let t1 = expr !curr_env e1 
+                            and t2 = expr !curr_env e2
+                            and t3 = expr !curr_env e3
+                            in
+                (match (t1, t3, t3) with
+                    (MyString, MyString, MyString) -> ()
+     *)
+                    
       (*| Int_list_decl(_,_) -> ()
       | Str_list_decl(_,_) -> ()*)
       | List(t,id) -> ignore(update_locals !curr_env t id)
+      (* listen takes a string and int -> check if positive and under max
+       * http takes e1) string -> http method 'get' post' 'put' 'delete'
+       *            e2) route -> string start with the "/"
+       *            e3) string and translate to a func pointer -> name of a function
+       * 
+       * 
+       * *)
     in
     stmt env (Block func.body)
   in

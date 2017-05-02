@@ -149,7 +149,7 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
 }\n"
 
 let string_of_pdecl_no_listen pdecl = 
-    "int 3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
+    "int " ^ pdecl.pname ^ ";\n" ^ 
     String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
  

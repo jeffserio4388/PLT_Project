@@ -9,12 +9,12 @@ pipe {
 
 }
 function void foo() {
-    int i;
-    bool j;
-    i = i + 1;
-    j = true;
+    int i; 
+    float j = 1.0 + 2.222;
+    float ij = i + j;
     string k;
     k = "abcd";
+    string ka = k + "1234";
     for( i = 0; i < 2; i = i + 1){
         int temp = 0;
         temp = temp + 1;
