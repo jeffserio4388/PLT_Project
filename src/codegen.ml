@@ -47,6 +47,7 @@ let rec string_of_expr = function
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")" 
   (*| Call("addLeft",e)    ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^")"
     | Call("addRight",e)   ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^")"
     | Call("popLeft",e)    ->"removeLeft(&"^ String.concat "," (List.map string_of_expr e)^")"
