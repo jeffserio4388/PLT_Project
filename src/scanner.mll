@@ -60,10 +60,7 @@ rule token = parse
 | "pipe"                { PIPE }
 | "function"            { FUNCTION }
 | "listen"		        { LISTEN }
-| "httpGet" 		    { HTTPGET }
-| "httpPut" 		    { HTTPPUT }
-| "httpPost" 		    { HTTPPOST }
-| "httpDelete" 		    { HTTPDELETE}
+| "http" 		    { HTTP }
 | "global"              { GLOBAL }
 | "File"                { FILE }
 | "struct"              { STRUCT }
