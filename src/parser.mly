@@ -70,9 +70,9 @@ LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI http_list
 http:
     HTTP LPAREN STR_LIT COMMA STR_LIT COMMA STR_LIT RPAREN SEMI    
     {{ 
-        arg1 = $3; 
-        arg2 = $5;
-        arg3 = $7;
+        httpArg1 = $3; 
+        httpArg2 = $5;
+        httpArg3 = $7;
     }}
 
 http_list:

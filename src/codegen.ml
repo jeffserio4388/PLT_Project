@@ -85,7 +85,6 @@ let rec string_of_stmt = function
   | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
-  | Http (e1, e2, e3) -> "http"
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
@@ -100,7 +99,7 @@ let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
 
-let string_of_http http = "if (strcmp(" ^ http.arg1^ http.arg2 ^", userVariable)) {"^ String.sub http.arg3 1 (String.length(http.arg3)-2) ^ "(result);} else"
+let string_of_http http = "if (strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) {"^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "(result);} else"
 
 let construct_routing http_list = 
       String.concat "\n    " (List.map string_of_http http_list)

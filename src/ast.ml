@@ -48,9 +48,9 @@ type stmt =
 type var_init = typ * string * expr
 
 type http = {
-    arg1 : string;
-    arg2 : string;
-    arg3 : string;
+    httpArg1 : string;
+    httpArg2 : string;
+    httpArg3 : string;
 }
 type listen = {
     arg1    : string;
@@ -235,7 +235,10 @@ let string_of_pdecl pdecl =
     (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^
     "\n}"
 
-let string_of_http http = "if (strcmp(" ^ http.arg1^ http.arg2 ^", userVariable)) {"^ String.sub http.arg3 1 (String.length(http.arg3)-2) ^ "(result);} else"
+
+let string_of_http http = "if (strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) {"^ (String.sub http.httpArg3 1 (String.length(http.httpArg3)-2)) ^ "(result);} else"
+
+
 
 let construct_routing http_list = 
       String.concat "\n    " (List.map string_of_http http_list)
