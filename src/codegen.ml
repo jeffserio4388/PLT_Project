@@ -101,6 +101,7 @@ let string_of_global (t , id, e) = if e = Noexpr then
 
 let string_of_http http = "if (strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) {"^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "(result);} else"
 
+
 let construct_routing http_list = 
       String.concat "\n    " (List.map string_of_http http_list)
 
@@ -110,24 +111,15 @@ let string_of_pdecl_listen pdecl =
 "struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
 "uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
 
-"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
-    // fprintf(stderr, \"%s\", req->data);
-    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
-} 
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req){ "^
+construct_routing (List.hd pdecl.listen).arg3 ^ 
+" if {//FILL UP THE ELSE} }
 
-    void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
-        if (nread > 0) {
-            req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
-            uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
-            return;
-        }
-        if (nread < 0) {
-            if (nread != UV_EOF)
-                fprintf(stderr, \"Read error %s\", uv_err_name(nread));
-            uv_close((uv_handle_t*) client, NULL);
-        }
-
-        // free(buf->base);
+void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
+    if (nread > 0) {
+        req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
+        uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
+        return;
     }
 
     void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
@@ -173,11 +165,14 @@ let string_of_pdecl_no_listen pdecl =
     "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
     String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
-    let string_of_pdecl pdecl = 
-        (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
-        "void work_" ^ pdecl.pname ^
-        "(uv_work_t *req) {    " ^ 
-        (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
+ 
+let string_of_pdecl pdecl = 
+    (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
+    "void work_" ^ pdecl.pname ^
+
+    "(uv_work_t *req) {    " ^ 
+    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
+     String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ 
     "\n}"
  
 
