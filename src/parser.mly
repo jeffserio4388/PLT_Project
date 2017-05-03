@@ -76,8 +76,8 @@ http:
     }}
 
 http_list:
-    {[]}
-    | http_list http{[$1]}
+    /* nothing */       {[]}
+    | http_list http    { $2 :: $1}
 
 listen_opt:
     /* nothing */   { [] }
