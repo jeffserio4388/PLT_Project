@@ -7,19 +7,21 @@
 #define DEFAULT_PORT 7000
 #define DEFAULT_BACKLOG 128
 
-
-char *dat = 
+char *header = 
 "HTTP/1.0 200 OK\n"
 "Date: Fri, 31 Dec 1999 23:59:59 GMT\n"
-"Content-Type: text/html\n"
-"Content-Length: 1354\n"
-"\n"
-"<html>\n"
-"<body>\n"
-"<h1>Happy New Millennium!</h1>\n"
-"(more file contents)\n"
-"</body>\n"
-"</html>\n";
+"\n";
+
+char *makeHTTP(char *body) {
+    int headerLength = strlen(header);
+	int bodyLength = strlen(body);
+    char *httpResult = (char*) malloc(headerLength + bodyLength + 1);
+    strcpy(httpResult, header);
+    strcat(httpResult, body);
+
+    return httpResult;
+}
+
 
 struct Backpack {
     uv_stream_t *client;
@@ -82,7 +84,8 @@ void post_listen_server2(uv_work_t *req) {
     */
 	
 	write_req_t *req_send = (write_req_t*) malloc(sizeof(write_req_t));
-	req_send->buf = uv_buf_init(dat, strlen(dat));
+    char *result = makeHTTP("hello this is the body");
+	req_send->buf = uv_buf_init(result, strlen(result));
 	// fprintf(stderr, "buf base: %s\n", req->buf.base);
 	// fprintf(stderr, "buf len: %d\n", req->buf.len);
 	uv_write((uv_write_t*) req_send, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
