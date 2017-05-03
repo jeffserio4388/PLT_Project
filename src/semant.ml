@@ -51,6 +51,36 @@ let reserved_funcs =
             formals = [(Bool, "x")];
             body    = [];
         }(
+    StringMap.add "open" {
+            typ     = File;
+            fname   = "open";
+            formals = [(MyString, "file_name"), (MyString, "mode")];
+            body = [];
+        }(
+    StringMap.add "open_file" {
+            typ     = File;
+            fname   = "fclose";
+            formals = [(File , "file_object")];
+            body = [];
+        }( (*
+    StringMap.add "writeln" {
+            typ     = int;
+            fname   = "close";
+            formals = [(MyString, "input_string"), (File , "file_object")];
+            body = [];
+        }(
+    StringMap.add "readln" {
+            typ     = MyString;
+            fname   = "fclose";
+            formals = [(File , "file_object")];
+            body = [];
+        }(
+    StringMap.add "write_str" {
+            typ     = Void;
+            fname   = "write_str";
+            formals = [(File, "file_object"), (MyString,"string")];
+            body    = [];
+        }( *)
     StringMap.add "addLeft" {
             typ     = Void;
             fname   = "addLeft";
@@ -75,7 +105,7 @@ let reserved_funcs =
             formals = [(List, "x")];
             body = [];
         }
-    )))))))
+    )))))))))
 
 let update_env_name env new_name = 
     {
