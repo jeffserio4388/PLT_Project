@@ -144,6 +144,7 @@ let string_of_typ = function
     | Void -> "void"
     | MyString -> "string"
     | Float -> "float"
+    | File -> "file"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
