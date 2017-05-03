@@ -156,9 +156,16 @@ let string_of_pdecl_listen pdecl =
         }
     }\n"
 
-    let string_of_pdecl_no_listen pdecl = 
-        "int _" ^ pdecl.pname ^ ";\n" ^ 
-        String.concat "\n    " (List.map string_of_stmt pdecl.body)
+    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
+    int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
+    if (r) {
+        fprintf(stderr, \"Listen error %s\", uv_strerror(r));
+    }
+}\n"
+
+let string_of_pdecl_no_listen pdecl = 
+    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
+    String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
     let string_of_pdecl pdecl = 
         (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^

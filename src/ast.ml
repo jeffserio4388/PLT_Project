@@ -40,7 +40,6 @@ type stmt =
     | Add_left of expr * expr
     | Add_right of expr * expr
     | Find_node of expr * expr * expr
-    | Http of string * string * expr
     | For of expr * expr * expr * stmt
     | While of expr * stmt
     | Local of typ * string * expr
@@ -48,9 +47,15 @@ type stmt =
 
 type var_init = typ * string * expr
 
+type http = {
+    arg1 : string;
+    arg2 : string;
+    arg3 : string;
+}
 type listen = {
     arg1    : string;
     arg2    : int;
+    arg3    : http list;
 }
 
 
@@ -227,8 +232,13 @@ let string_of_pdecl pdecl =
     (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
     "void work_" ^ pdecl.pname ^
     "(uv_work_t *req) {    " ^ 
-    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
+    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^
     "\n}"
+
+let string_of_http http = "if (strcmp(" ^ http.arg1^ http.arg2 ^", userVariable)) {"^ String.sub http.arg3 1 (String.length(http.arg3)-2) ^ "(result);} else"
+
+let construct_routing http_list = 
+      String.concat "\n    " (List.map string_of_http http_list)
 
 
 let string_of_pdecl_main pdecl = 
