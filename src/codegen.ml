@@ -99,6 +99,13 @@ let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^";\n" else
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
+
+let string_of_http http = "if (strcmp(" ^ http.arg1^ http.arg2 ^", userVariable)) {"^ String.sub http.arg3 1 (String.length(http.arg3)-2) ^ "(result);} else"
+
+let construct_routing http_list = 
+      String.concat "\n    " (List.map string_of_http http_list)
+
+
 let string_of_pdecl_listen pdecl = 
 "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
 "struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
