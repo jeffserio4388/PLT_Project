@@ -17,6 +17,28 @@ struct List {
     struct Node *head;
 };
 
+struct int_list{
+    struct List list;
+    int (*cast)(void*);
+};
+
+struct float_list{
+    struct List list;
+    float (*cast)(void*);
+
+};
+
+struct string_list{
+    struct List list;
+    char *(*cast)(void*);
+};
+
+struct bool_list{
+    struct List list;
+    int (*cast)(void *);
+};
+
+
 /*
  * Initialize an empty list.  
  */

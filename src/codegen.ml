@@ -53,12 +53,12 @@ let rec string_of_expr = function
     | Call("popLeft",e)    ->"removeLeft(&"^ String.concat "," (List.map string_of_expr e)^")"
     | Call("popRight",e)   ->"removeRight(&" ^String.concat "," (List.map string_of_expr e)^")"
   *)| Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
-    | Access(ln,n) ->        "*(int *)accessL(&"^ ln ^ "," ^ string_of_int n ^")"
-    | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^ string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^",(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
+    | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
+    | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^ string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
                             ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
-    | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^",(void *)&TEMP_FOR_ADD_RIGHT)"
-    | Popleft(n) ->        "removeLeft(&"^n^")"
-    | Popright(n) ->       "removeRight(&"^n^")"
+    | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)&TEMP_FOR_ADD_RIGHT)"
+    | Popleft(n) ->        "removeLeft(&"^n^".list)"
+    | Popright(n) ->       "removeRight(&"^n^".list)"
     | Noexpr ->             ""
 
 
@@ -83,8 +83,8 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
-  | List(t,n) -> "struct List " ^ n ^ ";\n" ^ "initList(&"^ n ^ ");\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
-                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];"
+  | List(t,n) -> "struct "^string_of_typ t^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
+                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^string_of_typ t^"_cast;"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
@@ -190,6 +190,19 @@ let translate (globals, stmts, funcs, pipes, structs) =
 uv_loop_t *loop;
 int TEMP_FOR_ADD_LEFT;
 int TEMP_FOR_ADD_RIGHT;
+
+int int_cast(void* data){
+    return *(int *)data;
+}
+
+float float_cast(void *data){
+    return *(float*)data;
+}
+
+char * string_cast(void* data){
+    return *(char **)data;
+}
+
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*) malloc(suggested_size);
