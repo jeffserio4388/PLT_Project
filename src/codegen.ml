@@ -33,6 +33,7 @@ let string_of_typ = function
     | Bool -> "int"
     | Void -> "void"
     | MyString -> "char *"
+    | File -> "FILE *"
 
 let rec string_of_expr = function
       Literal(l) ->         string_of_int l
