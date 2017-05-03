@@ -54,7 +54,7 @@ let reserved_funcs =
     StringMap.add "open" {
             typ     = File;
             fname   = "open";
-            formals = [(MyString, "file_name"), (MyString, "mode")];
+            formals = [(MyString, "file_name"); (MyString, "mode")];
             body = [];
         }(
     StringMap.add "open_file" {
@@ -78,7 +78,7 @@ let reserved_funcs =
     StringMap.add "write_str" {
             typ     = Void;
             fname   = "write_str";
-            formals = [(File, "file_object"), (MyString,"string")];
+            formals = [(File, "file_object"); (MyString,"string")];
             body    = [];
         }( *)
     StringMap.add "addLeft" {
