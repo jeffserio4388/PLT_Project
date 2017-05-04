@@ -11,8 +11,8 @@
     let pipe_name = ref 0;;
 %}
 
-	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE
-	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
+	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
+	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
@@ -32,6 +32,7 @@
 	%left LT GT LEQ GEQ
 	%left PLUS MINUS
 	%left TIMES DIVIDE
+    %left DOT
 	%right NOT NEG
 
 	%start program
@@ -183,6 +184,7 @@ LITERAL                         { Literal($1) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
 | expr OR     expr              { Binop($1, Or,    $3) }
+| ID   DOT    expr              { Binop($1, DOT, $3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
 | NOT expr                      { Unop(Not, $2) }
 | ID ASSIGN expr                { Assign($1, $3) }

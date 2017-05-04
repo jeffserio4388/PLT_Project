@@ -57,7 +57,7 @@ rule token = parse
 | "httpPost" 		    { HTTPPOST }
 | "httpDelete" 		    { HTTPDELETE}
 | "global"              { GLOBAL }
-| "file"                { FILE }
+| "File"                { FILE }
 | string_t as str       { STR_LIT(str) }
 | ['0'-'9']+ as lxm     { LITERAL(int_of_string lxm) }
 | ['0'-'9']+ ['.']['0'-'9']+ as lxm {FLOAT_LIT(float_of_string lxm)}
