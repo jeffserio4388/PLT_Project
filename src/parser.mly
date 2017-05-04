@@ -50,17 +50,8 @@ decls:
 | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
 | decls sdecl       { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1) }
 
-/*
-literal_list:
-LITERAL                         { [$1] }
-| LITERAL COMMA literal_list    { $1 :: $3 }
-
-stringlit_list:
-STR_LIT                         { [$1] }
-| STR_LIT COMMA stringlit_list    { $1 :: $3 }
-*/
 sdecl:
-STRUCT ID LBRACE vdecl_list RBRACE
+STRUCT ID LBRACE vdecl_list RBRACE SEMI
 { {
 	sname = $2;
 	vars = List.rev $4;
@@ -91,7 +82,7 @@ PIPE LBRACE listen_opt stmt_list RBRACE
 }
 
 vdecl:
-    typ ID {($1,$2)}
+    typ ID SEMI {($1,$2)}
 
 
 
