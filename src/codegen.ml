@@ -32,8 +32,8 @@ let string_of_typ = function
     | Float -> "float"
     | Bool -> "int"
     | Void -> "void"
-    | MyString -> "char *"
-    | File -> "FILE *"
+    | MyString -> "char*"
+    | File -> "FILE*"
 
 let rec string_of_expr = function
       Literal(l) ->         string_of_int l
@@ -55,7 +55,7 @@ let rec string_of_expr = function
     | Call("popRight",e)   ->"removeRight(&" ^String.concat "," (List.map string_of_expr e)^")"
   *)| Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
-    | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^ string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
+    | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
                             ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
     | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)&TEMP_FOR_ADD_RIGHT)"
     | Popleft(n) ->        "removeLeft(&"^n^".list)"
@@ -84,8 +84,8 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
-  | List(t,n) -> "struct "^string_of_typ t^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
-                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^string_of_typ t^"_cast;"
+  | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
+                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^String.sub (string_of_typ t) 0 1^"_cast;"
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
@@ -192,15 +192,15 @@ uv_loop_t *loop;
 int TEMP_FOR_ADD_LEFT;
 int TEMP_FOR_ADD_RIGHT;
 
-int int_cast(void* data){
+int i_cast(void* data){
     return *(int *)data;
 }
 
-float float_cast(void *data){
+float f_cast(void *data){
     return *(float*)data;
 }
 
-char * string_cast(void* data){
+char * c_cast(void* data){
     return *(char **)data;
 }
 

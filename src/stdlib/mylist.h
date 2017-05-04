@@ -17,18 +17,18 @@ struct List {
     struct Node *head;
 };
 
-struct int_list{
+struct i_list{
     struct List list;
     int (*cast)(void*);
 };
 
-struct float_list{
+struct f_list{
     struct List list;
     float (*cast)(void*);
 
 };
 
-struct string_list{
+struct c_list{
     struct List list;
     char *(*cast)(void*);
 };
