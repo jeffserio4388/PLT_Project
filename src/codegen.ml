@@ -21,6 +21,7 @@ let string_of_op = function
     | Geq -> ">="
     | And -> "&&"
     | Or -> "||"
+    | Dot -> "."
 
 
 let string_of_uop = function
@@ -42,7 +43,7 @@ let rec string_of_expr = function
     | BoolLit(true) ->      "1"
     | BoolLit(false) ->     "0"
     | Id(s) ->              s
-    | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
+    | Binop(e1, o, e2) ->   string_of_expr e1 ^ "" ^ string_of_op o ^ "" ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
@@ -86,7 +87,7 @@ let rec string_of_stmt = function
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
                  ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^String.sub (string_of_typ t) 0 1^"_cast;"
-
+  | Struct(sid, vid) -> "struct " ^sid^" "^ vid^";" 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
 let string_of_global (t , id, e) = if e = Noexpr then

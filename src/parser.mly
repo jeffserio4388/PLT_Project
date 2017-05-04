@@ -13,7 +13,7 @@
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
-	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
+	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR DOT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
     %token ADDLEFT ADDRIGHT POPLEFT POPRIGHT
@@ -33,6 +33,7 @@
 	%left PLUS MINUS
 	%left TIMES DIVIDE
 	%right NOT NEG
+    %left DOT
 
 	%start program
 	%type <Ast.program> program
@@ -149,7 +150,7 @@ expr SEMI                                                     { Expr $1 }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List($1,$2)}
-
+| STRUCT ID ID SEMI                                       {Struct($2,$3)}
 
 expr_opt:
 /* nothing */ { Noexpr }
@@ -173,6 +174,7 @@ LITERAL                         { Literal($1) }
 | expr GT     expr              { Binop($1, Greater, $3) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
+| expr DOT    expr              { Binop($1, Dot,   $3) } 
 | expr OR     expr              { Binop($1, Or,    $3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
 | NOT expr                      { Unop(Not, $2) }

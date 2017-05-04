@@ -48,6 +48,7 @@ type stmt =
     | Str_list_decl of string * string list*)
     | Local of typ * string * expr
     | List of typ * string
+    | Struct of string * string 
 
 type var_init = typ * string * expr
 
@@ -93,6 +94,7 @@ let string_of_op = function
     | Geq -> ">="
     | And -> "&&"
     | Or -> "||"
+    | Dot -> "."
 
 let string_of_uop = function
     Neg -> "-"
