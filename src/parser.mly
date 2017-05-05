@@ -13,7 +13,7 @@
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
-	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR DOT
+	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR DOT CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
     %token ADDLEFT ADDRIGHT POPLEFT POPRIGHT
@@ -30,7 +30,7 @@
 	%left AND
 	%left EQ NEQ
 	%left LT GT LEQ GEQ
-	%left PLUS MINUS
+	%left PLUS MINUS CONCAT
 	%left TIMES DIVIDE
 	%right NOT NEG
     %left DOT
@@ -176,6 +176,7 @@ LITERAL                         { Literal($1) }
 | expr AND    expr              { Binop($1, And,   $3) }
 | expr DOT    expr              { Binop($1, Dot,   $3) } 
 | expr OR     expr              { Binop($1, Or,    $3) }
+| expr CONCAT expr              { Concat($1,$3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
 | NOT expr                      { Unop(Not, $2) }
 | ID ASSIGN expr                { Assign($1, $3) }
