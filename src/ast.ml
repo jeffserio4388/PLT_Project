@@ -27,6 +27,7 @@ type expr =
     | Addright of string * expr
     | Popleft of string
     | Popright of string
+    | Concat of expr * expr 
     | Noexpr
 
 type stmt =
@@ -34,18 +35,12 @@ type stmt =
     | Expr of expr
     | Return of expr
     | If of expr * stmt * stmt
-    (*| Add_left of expr * expr
-    | Add_right of expr * expr
-    | Find_node of expr * expr * expr
-    *)
     | Http_put of expr * expr
     | Http_get of expr * expr
     | Http_post of expr * expr
     | Http_delete of expr * expr
     | For of expr * expr * expr * stmt
     | While of expr * stmt
-   (* | Int_list_decl of string * int list
-    | Str_list_decl of string * string list*)
     | Local of typ * string * expr
     | List of typ * string
     | Struct of string * string 
@@ -117,6 +112,7 @@ let rec string_of_expr = function
     | Addright(l,e) ->      "add" ^ string_of_expr e ^ " to the right of list" ^ l
     | Popleft(n) ->         "popleft of " ^ n
     | Popright(n)->         "popright of " ^ n
+    | Concat(e1,e2)->       "concat" ^ string_of_expr e1 ^" with "^ string_of_expr e2
 let rec string_of_stmt = function
     Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) ->           string_of_expr expr ^ ";\n";

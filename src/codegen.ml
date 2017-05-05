@@ -45,6 +45,7 @@ let rec string_of_expr = function
     | Id(s) ->              s
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ "" ^ string_of_op o ^ "" ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
+    | Concat(e1,e2) ->      "strcat(" ^string_of_expr e1 ^","^ string_of_expr e2 ^")"
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
