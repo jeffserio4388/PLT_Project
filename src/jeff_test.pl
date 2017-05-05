@@ -1,17 +1,24 @@
-global int g = 1;
+
+struct A {
+    int i;
+};
 /* global bool a = true; 
 int j;
 j = 1;
 */
+global int g = 1;
 pipe {
     int j = 1;
     bool i = true;
 
 }
 function void foo() {
-    int i; 
+
+    int i;
+    /*struct A a;*/
     float j = 1.0 + 2.222;
     float ij = i + j;
+    /*a.i = 1;*/
     string k;
     k = "abcd";
     string ka = k + "1234";

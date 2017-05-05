@@ -12,11 +12,17 @@ module StringMap = Map.Make(String)
 
 module StringSet = Set.Make(String)
 
+type struct_info = 
+    {
+        info_sdecl       : struct_decl;
+        info_vars        : typ StringMap.t;
+    }
+
 type env = 
     {
         env_name        : string;
         env_funcs       : func_decl StringMap.t;
-        env_structs     : struct_decl StringMap.t;
+        env_structs     : struct_info StringMap.t;
         env_pipes       : pipe_decl StringMap.t;
         env_locals      : typ StringMap.t;
         env_parameters  : typ StringMap.t;
@@ -107,6 +113,33 @@ let reserved_funcs =
         }
     )))))))))
 
+(*    let formal_map = List.fold_left 
+                         (fun map (t, id) -> StringMap.add id t map)
+                             StringMap.empty formals*)
+
+let init_struct_info struct_decl =
+    let var_map = (* added _ for noexpr changed struct to var_init lists *) 
+        List.fold_left (fun map (t, id, _) -> StringMap.add id t map) 
+                                            StringMap.empty struct_decl.vars
+    in
+    {
+        info_sdecl           = struct_decl;
+        info_vars            = var_map;
+    }
+
+let update_env_structs env struct_info struct_name  = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = StringMap.add struct_name struct_info env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = env.env_locals;
+        env_parameters  = env.env_parameters;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+
 let update_env_name env new_name = 
     {
         env_name        = new_name;
@@ -171,6 +204,20 @@ let update_formals env formals =
         env_pipes       = env.env_pipes;
         env_locals      = env.env_locals;
         env_parameters  = formal_map;
+        env_globals     = env.env_globals;
+        env_in_block    = env.env_in_block;
+        env_reserved    = env.env_reserved;
+    }
+
+
+let update_struct_var env typ_t id_t = 
+    {
+        env_name        = env.env_name;
+        env_funcs       = env.env_funcs;
+        env_structs     = env.env_structs;
+        env_pipes       = env.env_pipes;
+        env_locals      = StringMap.add id_t typ_t env.env_locals;
+        env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
         env_reserved    = env.env_reserved;
@@ -342,7 +389,30 @@ let check (globals, stmts, functions, pipes, structs) =
             | (Float, Float) -> Float
             | (Int, Float) -> Float
             | (Float, Int) -> Float
+            | (_ , _) -> raise (Failure ("illegal binary operator " ^
+                      string_of_typ t1 ^ " +  " ^
+                      string_of_typ t2 ))
         in
+        (*
+        let check_assignable = function
+                 Literal of int
+                | FloatLit of float
+                | MyStringLit of string
+                | BoolLit of bool
+                | Id of string
+                | Binop of expr * op * expr
+                | Unop of uop * expr
+                | Assign of expr * expr
+                | Call of string * expr list
+                | Access of string * int
+                | Addleft of string * expr
+                | Addright (_,_)
+                | Popleft(_)
+                | Popright(_)
+                | StructAccess(_,_,) ->
+                | Noexpr -> false
+
+        in*)
         function
 	Literal _ -> Int
       | FloatLit _ -> Float
@@ -353,8 +423,8 @@ let check (globals, stmts, functions, pipes, structs) =
               let t1 = expr env e1 and t2 = expr env e2 in
     	(match op with
 (*          Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int*)
-        | Add -> if t1 = MyString && t2 = MyString then MyString
-                 else match_helper (t1,t2) 
+        | Add ->(* if t1 = MyString && t2 = MyString then MyString
+                 else*) match_helper (t1,t2) 
                 (*if t1 = Int && t2 = Int then Int
                  else if (t1 = Int || t1 = Float) && (t2 = Int || t2 = Float) then Float
                  else raise Not_found*)
@@ -370,12 +440,25 @@ let check (globals, stmts, functions, pipes, structs) =
         )
       | Unop(op, e) as ex -> let t = expr env e in
 	 (match op with
-	   Neg when t = Int -> Int
+       Neg -> if t = Int || t = Float 
+              then t 
+              else raise (Failure ("illegal unary operator " ^ string_of_uop op ^
+	  		   string_of_typ t ^ " in " ^ string_of_expr ex))
 	 | Not when t = Bool -> Bool
          | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
 	  		   string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
-      | Assign(var, e) as ex -> let lt = get_ID_typ env var (*type_of_identifier var*)
+      (******************************************)
+      | Assign(var, e) as ex -> (*let v = 
+                                    match var with
+                                  | StructAccess(var, e) -> true
+                                  | Access(s, n) -> true
+                                  | _ -> raise 
+                                         (Failure ("illegal assignment " ^
+                                                   "lefthand expr is not " ^
+                                                   "a valid variable"))
+                                in*)
+                                let lt = get_ID_typ env var (*type_of_identifier var*)
                                 and rt = expr env e in
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 				     " = " ^ string_of_typ rt ^ " in " ^ 
@@ -393,6 +476,7 @@ let check (globals, stmts, functions, pipes, structs) =
              fd.formals actuals;
            fd.typ
        | Access(list_name, number) -> Int(*need to check the list type*)  
+(*       | StructAcccess(struct_name, var_name) -> *)
     in
     let check_bool_expr env e = if expr env e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))

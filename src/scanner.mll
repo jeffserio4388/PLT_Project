@@ -24,6 +24,8 @@ rule token = parse
 | '*'                   { TIMES }
 | '/'                   { DIVIDE }
 | '='                   { ASSIGN }
+| '.'                   { DOT }
+(*| '^'                   { CONCAT } *)
 | "=="                  { EQ }
 | "!="                  { NEQ }
 | '<'                   { LT }
@@ -58,6 +60,7 @@ rule token = parse
 | "httpDelete" 		    { HTTPDELETE}
 | "global"              { GLOBAL }
 | "File"                { FILE }
+| "struct"              { STRUCT }
 | string_t as str       { STR_LIT(str) }
 | ['0'-'9']+ as lxm     { LITERAL(int_of_string lxm) }
 | ['0'-'9']+ ['.']['0'-'9']+ as lxm {FLOAT_LIT(float_of_string lxm)}

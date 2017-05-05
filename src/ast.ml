@@ -1,11 +1,12 @@
 (* Abstract Syntax Tree and functions for printing it *)
 
 type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq |
-          And | Or  | Dot
+          And | Or
 
 type uop = Neg | Not
 
-type typ = Int | Bool | Void | MyString | Float | List | File | Struct of string
+type typ = Int | Bool | Void | MyString | Float | List
+        | File(* | Struct of string*)
 
 type bind = typ * string  
 
@@ -27,6 +28,8 @@ type expr =
     | Addright of string * expr
     | Popleft of string
     | Popright of string
+(*    | Concat of string list *)
+    | StructAccess of expr * expr
     | Noexpr
 
 type stmt =
@@ -72,7 +75,7 @@ type func_decl = {
 
 type struct_decl = {
     sname   :   string;
-    vars    :   bind list;
+    vars    :   var_init list;
 }
 
 type program = var_init list * stmt list * func_decl list  * pipe_decl list * struct_decl list
@@ -106,6 +109,7 @@ let rec string_of_expr = function
     | Id(s) ->              s
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
+    (*| Assign(v, e) ->       string_of_expr v ^ " = " ^ string_of_expr e*)
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Noexpr ->             ""
@@ -206,7 +210,7 @@ let string_of_pdecl_no_listen pdecl =
     "int 3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
       String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
- 
+(* 
 let string_of_pdecl pdecl = 
     (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
     "void work_" ^ pdecl.pname ^
@@ -265,4 +269,4 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
-
+*)

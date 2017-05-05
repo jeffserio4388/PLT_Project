@@ -5,6 +5,8 @@
 
 open Ast
 
+module S = Semant
+
 module StringMap = Map.Make(String)
 
 
@@ -61,6 +63,7 @@ let rec string_of_expr = function
     | Popleft(n) ->        "removeLeft(&"^n^".list)"
     | Popright(n) ->       "removeRight(&"^n^".list)"
     | Noexpr ->             ""
+    | StructAccess(s, e) -> string_of_expr s ^ "." ^ string_of_expr e
 
 
 let rec string_of_stmt = function
@@ -151,7 +154,7 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
 }\n"
 
 let string_of_pdecl_no_listen pdecl = 
-    "int " ^ pdecl.pname ^ ";\n" ^ 
+    "int _" ^ pdecl.pname ^ ";\n" ^ 
     String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
  
@@ -178,7 +181,7 @@ let string_of_fdecl fdecl =
 
 let string_of_sdecl sdecl =
     "struct " ^ sdecl.sname ^ " {\n    " ^
-    String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
+    String.concat "    " (List.map string_of_global sdecl.vars) ^
     "};\n"
 
 let translate (globals, stmts, funcs, pipes, structs) =
@@ -190,9 +193,12 @@ let translate (globals, stmts, funcs, pipes, structs) =
 
 uv_loop_t *loop;
 int TEMP_FOR_ADD_LEFT;
-int TEMP_FOR_ADD_RIGHT;
+int TEMP_FOR_ADD_RIGHT;" ^
 
-int int_cast(void* data){
+    String.concat "\n" (List.map string_of_global globals) ^ "\n" ^
+    
+    String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
+"\nint int_cast(void* data){
     return *(int *)data;
 }
 
@@ -210,11 +216,8 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->len = suggested_size;
 }\n" ^
 
-    String.concat "\n" (List.map string_of_global globals) ^ "\n" ^
     
   	String.concat "\n\n" (List.map string_of_fdecl funcs) ^ "\n" ^
-	
-    String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
  
 	"void after(uv_work_t *req, int status) { }\n\n" ^
   
