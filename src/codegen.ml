@@ -51,6 +51,7 @@ let rec string_of_expr = function
     | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
     | Call("len",e)        -> "strlen(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
+    | Call("cmp",e)        -> "strcmp(" ^ String.concat ","(List.map string_of_expr e) ^ ")? 0:1"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
@@ -82,6 +83,7 @@ let rec string_of_stmt = function
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
 let string_of_formal (t,id) = string_of_typ t ^ " " ^ id
+
 let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^";\n" else
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
