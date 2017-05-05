@@ -58,7 +58,8 @@ let rec string_of_expr = function
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
                             ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
-    | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)&TEMP_FOR_ADD_RIGHT)"
+    | Addright(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
+                            ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
     | Popleft(n) ->        "removeLeft(&"^n^".list)"
     | Popright(n) ->       "removeRight(&"^n^".list)"
     | Noexpr ->             ""
@@ -90,6 +91,7 @@ let rec string_of_stmt = function
   | Struct(sid, vid) -> "struct " ^sid^" "^ vid^";" 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
+let string_of_formal (t,id) = string_of_typ t ^ " " ^ id
 let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^";\n" else
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
@@ -150,6 +152,7 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
         fprintf(stderr, \"Listen error %s\", uv_strerror(r));
     }
 }\n"
+ 
 
 let string_of_pdecl_no_listen pdecl = 
     "int " ^ pdecl.pname ^ ";\n" ^ 
@@ -172,7 +175,7 @@ let string_of_pdecl_main pdecl =
 
 let string_of_fdecl fdecl =
     string_of_typ fdecl.typ ^ " " ^
-    fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
+    fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_formal fdecl.formals) ^
     ") {\n" ^
     String.concat "    " (List.map string_of_stmt fdecl.body) ^
     "}\n"
