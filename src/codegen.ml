@@ -49,12 +49,9 @@ let rec string_of_expr = function
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")" 
-  (*| Call("addLeft",e)    ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^")"
-    | Call("addRight",e)   ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^")"
-    | Call("popLeft",e)    ->"removeLeft(&"^ String.concat "," (List.map string_of_expr e)^")"
-    | Call("popRight",e)   ->"removeRight(&" ^String.concat "," (List.map string_of_expr e)^")"
-  *)| Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
+    | Call("len",e)        -> "strlen(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
+    | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
                             ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
@@ -73,13 +70,6 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
-                                        ^ (string_of_int (List.length intlist)) ^ ", 1);"
-  | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
-                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
-  (*| Add_left(e1, e2) -> "void *a7858585765 = (void* )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
-  | Add_right(e1, e2) -> "void *a782345765 = (void* )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
-  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void* )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
   | Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
@@ -187,7 +177,7 @@ let string_of_sdecl sdecl =
 
 let translate (globals, stmts, funcs, pipes, structs) =
  
-    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
+    "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include <string.h>\n#include \"stdlib/mylist.h\"\n"^ 
 
 "#define DEFAULT_PORT 7000
 #define DEFAULT_BACKLOG 128
