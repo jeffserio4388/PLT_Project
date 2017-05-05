@@ -30,10 +30,10 @@
 	%left AND
 	%left EQ NEQ
 	%left LT GT LEQ GEQ
-	%left PLUS MINUS
+	%left PLUS MINUS CONCAT
 	%left TIMES DIVIDE
-    %left DOT
 	%right NOT NEG
+    %left DOT
 
 	%start program
 	%type <Ast.program> program
@@ -61,11 +61,11 @@ STR_LIT                         { [$1] }
 | STR_LIT COMMA stringlit_list    { $1 :: $3 }
 */
 sdecl:
-STRUCT ID LBRACE vdecl_list RBRACE
+STRUCT ID LBRACE vdecl_list RBRACE SEMI
 { {
 	sname = $2;
 	vars = List.rev $4;
-  } }
+} }
 
 
 listen:
@@ -92,7 +92,7 @@ PIPE LBRACE listen_opt stmt_list RBRACE
 }
 
 vdecl:
-    typ ID {($1,$2)}
+    typ ID SEMI {($1,$2, Noexpr)}
 
 
 
@@ -184,7 +184,9 @@ LITERAL                         { Literal($1) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
 | expr OR     expr              { Binop($1, Or,    $3) }
-| ID   DOT    expr              { Binop($1, DOT, $3) }
+| expr DOT    expr              { StructAccess($1, $3) }
+/*| ID CONCAT expr              { Binop($1, Concat, $3) }
+| STR_LIT CONCAT expr              { Binop($1, Concat, $3) }*/
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
 | NOT expr                      { Unop(Not, $2) }
 | ID ASSIGN expr                { Assign($1, $3) }
