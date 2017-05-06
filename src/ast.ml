@@ -5,7 +5,7 @@ type op = Add | Sub | Mult | Div | Equal | Neq | Less | Leq | Greater | Geq |
 
 type uop = Neg | Not
 
-type typ = Int | Bool | Void | MyString | Float | List
+type typ = Int | Bool | Void | MyString | Float | List_t of typ
         | File | Struct of string
 
 type bind = typ * string  
@@ -92,6 +92,7 @@ let string_of_op = function
     | And -> "&&"
     | Or -> "||"
     | Dot -> "."
+    
 
 let string_of_uop = function
     Neg -> "-"
@@ -138,13 +139,21 @@ let rec string_of_stmt = function
   | Http_delete (e1, e2) -> "delete"
   | Local(t,n,e) -> ""
   | List(t,e) -> ""
-
+(*
 let string_of_typ = function
     Int -> "int"
     | Bool -> "bool"
     | Void -> "void"
     | MyString -> "string"
+    | Float -> "float"*)
+let string_of_typ = function
+    Int -> "int"
     | Float -> "float"
+    | Bool -> "int"
+    | Void -> "void"
+    | MyString -> "char *"
+    | File -> "FILE *"
+    | Struct(s) -> "struct " ^ s
 
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 

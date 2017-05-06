@@ -30,7 +30,7 @@ let string_of_uop = function
     Neg -> "-"
     | Not -> "!"
 
-let string_of_typ = function
+let rec string_of_typ = function
     Int -> "int"
     | Float -> "float"
     | Bool -> "int"
@@ -38,6 +38,7 @@ let string_of_typ = function
     | MyString -> "char *"
     | File -> "FILE *"
     | Struct(s) -> "struct " ^ s
+    | List_t(s) -> string_of_typ s
 
 let rec string_of_expr = function
       Literal(l) ->         string_of_int l

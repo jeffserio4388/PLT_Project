@@ -59,12 +59,12 @@ let reserved_funcs =
             formals = [(Bool, "x")];
             body    = [];
         }(
-    StringMap.add "open_file" {
+    StringMap.singleton "open_file" {
             typ     = File;
             fname   = "fclose";
             formals = [(MyString, "file_name"); (MyString, "mode")];
             body = [];
-        }( (*
+        }(*(
     StringMap.add "writeln" {
             typ     = int;
             fname   = "close";
@@ -83,7 +83,7 @@ let reserved_funcs =
             formals = [(File, "file_object"); (MyString,"string")];
             body    = [];
         }( *)
-    StringMap.add "addLeft" {
+(*    StringMap.add "addLeft" {
             typ     = Void;
             fname   = "addLeft";
             formals = [(List, "x")];
@@ -112,8 +112,8 @@ let reserved_funcs =
             fname   = "popRight";
             formals = [(List, "x")];
             body = [];
-        }
-    )))))))))
+        }*)
+    ))))(*)))))*)
 
 (*    let formal_map = List.fold_left 
                          (fun map (t, id) -> StringMap.add id t map)
@@ -311,7 +311,7 @@ let check (globals, stmts, functions, pipes, structs) =
           {
               typ = Int;
               fname = "main";
-              formals = [(Int, "argc"); (List, "argv")];
+              formals = [(Int, "argc"); (List_t(MyString), "argv")];
               body = stmts;
           }
     in
@@ -564,6 +564,27 @@ let check (globals, stmts, functions, pipes, structs) =
                       if StringMap.mem s env.env_structs
                       then Struct(s)
                       else raise Not_found *)
+       | Addleft(s, e) ->let list_typ = get_ID_typ env s in
+                         let t2 = expr env e in
+                         let t1 = 
+                             match list_typ with
+                             List_t(t) -> t
+                            | _ -> raise (Failure ("illegal argument in addleft(" ^
+                                                   s ^", " ^ string_of_expr e ^") "^
+                                                   s ^" has type " ^ 
+                                                   string_of_typ list_typ ^ 
+                                                   " but should be of type" ^
+                                                   string_of_typ t2 ^ 
+                                                   " List."))
+                          in if t1 = t2 
+                             then list_typ
+                             else raise (Failure ("illegal argument in addleft(" ^
+                                                   s ^", " ^ string_of_expr e ^") "^
+                                                   string_of_expr e ^" has type " ^ 
+                                                   string_of_typ t2 ^ 
+                                                   " but should be of type" ^
+                                                   string_of_typ t1))
+                           
        | StructAccess(struct_name, var_name) -> print_string "in StructAccess\n";
 (*               let raise_error = 
                    raise (Failure("illegal dot operator argument found in " ^
@@ -665,10 +686,7 @@ let check (globals, stmts, functions, pipes, structs) =
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else
-                            (*print_string "in local\n";*)
                              curr_env := update_locals !curr_env t id;
-                             (*if StringMap.mem id !curr_env.env_locals
-                             then print_string "true\n" else print_string "false\n";*)
                              ignore(expr !curr_env e)
       (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
@@ -686,7 +704,13 @@ let check (globals, stmts, functions, pipes, structs) =
                     
       (*| Int_list_decl(_,_) -> ()
       | Str_list_decl(_,_) -> ()*)
-      | List(t,id) -> ignore(update_locals !curr_env t id)
+(*      | List(t,id) -> ignore(update_locals !curr_env t id)*)
+      | List(t,id) -> if is_defined !curr_env id then raise 
+                                    (Failure("variable "^ id ^ " is a duplicate in scope "
+                                     ^ env.env_name ^ "."))
+                         else
+                             curr_env := update_locals !curr_env t id(*;
+                             ignore(expr !curr_env e)*)
       (* listen takes a string and int -> check if positive and under max
        * http takes e1) string -> http method 'get' post' 'put' 'delete'
        *            e2) route -> string start with the "/"

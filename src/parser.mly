@@ -150,7 +150,7 @@ expr SEMI                                                     { Expr $1 }
 | HTTPPOST LPAREN expr COMMA expr RPAREN SEMI		      { Http_post($3, $5) }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
-| typ ID LSBRACE RSBRACE SEMI                             {List($1,$2)}
+| typ ID LSBRACE RSBRACE SEMI                             {List(List_t($1),$2)}
 /*| STRUCT ID ID SEMI                                       {Struct($2,$3)} */
 
 expr_opt:
