@@ -455,36 +455,39 @@ let check (globals, stmts, functions, pipes, structs) =
           | _ ->  raise Not_found
     in
     let rec expr env = 
-(*        let match_helper (t1,t2) = 
-            match (t1,t2) with
-            (Int, Int) -> Int
-            | (Float, Float) -> Float
-            | (Int, Float) -> Float
-            | (Float, Int) -> Float
-            | (_ , _) -> raise (Failure ("illegal binary operator " ^
-                      string_of_typ t1 ^ " +  " ^
-                      string_of_typ t2 ))
-        in *)
-        (*
-        let check_assignable = function
-                 Literal of int
-                | FloatLit of float
-                | MyStringLit of string
-                | BoolLit of bool
-                | Id of string
-                | Binop of expr * op * expr
-                | Unop of uop * expr
-                | Assign of expr * expr
-                | Call of string * expr list
-                | Access of string * int
-                | Addleft of string * expr
-                | Addright (_,_)
-                | Popleft(_)
-                | Popright(_)
-                | StructAccess(_,_,) ->
-                | Noexpr -> false
+        let check_list_pop direction s = 
+            let list_typ = get_ID_typ env s 
+            in
+            match list_typ with
+            List_t(t) -> t
+            | _ -> raise (Failure ("illegal argument passed in pop"^ direction ^"(" ^
+                                   s ^ "), " ^ s ^" should be of type List " ^
+                                   "but instead instead is of type "^
+                                   string_of_typ list_typ ^ "."))
+        in
 
-        in*)
+        let list_op_test op_name list_id e =
+            let list_typ = get_ID_typ env list_id in
+            let t2 = expr env e in
+            let t1 = 
+                match list_typ with
+                List_t(t) -> t
+                | _ -> raise (Failure ("illegal argument in " ^ op_name ^ "(" ^
+                                       list_id ^", " ^ string_of_expr e ^") "^
+                                       list_id ^" has type " ^ 
+                                       string_of_typ list_typ ^ 
+                                       " but should be of type" ^
+                                        string_of_typ t2 ^ 
+                                       " List."))
+                  in if t1 = t2 
+                     then list_typ
+                     else raise (Failure ("illegal argument in " ^ op_name ^ "(" ^
+                                           list_id ^", " ^ string_of_expr e ^") "^
+                                           string_of_expr e ^" has type " ^ 
+                                           string_of_typ t2 ^ 
+                                           " but should be of type" ^
+                                           string_of_typ t1))
+        in 
         function
 	Literal _ -> Int
       | FloatLit _ -> Float
@@ -504,14 +507,8 @@ let check (globals, stmts, functions, pipes, structs) =
                               string_of_typ t2 ^ " in " ^ string_of_expr e)))
                 in
     	(match op with
-(*          Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int*)
         | Add ->     
                 match_helper (t1,t2) 
-                (* if t1 = MyString && t2 = MyString then MyString
-                 else match_helper (t1,t2) *)
-                (*if t1 = Int && t2 = Int then Int
-                 else if (t1 = Int || t1 = Float) && (t2 = Int || t2 = Float) then Float
-                 else raise Not_found*)
         | Sub -> match_helper (t1,t2)
         | Mult -> match_helper (t1,t2)
         | Div -> match_helper (t1,t2)
@@ -532,23 +529,13 @@ let check (globals, stmts, functions, pipes, structs) =
          | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
 	  		   string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
-      (******************************************)
-      | Assign(var, e) as ex -> (*let v = 
-                                    match var with
-                                  | StructAccess(var, e) -> true
-                                  | Access(s, n) -> true
-                                  | _ -> raise 
-                                         (Failure ("illegal assignment " ^
-                                                   "lefthand expr is not " ^
-                                                   "a valid variable"))
-                                in*)
-                                let lt = get_ID_typ env var (*type_of_identifier var*)
+      | Assign(var, e) as ex -> let lt = get_ID_typ env var (*type_of_identifier var*)
                                 and rt = expr env e in
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 				     " = " ^ string_of_typ rt ^ " in " ^ 
 				     string_of_expr ex))
-      | Call(fname, actuals) as call -> (***** need to update this!!******)
-              let fd = find_fdecl env fname (*function_decl fname*) in
+      | Call(fname, actuals) as call -> 
+              let fd = find_fdecl env fname in
          if List.length actuals != List.length fd.formals then
            raise (Failure ("expecting " ^ string_of_int
              (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
@@ -564,27 +551,19 @@ let check (globals, stmts, functions, pipes, structs) =
                       if StringMap.mem s env.env_structs
                       then Struct(s)
                       else raise Not_found *)
-       | Addleft(s, e) ->let list_typ = get_ID_typ env s in
-                         let t2 = expr env e in
-                         let t1 = 
-                             match list_typ with
-                             List_t(t) -> t
-                            | _ -> raise (Failure ("illegal argument in addleft(" ^
-                                                   s ^", " ^ string_of_expr e ^") "^
-                                                   s ^" has type " ^ 
-                                                   string_of_typ list_typ ^ 
-                                                   " but should be of type" ^
-                                                   string_of_typ t2 ^ 
-                                                   " List."))
-                          in if t1 = t2 
-                             then list_typ
-                             else raise (Failure ("illegal argument in addleft(" ^
-                                                   s ^", " ^ string_of_expr e ^") "^
-                                                   string_of_expr e ^" has type " ^ 
-                                                   string_of_typ t2 ^ 
-                                                   " but should be of type" ^
-                                                   string_of_typ t1))
-                           
+      (****** list_op_test op_name list_id e  ***************************)
+       | Addleft(s, e) -> list_op_test "addleft" s e
+       | Addright(s, e) -> list_op_test "addleft" s e
+       | Popleft(s) -> check_list_pop "left" s 
+       | Popright(s) -> check_list_pop "right" s 
+                      (* let list_typ = get_ID_typ env s in
+                           match list_typ with
+                           List_t(t) -> t
+                         | _ -> raise (Failure ("illegal argument passed in popleft(" ^
+                                          s ^ "), " ^ s ^" should be of type list " ^
+                                          "but instead instead is of type "^
+                                          string_of_typ list_typ ^ ".")) *)
+                                           
        | StructAccess(struct_name, var_name) -> print_string "in StructAccess\n";
 (*               let raise_error = 
                    raise (Failure("illegal dot operator argument found in " ^

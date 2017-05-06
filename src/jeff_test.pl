@@ -23,6 +23,7 @@ function void foo() {
     int testlist[];
     int i;
     addleft(testlist, 1);
+    popright(i);
     struct A a;
     float j = 1.0 + 2.222;
     float ij = i + j;
