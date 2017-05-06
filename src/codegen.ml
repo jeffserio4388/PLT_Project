@@ -113,7 +113,7 @@ let string_of_pdecl_listen pdecl =
 
 "void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req){ "^
 construct_routing (List.hd pdecl.listen).arg3 ^ 
-" if {//FILL UP THE ELSE} }
+" if {//FILL UP THE ELSE} \n }
 
 void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
     if (nread > 0) {
