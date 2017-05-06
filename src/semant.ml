@@ -455,13 +455,13 @@ let check (globals, stmts, functions, pipes, structs) =
           | _ ->  raise Not_found
     in
     let rec expr env = 
-        let check_list_pop direction s = 
+        let check_list_typ operation s = 
             let list_typ = get_ID_typ env s 
             in
             match list_typ with
             List_t(t) -> t
-            | _ -> raise (Failure ("illegal argument passed in pop"^ direction ^"(" ^
-                                   s ^ "), " ^ s ^" should be of type List " ^
+            | _ -> raise (Failure ("illegal argument passed in "^ operation ^
+                                   ", " ^ s ^" should be of type List " ^
                                    "but instead instead is of type "^
                                    string_of_typ list_typ ^ "."))
         in
@@ -546,7 +546,7 @@ let check (globals, stmts, functions, pipes, structs) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
-       | Access(list_name, number) -> Int(*need to check the list type*)  
+               (*need to check the list type*)  
        (*| Struct(s) -> print_string "in Struct(s) expr"; print_string s; print_string "\n";
                       if StringMap.mem s env.env_structs
                       then Struct(s)
@@ -554,8 +554,13 @@ let check (globals, stmts, functions, pipes, structs) =
       (****** list_op_test op_name list_id e  ***************************)
        | Addleft(s, e) -> list_op_test "addleft" s e
        | Addright(s, e) -> list_op_test "addleft" s e
-       | Popleft(s) -> check_list_pop "left" s 
-       | Popright(s) -> check_list_pop "right" s 
+       | Popleft(s) -> let operation = "popleft(" ^ s ^")" in 
+                       check_list_typ operation s 
+       | Popright(s) -> let operation = "popright(" ^ s ^")" in
+                        check_list_typ operation s 
+       | Access(list_id, number) -> let operation = list_id ^ "[" 
+                                        ^ string_of_int number ^ "]"
+                                    in check_list_typ operation list_id
                       (* let list_typ = get_ID_typ env s in
                            match list_typ with
                            List_t(t) -> t
