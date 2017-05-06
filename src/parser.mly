@@ -11,9 +11,16 @@
     let pipe_name = ref 0;;
 %}
 
+/*
+<<<<<<< HEAD
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
+======= */
+	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE
+	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
+	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR DOT
+/* >>>>>>> master */
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
     %token ADDLEFT ADDRIGHT POPLEFT POPRIGHT
@@ -51,15 +58,6 @@ decls:
 | decls pdecl       { first $1, second $1, third $1, ($2 :: fourth $1), fifth $1 }
 | decls sdecl       { first $1, second $1, third $1, fourth $1, ($2 :: fifth $1) }
 
-/*
-literal_list:
-LITERAL                         { [$1] }
-| LITERAL COMMA literal_list    { $1 :: $3 }
-
-stringlit_list:
-STR_LIT                         { [$1] }
-| STR_LIT COMMA stringlit_list    { $1 :: $3 }
-*/
 sdecl:
 STRUCT ID LBRACE vdecl_list RBRACE SEMI
 { {
@@ -92,7 +90,11 @@ PIPE LBRACE listen_opt stmt_list RBRACE
 }
 
 vdecl:
+/* <<<<<<< HEAD */
     typ ID SEMI {($1,$2, Noexpr)}
+/* =======
+    typ ID SEMI {($1,$2)}
+>>>>>>> master */
 
 
 
@@ -160,7 +162,7 @@ expr SEMI                                                     { Expr $1 }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List($1,$2)}
-
+| STRUCT ID ID SEMI                                       {Struct($2,$3)}
 
 expr_opt:
 /* nothing */ { Noexpr }
@@ -184,6 +186,7 @@ LITERAL                         { Literal($1) }
 | expr GT     expr              { Binop($1, Greater, $3) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
+| expr DOT    expr              { Binop($1, Dot,   $3) } 
 | expr OR     expr              { Binop($1, Or,    $3) }
 | expr DOT    expr              { StructAccess($1, $3) }
 /*| ID CONCAT expr              { Binop($1, Concat, $3) }
