@@ -99,7 +99,7 @@ let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
 
-let string_of_http http = "if (strcmp(" ^ http.httpArg1^","^ http.httpArg2 ^", userVariable)) {"^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "(result);} else"
+let string_of_http http = "if (strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) {"^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "(result);} else"
 
 
 let construct_routing http_list = 
