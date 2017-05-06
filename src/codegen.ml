@@ -227,6 +227,42 @@ char * c_cast(void* data){
     return *(char ** )data;
 }
 
+char *header =
+\"HTTP/1.0 200 OK\\n\"
+\"Date: Fri, 31 Dec 1999 23:59:59 GMT\\n\"
+\"\\n\";
+
+char *makeHTTP(char *body) {
+    int headerLength = strlen(header);
+        int bodyLength = strlen(body);
+    char *httpResult = (char*) malloc(headerLength + bodyLength + 1);
+    strcpy(httpResult, header);
+    strcat(httpResult, body);
+
+    return httpResult;
+}
+
+
+struct Backpack {
+    uv_stream_t *client;
+    char *data;
+};
+
+typedef struct {
+    uv_write_t req;
+    uv_buf_t buf;
+} write_req_t;
+
+void echo_write(uv_write_t *req, int status) {
+    fprintf(stderr, \"I did print\\n\");
+    if (status) {
+        fprintf(stderr, \"Write error %s\\n\", uv_strerror(status));
+    }
+    // free_write_req(req);
+}
+
+
+uv_loop_t *loop;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char * ) malloc(suggested_size);
@@ -248,7 +284,6 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
-
 
 
 
