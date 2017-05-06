@@ -1,6 +1,9 @@
 
 struct A {
     int i;
+    int k;
+    bool j;
+    string s;
 };
 /* global bool a = true; 
 int j;

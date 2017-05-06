@@ -13,7 +13,6 @@
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
-	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
@@ -84,11 +83,7 @@ PIPE LBRACE listen_opt stmt_list RBRACE
 }
 
 vdecl:
-/* <<<<<<< HEAD 
     typ ID SEMI {($1,$2, Noexpr)}
-======= */
-    typ ID SEMI {($1,$2)}
-/*>>>>>>> master */
 
 
 
@@ -156,7 +151,7 @@ expr SEMI                                                     { Expr $1 }
 | typ ID SEMI                                             {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List($1,$2)}
-| STRUCT ID ID SEMI                                       {Struct($2,$3)}
+/*| STRUCT ID ID SEMI                                       {Struct($2,$3)} */
 
 expr_opt:
 /* nothing */ { Noexpr }

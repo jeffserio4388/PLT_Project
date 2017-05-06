@@ -177,8 +177,13 @@ let string_of_pdecl_listen pdecl =
         "}\n"
 
     let string_of_sdecl sdecl =
+        let svars = 
+            let temp_vars = List.fold_left 
+            (fun l (t, id, _) -> (t, id) :: l) [] sdecl.vars 
+            in List.rev temp_vars
+        in
         "struct " ^ sdecl.sname ^ " {\n    " ^
-        String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
+        String.concat "    " (List.map string_of_vdecl svars) ^
         "};\n"
 
     let translate (globals, stmts, funcs, pipes, structs) =

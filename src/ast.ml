@@ -45,7 +45,7 @@ type stmt =
     | While of expr * stmt
     | Local of typ * string * expr
     | List of typ * string
-    | Struct of string * string 
+    (*| Struct of string * string *)
 
 type var_init = typ * string * expr
 
