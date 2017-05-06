@@ -121,6 +121,7 @@ INT         { Int }
 | STRING    { MyString }
 | FLOAT     { Float }
 | FILE      { File }
+| STRUCT ID { Struct($2) }
 
 vdecl_list:
 /* nothing */    { [] }

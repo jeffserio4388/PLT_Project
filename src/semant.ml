@@ -16,6 +16,7 @@ type struct_info =
     {
         info_sdecl       : struct_decl;
         info_vars        : typ StringMap.t;
+(*        info_fdecls      : func_decl StringMap.t; *)
     }
 
 type env = 
@@ -28,6 +29,7 @@ type env =
         env_parameters  : typ StringMap.t;
         env_globals     : typ StringMap.t;
         env_in_block    : bool;
+        env_check_strct : typ StringMap.t; 
         env_reserved    : func_decl StringMap.t;
     }
 
@@ -57,16 +59,10 @@ let reserved_funcs =
             formals = [(Bool, "x")];
             body    = [];
         }(
-    StringMap.add "open" {
-            typ     = File;
-            fname   = "open";
-            formals = [(MyString, "file_name"); (MyString, "mode")];
-            body = [];
-        }(
     StringMap.add "open_file" {
             typ     = File;
             fname   = "fclose";
-            formals = [(File , "file_object")];
+            formals = [(MyString, "file_name"); (MyString, "mode")];
             body = [];
         }( (*
     StringMap.add "writeln" {
@@ -93,9 +89,15 @@ let reserved_funcs =
             formals = [(List, "x")];
             body = [];
         }(
-    StringMap.add "addRight" {
+    StringMap.add "concat" {
+            typ     = MyString;
+            fname   = "concat";
+            formals = [(MyString, "x"); (MyString, "x")];
+            body = [];
+        }(
+    StringMap.add "popLeft" {
             typ     = Void;
-            fname   = "addRight";
+            fname   = "popLeft";
             formals = [(List, "x")];
             body = [];
         }(
@@ -117,15 +119,17 @@ let reserved_funcs =
                          (fun map (t, id) -> StringMap.add id t map)
                              StringMap.empty formals*)
 
-let init_struct_info struct_decl =
-    let var_map = (* added _ for noexpr changed struct to var_init lists *) 
-        List.fold_left (fun map (t, id, _) -> StringMap.add id t map) 
-                                            StringMap.empty struct_decl.vars
-    in
-    {
-        info_sdecl           = struct_decl;
-        info_vars            = var_map;
-    }
+let init_struct_info map sdecl = print_string sdecl.sname; print_string " in init\n";
+    let st_info = 
+        let var_map = (* added _ for noexpr changed struct to var_init lists *) 
+            List.fold_left (fun map (t, id, _) -> StringMap.add id t map) 
+                                                StringMap.empty sdecl.vars
+        in
+        {
+            info_sdecl           = sdecl;
+            info_vars            = var_map;
+        }
+    in StringMap.add sdecl.sname st_info map
 
 let update_env_structs env struct_info struct_name  = 
     {
@@ -137,6 +141,7 @@ let update_env_structs env struct_info struct_name  =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct; 
         env_reserved    = env.env_reserved;
     }
 
@@ -150,6 +155,7 @@ let update_env_name env new_name =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct;
         env_reserved    = env.env_reserved;
     }
 
@@ -163,6 +169,7 @@ let update_call_stack env in_block =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = in_block;
+        env_check_strct = env.env_check_strct;
         env_reserved    = env.env_reserved;
     }
 
@@ -176,6 +183,7 @@ let update_globals env global_map =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct; 
         env_reserved    = env.env_reserved;
     }
 
@@ -189,6 +197,7 @@ let update_locals env typ_t id_t =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct; 
         env_reserved    = env.env_reserved;
     }
 
@@ -206,23 +215,26 @@ let update_formals env formals =
         env_parameters  = formal_map;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct; 
         env_reserved    = env.env_reserved;
     }
 
-
-let update_struct_var env typ_t id_t = 
+let update_struct_check env var_map = 
     {
         env_name        = env.env_name;
         env_funcs       = env.env_funcs;
         env_structs     = env.env_structs;
         env_pipes       = env.env_pipes;
-        env_locals      = StringMap.add id_t typ_t env.env_locals;
+        env_locals      = env.env_locals;
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = var_map; 
         env_reserved    = env.env_reserved;
     }
 
+
+       
 let find_var env id = 
     if StringMap.mem id env.env_parameters 
     then StringMap.find id env.env_parameters
@@ -230,6 +242,8 @@ let find_var env id =
     then StringMap.find id env.env_locals
     else if StringMap.mem id env.env_globals
     then StringMap.find id env.env_globals
+    else if StringMap.mem id env.env_check_strct
+    then StringMap.find id env.env_check_strct
     else raise Not_found
 
 let check (globals, stmts, functions, pipes, structs) = 
@@ -276,7 +290,7 @@ let check (globals, stmts, functions, pipes, structs) =
   
   if List.mem "print" (List.map (fun fd -> fd.fname) functions)
   then raise (Failure ("function print may not be defined")) else ();
-
+(********** need to fix this so it checks for builtins ***************)
   report_duplicate (fun n -> "duplicate function " ^ n)
     (List.map (fun fd -> fd.fname) functions);
 
@@ -301,9 +315,21 @@ let check (globals, stmts, functions, pipes, structs) =
               body = stmts;
           }
     in
-   
+    let fdecls = List.fold_left 
+                        (fun m fd -> StringMap.add fd.fname fd m) 
+                            StringMap.empty functions
+    in
+    let global_map = List.fold_left
+                     (fun map (t, id, _) -> StringMap.add id t map)
+                        StringMap.empty globals
+    in
+    let struct_map = 
+        List.fold_left 
+                     (fun map sd -> init_struct_info map sd)
+                          StringMap.empty structs
+    in
     let init_env name = 
-        let fdecls = List.fold_left 
+       (* let fdecls = List.fold_left 
                             (fun m fd -> StringMap.add fd.fname fd m) 
                                 StringMap.empty functions
         in
@@ -311,16 +337,22 @@ let check (globals, stmts, functions, pipes, structs) =
                          (fun map (t, id, _) -> StringMap.add id t map)
                             StringMap.empty globals
         in
+        let struct_map = 
+            List.fold_left 
+                         (fun map sd -> init_struct_info map sd)
+                              StringMap.empty structs
+        in*)
         {
-            env_name        = name;
-            env_funcs       = fdecls;
-            env_structs     = StringMap.empty;
-            env_pipes       = StringMap.empty;
-            env_locals      = StringMap.empty;
-            env_parameters  = StringMap.empty;
-            env_globals     = global_map;
-            env_in_block    = false;
-            env_reserved    = reserved_funcs;
+            env_name            = name;
+            env_funcs           = fdecls;
+            env_structs         = struct_map;
+            env_pipes           = StringMap.empty;
+            env_locals          = StringMap.empty;
+            env_parameters      = StringMap.empty;
+            env_globals         = global_map;
+            env_in_block        = false;
+            env_check_strct     = StringMap.empty;
+            env_reserved        = reserved_funcs;
         }
     in
 
@@ -382,8 +414,48 @@ let check (globals, stmts, functions, pipes, structs) =
     in
 
     (* Return the type of an expression or throw an exception *)
+    let get_struct_var_typ struct_info var = 
+        if StringMap.mem var struct_info.info_vars 
+        then StringMap.find var struct_info.info_vars
+        else raise Not_found
+    in
+    let rec get_struct_var_t env struct_info var = print_string "in get_struct_var_t\n";
+            match var with
+            Id s -> if StringMap.mem s struct_info.info_vars
+                    then StringMap.find s struct_info.info_vars
+                    else raise Not_found
+          | StructAccess(st, v) -> print_string "in struct_access\n";
+                 let struct_inf = 
+                     let struct_t = get_struct_var_t env struct_info st in
+                     match struct_t with
+                     Struct(s) -> if StringMap.mem s env.env_structs
+                                  then StringMap.find s env.env_structs
+                                  else raise Not_found
+                    | _ -> raise Not_found
+                 in try get_struct_var_t env struct_inf v 
+                     with Not_found -> raise Not_found
+          (*           
+          | Call(func_name, actuals) -> 
+                  let fd = if StringMap.mem func_name struct_info.info_vars 
+                              then StringMap.find func_name struct_info.info_vars
+                              else raise Not_found
+                  in
+                  if List.length actuals != List.length fd.formals then
+                    raise (Failure ("expecting " ^ string_of_int
+                      (List.length fd.formals) ^ " arguments in " ^ 
+                      string_of_expr call))
+                  else
+                    List.iter2 (fun (ft, _) e -> let et = expr env e in
+                       ignore (check_assign ft et
+                         (Failure ("illegal actual argument found " ^ 
+                         string_of_typ et ^ " expected " ^ string_of_typ ft ^ 
+                         " in " ^ string_of_expr e)))) 
+                    fd.formals actuals;
+                    fd.typ *)
+          | _ ->  raise Not_found
+    in
     let rec expr env = 
-        let match_helper (t1,t2) = 
+(*        let match_helper (t1,t2) = 
             match (t1,t2) with
             (Int, Int) -> Int
             | (Float, Float) -> Float
@@ -392,7 +464,7 @@ let check (globals, stmts, functions, pipes, structs) =
             | (_ , _) -> raise (Failure ("illegal binary operator " ^
                       string_of_typ t1 ^ " +  " ^
                       string_of_typ t2 ))
-        in
+        in *)
         (*
         let check_assignable = function
                  Literal of int
@@ -421,10 +493,22 @@ let check (globals, stmts, functions, pipes, structs) =
       | Id s -> (*print_string "in ID";*) get_ID_typ env s
       | Binop(e1, op, e2) as e -> 
               let t1 = expr env e1 and t2 = expr env e2 in
+                let match_helper (t1,t2) = 
+                    match (t1,t2) with
+                    (Int, Int) -> Int
+                    | (Float, Float) -> Float
+                    | (Int, Float) -> Float
+                    | (Float, Int) -> Float
+                    | (_ , _) -> raise ((Failure ("illegal binary operator " ^
+                              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                              string_of_typ t2 ^ " in " ^ string_of_expr e)))
+                in
     	(match op with
 (*          Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int*)
-        | Add ->(* if t1 = MyString && t2 = MyString then MyString
-                 else*) match_helper (t1,t2) 
+        | Add ->     
+                match_helper (t1,t2) 
+                (* if t1 = MyString && t2 = MyString then MyString
+                 else match_helper (t1,t2) *)
                 (*if t1 = Int && t2 = Int then Int
                  else if (t1 = Int || t1 = Float) && (t2 = Int || t2 = Float) then Float
                  else raise Not_found*)
@@ -463,7 +547,7 @@ let check (globals, stmts, functions, pipes, structs) =
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 				     " = " ^ string_of_typ rt ^ " in " ^ 
 				     string_of_expr ex))
-      | Call(fname, actuals) as call -> 
+      | Call(fname, actuals) as call -> (***** need to update this!!******)
               let fd = find_fdecl env fname (*function_decl fname*) in
          if List.length actuals != List.length fd.formals then
            raise (Failure ("expecting " ^ string_of_int
@@ -476,7 +560,35 @@ let check (globals, stmts, functions, pipes, structs) =
              fd.formals actuals;
            fd.typ
        | Access(list_name, number) -> Int(*need to check the list type*)  
-(*       | StructAcccess(struct_name, var_name) -> *)
+       (*| Struct(s) -> print_string "in Struct(s) expr"; print_string s; print_string "\n";
+                      if StringMap.mem s env.env_structs
+                      then Struct(s)
+                      else raise Not_found *)
+       | StructAccess(struct_name, var_name) -> print_string "in StructAccess\n";
+(*               let raise_error = 
+                   raise (Failure("illegal dot operator argument found in " ^
+                                  "expression  " ^ string_of_expr struct_name ^
+                                  "." ^ string_of_expr var_name)) 
+               in*)
+               print_string "after raise_error\n";
+               let struct_info = 
+                   let struct_t = expr env struct_name in
+               match struct_t with
+               Struct(s) -> print_string "in Struct(s) "; print_string s; print_string "\n";
+                            if StringMap.mem s env.env_structs
+                            then StringMap.find s env.env_structs
+                            else raise Not_found
+               | _ -> raise (Failure("illegal argument found " ^
+                             string_of_typ struct_t ^ " must be a struct " ^
+                             "type for argument in expr " ^ 
+                             string_of_expr struct_name ^
+                             "." ^ string_of_expr var_name))
+               in print_string(string_of_expr(var_name)); print_string "\n";
+             (*  let var_t = expr env var_name 
+               in *)
+               let senv = update_struct_check env struct_info.info_vars in
+               expr senv var_name
+
     in
     let check_bool_expr env e = if expr env e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
@@ -492,13 +604,29 @@ let check (globals, stmts, functions, pipes, structs) =
         env_parameters  = env.env_parameters;
         env_globals     = env.env_globals;
         env_in_block    = env.env_in_block;
+        env_check_strct = env.env_check_strct;
         env_reserved    = env.env_reserved;
     }
     in 
     let curr_env = ref env
     in
 (*    let check_dup_var env s = if StringMap.find *)
-    
+(*
+    let rec check_struct env struct_info var = 
+        match var with
+        StructAccess(s, e)  -> if StringMap.mem s struct_info.vars
+                               then 
+                                   let curr_info = StringMap.find s struct_info.vars in
+
+                                   check_struct env curr_info e
+                               else raise Not_found
+(*        | Call(fname, actuals)-> if StringMap.mem fname struct_info.vars
+                               then  StringMap.find fname struct_info.vars in
+                               if StringMap.mem real_fname *)
+       | ID s -> if StringMap.mem s struct_info.vars 
+                 then StringMap.find s struct_info.vars
+                 else raise Not_found 
+    in*)
     (* Verify a statement or throw an exception *)
     let rec stmt env =        
         function

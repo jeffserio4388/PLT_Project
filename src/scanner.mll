@@ -1,6 +1,9 @@
 (* Ocamllex scanner for MicroC *)
 
-{ open Parser }
+{
+    open Parser
+    let lineno = ref 1
+}
 
 
 let escape = '\\' ['\\' ''' '"' 'n' 'r' 't']
@@ -9,7 +12,8 @@ let string_t = '"' ( (ascii | escape)*) '"'
 
 
 rule token = parse
-  [' ' '\t' '\r' '\n']  { token lexbuf } (* Whitespace *)
+  [' ' '\t' '\r']       { token lexbuf }             (* Whitespace *)
+| '\n'                  { incr lineno; token lexbuf }
 | "/*"                  { comment lexbuf }           (* Comments *)
 | '('                   { LPAREN }
 | ')'                   { RPAREN }

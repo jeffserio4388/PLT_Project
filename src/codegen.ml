@@ -36,6 +36,7 @@ let string_of_typ = function
     | Void -> "void"
     | MyString -> "char *"
     | File -> "FILE *"
+    | Struct(s) -> "struct " ^ s
 
 let rec string_of_expr = function
       Literal(l) ->         string_of_int l
