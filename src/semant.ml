@@ -113,11 +113,7 @@ let reserved_funcs =
             formals = [(List, "x")];
             body = [];
         }*)
-    ))))(*)))))*)
-
-(*    let formal_map = List.fold_left 
-                         (fun map (t, id) -> StringMap.add id t map)
-                             StringMap.empty formals*)
+    )))) 
 
 let init_struct_info map sdecl = print_string sdecl.sname; print_string " in init\n";
     let st_info = 
@@ -424,6 +420,21 @@ let check (globals, stmts, functions, pipes, structs) =
             Id s -> if StringMap.mem s struct_info.info_vars
                     then StringMap.find s struct_info.info_vars
                     else raise Not_found
+          | Literal _  -> raise Not_found
+          | FloatLit _ -> raise Not_found
+          | MyStringLit _ -> raise Not_found
+          | BoolLit _ -> raise Not_found
+          | Binop(_, _, _) -> raise Not_found
+          | Unop(_,_) -> raise Not_found 
+          | Assign(_,_) -> raise Not_found
+          | Call(_, _) -> raise Not_found
+          | Access(_, _) -> raise Not_found
+          | Addleft(_,_) -> raise Not_found
+          | Addright(_, _) -> raise Not_found
+          | Popleft(_) -> raise Not_found
+          | Popright(_) -> raise Not_found
+          | Concat(_, _) -> raise Not_found
+          | Noexpr -> raise Not_found
           | StructAccess(st, v) -> print_string "in struct_access\n";
                  let struct_inf = 
                      let struct_t = get_struct_var_t env struct_info st in
@@ -434,6 +445,7 @@ let check (globals, stmts, functions, pipes, structs) =
                     | _ -> raise Not_found
                  in try get_struct_var_t env struct_inf v 
                      with Not_found -> raise Not_found
+          | _ -> raise Not_found 
           (*           
           | Call(func_name, actuals) -> 
                   let fd = if StringMap.mem func_name struct_info.info_vars 
@@ -593,6 +605,14 @@ let check (globals, stmts, functions, pipes, structs) =
                in *)
                let senv = update_struct_check env struct_info.info_vars in
                expr senv var_name
+        | Concat(s1, s2) -> let t1 = expr env s1 and t2 = expr env s2 in
+                            match (t1, t2) with
+                            (MyString, MyString) -> MyString
+                            | (_ , _) -> raise ((Failure ("illegal concatenation operator " ^
+                                                 string_of_typ t1 ^ " $  " ^
+                                                 string_of_typ t2 ^ " in " ^ 
+                                                 string_of_expr s1 ^ " $ " ^
+                                                 string_of_expr s2)))
 
     in
     let check_bool_expr env e = if expr env e != Bool

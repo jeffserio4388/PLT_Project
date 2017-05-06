@@ -30,6 +30,8 @@ function void foo() {
     a.i = 1;
     string k;
     k = "abcd";
+    string f = "abcd" $ k $ k;
+    print_str(f);
 /*    string ka = k + "1234"; */
     for( i = 0; i < 2; i = i + 1){
         int temp = 0;
@@ -39,7 +41,6 @@ function void foo() {
         print_str("\n");
     }
 }
-string strng = "anbjdksf";
 foo();
 /* g = a; */
 
