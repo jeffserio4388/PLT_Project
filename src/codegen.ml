@@ -117,8 +117,12 @@ construct_routing (List.hd pdecl.listen).arg3 ^
 
 void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
     if (nread > 0) {
-        req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
-        uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
+        struct Backpack *backpack = (struct Backpack*) malloc(sizeof(struct Backpack));
+        backpack->data = buf->base;
+        backpack->client = client;
+
+        req_listen_"^pdecl.pname^".data = (void *) backpack;
+        uv_queue_work(loop, &req_listen_"^pdecl.pname^", post_listen_"^pdecl.pname^", after);
         return;
     }
 
