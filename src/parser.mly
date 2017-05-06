@@ -175,7 +175,6 @@ LITERAL                         { Literal($1) }
 | expr GT     expr              { Binop($1, Greater, $3) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
-| expr DOT    expr              { Binop($1, Dot,   $3) } 
 | expr OR     expr              { Binop($1, Or,    $3) }
 | expr DOT    expr              { StructAccess($1, $3) }
 | expr CONCAT expr              { Concat($1,$3) }
