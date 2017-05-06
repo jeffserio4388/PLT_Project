@@ -11,16 +11,10 @@
     let pipe_name = ref 0;;
 %}
 
-/*
-<<<<<<< HEAD
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
-======= */
-	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE
-	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
-	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR DOT
-/* >>>>>>> master */
+	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
     %token ADDLEFT ADDRIGHT POPLEFT POPRIGHT
@@ -90,11 +84,11 @@ PIPE LBRACE listen_opt stmt_list RBRACE
 }
 
 vdecl:
-/* <<<<<<< HEAD */
+/* <<<<<<< HEAD 
     typ ID SEMI {($1,$2, Noexpr)}
-/* =======
+======= */
     typ ID SEMI {($1,$2)}
->>>>>>> master */
+/*>>>>>>> master */
 
 
 
@@ -189,8 +183,7 @@ LITERAL                         { Literal($1) }
 | expr DOT    expr              { Binop($1, Dot,   $3) } 
 | expr OR     expr              { Binop($1, Or,    $3) }
 | expr DOT    expr              { StructAccess($1, $3) }
-/*| ID CONCAT expr              { Binop($1, Concat, $3) }
-| STR_LIT CONCAT expr              { Binop($1, Concat, $3) }*/
+| expr CONCAT expr              { Concat($1,$3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
 | NOT expr                      { Unop(Not, $2) }
 | ID ASSIGN expr                { Assign($1, $3) }

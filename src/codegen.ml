@@ -48,65 +48,61 @@ let rec string_of_expr = function
     | Id(s) ->              s
     | Binop(e1, o, e2) ->   string_of_expr e1 ^ "" ^ string_of_op o ^ "" ^ string_of_expr e2
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
+    | Concat(e1,e2) ->      "stringcat(" ^string_of_expr e1 ^","^ string_of_expr e2 ^")"
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")" 
-  (*| Call("addLeft",e)    ->"addLeft(&" ^ String.concat ",&" (List.map string_of_expr e)^")"
-    | Call("addRight",e)   ->"addRight(&"^ String.concat ",&" (List.map string_of_expr e)^")"
-    | Call("popLeft",e)    ->"removeLeft(&"^ String.concat "," (List.map string_of_expr e)^")"
-    | Call("popRight",e)   ->"removeRight(&" ^String.concat "," (List.map string_of_expr e)^")"
-  *)| Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
+    | Call("len",e)        -> "strlen(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
+    | Call("cmp",e)        -> "strcmp(" ^ String.concat ","(List.map string_of_expr e) ^ ")? 0:1"
+    | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
                             ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
-    | Addright(n,e) ->     "TEMP_FOR_ADD_RIGHT = " ^ string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)&TEMP_FOR_ADD_RIGHT)"
+    | Addright(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addRight(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
+                            ^"PTR_ARRAY_FOR_LIST_" ^ n ^ "++"
     | Popleft(n) ->        "removeLeft(&"^n^".list)"
-        | Popright(n) ->       "removeRight(&"^n^".list)"
-        | Noexpr ->             ""
-        | StructAccess(s, e) -> string_of_expr s ^ "." ^ string_of_expr e
+    | Popright(n) ->       "removeRight(&"^n^".list)"
+    | Noexpr ->             ""
+    | StructAccess(s, e) -> string_of_expr s ^ "." ^ string_of_expr e
 
 
-    let rec string_of_stmt = function
-        Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
-      | Expr(expr) ->           string_of_expr expr ^ ";\n";
-      | Return(expr) ->         "return " ^ string_of_expr expr ^ ";\n";
-      | If(e, s, Block([])) ->  "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
-      | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
-      | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
-      | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-      (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
-                                            ^ (string_of_int (List.length intlist)) ^ ", 1);"
-      | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
-                                            ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
-      (*| Add_left(e1, e2) -> "void *a7858585765 = (void* )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
-      | Add_right(e1, e2) -> "void *a782345765 = (void* )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
-      | Find_node(e1, e2, e3) -> "void *a7b45765 = (void* )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
-      | Http_put (e1, e2) -> "put"
-      | Http_get (e1, e2) -> "get"
-      | Http_post (e1, e2) -> "post"
-      | Http_delete (e1, e2) -> "delete"
-      | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
-      | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
-      | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
-                     ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^String.sub (string_of_typ t) 0 1^"_cast;"
-      | Struct(sid, vid) -> "struct " ^sid^" "^ vid^";" 
-    let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
-    let string_of_global (t , id, e) = if e = Noexpr then
-       string_of_typ t ^ " " ^ id ^";\n" else
-       string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
+let rec string_of_stmt = function
+    Block(stmts) ->         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
+  | Expr(expr) ->           string_of_expr expr ^ ";\n";
+  | Return(expr) ->         "return " ^ string_of_expr expr ^ ";\n";
+  | If(e, s, Block([])) ->  "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
+  | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
+  | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
+  | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | Http_put (e1, e2) -> "put"
+  | Http_get (e1, e2) -> "get"
+  | Http_post (e1, e2) -> "post"
+  | Http_delete (e1, e2) -> "delete"
+  | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
+  | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
+  | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
+                 ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^String.sub (string_of_typ t) 0 1^"_cast;"
+(*  | Struct(sid, vid) -> "struct " ^sid^" "^ vid^";" *)
+let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
-    let string_of_pdecl_listen pdecl = 
-    "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
-    "struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
-    "uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+let string_of_formal (t,id) = string_of_typ t ^ " " ^ id
 
-    "void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
-        // fprintf(stderr, \"%s\", req->data);
-        " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
-    }
+let string_of_global (t , id, e) = if e = Noexpr then
+   string_of_typ t ^ " " ^ id ^";\n" else
+   string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
+
+let string_of_pdecl_listen pdecl = 
+"uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
+"struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
+"uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
+    // fprintf(stderr, \"%s\", req->data);
+    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
+} 
 
     void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
         if (nread > 0) {
@@ -130,7 +126,7 @@ let rec string_of_expr = function
             return;
         }
 
-        uv_tcp_t *client = (uv_tcp_t*) malloc(sizeof(uv_tcp_t));
+        uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
         uv_tcp_init(loop, client);
         if (uv_accept(server, (uv_stream_t*) client) == 0) {
             uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
@@ -159,14 +155,13 @@ let rec string_of_expr = function
         "int _" ^ pdecl.pname ^ ";\n" ^ 
         String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
-     
     let string_of_pdecl pdecl = 
         (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
         "void work_" ^ pdecl.pname ^
         "(uv_work_t *req) {    " ^ 
         (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
-        "\n}"
-
+    "\n}"
+ 
 
     let string_of_pdecl_main pdecl = 
         "    int data_" ^ pdecl.pname ^ ";\n" ^
@@ -176,23 +171,23 @@ let rec string_of_expr = function
 
     let string_of_fdecl fdecl =
         string_of_typ fdecl.typ ^ " " ^
-        fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
+        fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_formal fdecl.formals) ^
         ") {\n" ^
         String.concat "    " (List.map string_of_stmt fdecl.body) ^
         "}\n"
 
     let string_of_sdecl sdecl =
         "struct " ^ sdecl.sname ^ " {\n    " ^
-        String.concat "    " (List.map string_of_global sdecl.vars) ^
+        String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
         "};\n"
 
     let translate (globals, stmts, funcs, pipes, structs) =
      
-        "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n#include \"stdlib/mylist.h\"\n"^ 
-
-    "#define DEFAULT_PORT 7000
+        "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n
+        #include <string.h>\n#include \"stdlib/mylist.h\"\n#include \"stdlib/strop.h\"\n"^ 
+(*>>>>>>> master *)
+   "#define DEFAULT_PORT 7000
     #define DEFAULT_BACKLOG 128
-
     uv_loop_t *loop;
     int TEMP_FOR_ADD_LEFT;
     int TEMP_FOR_ADD_RIGHT;" ^
@@ -227,7 +222,7 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   
   	String.concat "\n\n" (List.map string_of_pdecl pipes) ^ "\n\n" ^
 
-  	"int main() {\n    " ^
+  	"int main(int argc, char **argv) {\n    " ^
     "    loop = uv_default_loop();\n" ^
 
   	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^

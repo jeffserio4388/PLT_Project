@@ -1,2 +1,6 @@
-global int a = 1;
-global int b = 2; 
+int a = 1;
+int b = 2;
+print_int(a);
+print_int(b);
+
+
