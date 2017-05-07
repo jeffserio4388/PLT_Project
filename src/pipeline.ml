@@ -55,7 +55,7 @@ let _ =
                         let gen_exec = 
                             "gcc -g -Wall -Wno-unused-variable -I" ^ 
                             "../stdlib/ -g -L../stdlib/ -o" ^ fullNameStub ^ " " ^
-                            new_file_name ^ " -lmylist -lfileIO -luv"
+                            new_file_name ^ " -lmylist -luv"
                         in
                         ignore(read_process gen_o_file);
                         ignore(read_process gen_exec);

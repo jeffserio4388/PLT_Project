@@ -1,5 +1,8 @@
 #ifndef _MYLIST_H_
 #define _MYLIST_H_
+#include <stdio.h>
+#include <stdlib.h>
+
 
 /*
  * A node in a linked list.
@@ -38,6 +41,16 @@ struct bool_list{
     int (*cast)(void *);
 };
 
+typedef struct File{
+    FILE *fp;
+    char *buf;
+    char *(*readln)(void *fp);
+    void (*writestr)(char *str, FILE *fp);
+    char *(*readn)(void *fp, int n);
+    void (*close)(void *fp);
+} File;
+
+void init_file_obj(File *file_object);
 
 /*
  * Initialize an empty list.  

@@ -36,7 +36,7 @@ let rec string_of_typ = function
     | Bool -> "int"
     | Void -> "void"
     | MyString -> "char *"
-    | File -> "FILE *"
+    | File -> "File"
     | Struct(s) -> "struct " ^ s
     | List_t(s) -> string_of_typ s
 
@@ -53,8 +53,79 @@ let rec string_of_expr = function
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
     | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_float",e)->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_float",e) ->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
+    | Call("init_file_obj", e) -> let string_of_actuals = List.map string_of_expr e 
+                              in
+                              let check_mode m = match m with
+                                  (*function*)
+                                  "\"r\""   -> ()
+                                 |"\"w\""   -> ()
+                                 |"\"a\""   -> ()
+                                 |"\"r+\""  -> ()
+                                 |"\"w+\""  -> ()
+                                 |"\"a+\""  -> ()
+                                 |"\"rb\""  -> ()
+                                 |"\"wb\""  -> ()
+                                 |"\"ab\""  -> ()
+                                 |"\"rb+\"" -> ()
+                                 |"\"wb+\"" -> ()
+                                 |"\"ab+\"" -> ()
+                                 | _    -> raise (Failure("illegal file mode "^ 
+                                                  m ^ "given as argument in open file" ^
+                                                  " perhaps you added an extra space."))
+                              in  
+                              let expr_string =
+                              function
+                              [file_obj; filename; filemode] ->
+                                            check_mode filemode; 
+                                            (*"File " ^ file_obj ^ ";\n" ^*)
+                                            "init_file_obj(&" ^ file_obj ^ ");\n" ^
+                                            file_obj ^ ".fp = fopen(" ^ filename ^
+                                            ", " ^ filemode ^ ");\n"
+                              | _ -> raise (Failure("codegen error with open_file(" ^
+                                                    String.concat "," string_of_actuals ^
+                                                    ") illegal argumets passed"))
+                             in expr_string string_of_actuals
+
+    | Call("fread_line", e) -> let file_obj = 
+                                    let temp = List.map string_of_expr e 
+                                    in List.hd temp
+                               in
+                               file_obj ^ ".readln((void * ) &" ^ 
+                               file_obj ^ ");\n"
+(* lets the user read n bits where n < 4096 -- the max size of the buffer*)
+    | Call("freadn", e)    ->  let string_of_actuals = List.map string_of_expr e
+                               in
+                               let expr_string = function
+                               (*match string_of_actuals with*)
+                                   [file_obj; n] -> file_obj ^ ".readn((void * ) &" ^ 
+                                                              file_obj ^ "," ^ n ^
+                                                                ");\n"
+                                   | _ -> raise (Failure("codegen error with freadn(" ^
+                                                        String.concat "," string_of_actuals ^
+                                                        ") illegal argumets passed"))
+                               in expr_string string_of_actuals
+
+    | Call("fwrite_str", e) -> let string_of_actuals = List.map string_of_expr e
+                               in
+                               let expr_string = 
+                                   function
+                                       [str; file_obj] -> file_obj ^ ".writestr(" ^
+                                                          str ^ ", " ^ file_obj ^
+                                                          ".fp);\n"
+                                   | _ -> raise (Failure("codegen error with fwrite_str(" ^
+                                                        String.concat "," string_of_actuals ^ 
+                                                        ") illegal argumets passed"))
+                               in expr_string string_of_actuals
+
+    | Call("close_file", e) -> let file_obj = 
+                                    let temp = List.map string_of_expr e 
+                                    in List.hd temp
+                               in
+                               file_obj ^ ".close((void * ) &" ^ 
+                               file_obj ^ ");\n"
+
     | Call("len",e)        -> "strlen(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
     | Call("cmp",e)        -> "strcmp(" ^ String.concat ","(List.map string_of_expr e) ^ ")? 0:1"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"

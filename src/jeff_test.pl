@@ -19,11 +19,13 @@ pipe {
 
 }
 function void foo(int x, int y) {
-    int testlist[];
+    File file_test;
+    /*File file_testa = file_test;*/
+    init_file_obj(file_test, "test_file.txt", "r+");
+    close_file(file_test);
     int i = x + y;
-    addleft(testlist, 1);
-    g = testlist[0];
     struct A a;
+    struct A b = a;
     float j = 1.0 + 2.222;
     float ij = i + j;
     a.i = 1;
