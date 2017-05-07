@@ -37,10 +37,10 @@ type stmt =
     | Expr of expr
     | Return of expr
     | If of expr * stmt * stmt
-    | Http_put of expr * expr
+(*    | Http_put of expr * expr
     | Http_get of expr * expr
     | Http_post of expr * expr
-    | Http_delete of expr * expr
+    | Http_delete of expr * expr *)
     | For of expr * expr * expr * stmt
     | While of expr * stmt
     | Local of typ * string * expr
@@ -140,10 +140,10 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  | Http_put (e1, e2) -> "put"
+  (*| Http_put (e1, e2) -> "put"
   | Http_get (e1, e2) -> "get"
   | Http_post (e1, e2) -> "post"
-  | Http_delete (e1, e2) -> "delete"
+  | Http_delete (e1, e2) -> "delete" *)
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"

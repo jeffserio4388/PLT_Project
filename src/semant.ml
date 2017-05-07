@@ -324,14 +324,14 @@ let check (globals, stmts, functions, pipes, structs) =
     (List.map (fun fd -> fd.fname) functions);
 
   (* Function declaration for a named function *)
-    let built_in_decls =  StringMap.singleton "printf"
+  (*  let built_in_decls =  StringMap.singleton "printf"
             { 
                 typ = Void; 
                 fname = "printf"; 
                 formals = [(MyString, "x")]; 
                 body = [] 
             }
-   in
+   in*)
 let fdecls = List.fold_left 
                     (fun m fd -> StringMap.add fd.fname fd m) 
                         StringMap.empty functions
@@ -345,10 +345,11 @@ let struct_map =
                  (fun map sd -> init_struct_info map sd)
                       StringMap.empty structs
 in
-    
+  (*  
   let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
                          built_in_decls functions
-  in(*
+  in*)
+  (*
     let main = 
         let stmt_strings =
             let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
@@ -392,10 +393,11 @@ in
             env_reserved        = reserved_funcs;
         }
     in
-
+(*
   let function_decl s = try StringMap.find s function_decls
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
+  *)
   let find_fdecl env s = try StringMap.find s env.env_funcs
        with Not_found -> try StringMap.find s env.env_reserved
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
@@ -404,8 +406,8 @@ in
   (*let _ = function_decl "main" in (* Ensure "main" is defined *)*)
 
   let check_function env func =
-      let old_env = env in
-      let cur_env = (fun e -> update_formals e func.formals) (update_call_stack env false) in
+ (*     let old_env = env in
+      let cur_env = (fun e -> update_formals e func.formals) (update_call_stack env false) in *)
 
     List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^
       " in " ^ func.fname)) func.formals;
@@ -451,11 +453,13 @@ in
     in
 
     (* Return the type of an expression or throw an exception *)
+    (*
     let get_struct_var_typ struct_info var = 
         if StringMap.mem var struct_info.info_vars 
         then StringMap.find var struct_info.info_vars
         else raise Not_found
-    in
+    in*)
+    (*
     let rec get_struct_var_t env struct_info var = (*print_string "in get_struct_var_t\n";*)
             match var with
             Id s -> if StringMap.mem s struct_info.info_vars
@@ -506,7 +510,7 @@ in
                     fd.formals actuals;
                     fd.typ *)
           | _ ->  raise Not_found
-    in
+    in*)
     let rec expr env = 
         let check_list_typ operation s = 
             let list_typ = get_ID_typ env s 
@@ -655,7 +659,7 @@ in
     let check_bool_expr env e = if expr env e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
      else () in
-    
+    (*
     let duplicate_env env = 
     {
         env_name        = env.env_name;
@@ -669,7 +673,8 @@ in
         env_check_strct = env.env_check_strct;
         env_reserved    = env.env_reserved;
     }
-    in 
+    in
+    *)
     let curr_env = ref env
     in
 (*    let check_dup_var env s = if StringMap.find *)
@@ -779,8 +784,9 @@ in
 (*  let printme = print_string "\n\n*****************\n\n" in*)
 List.iter (fun f -> check_function (init_env f) f) (functions @ pipe_list);
 let locals_map = 
-    let helper s = let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
-        let astmt_str = "found " ^ string_of_stmt s ^"\n" in
+    let helper s = 
+        (*let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
+        let astmt_str = "found " ^ string_of_stmt s ^"\n" in*)
         match s with
         Local(_, _, _) -> (*print_string astmt_str;*)true
       | List(_,_) ->  (*print_string astmt_str;*)true
@@ -798,8 +804,9 @@ let locals_map =
                                else m) StringMap.empty stmts
 in
 let other_stmts = 
-    let helper s = let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
-        let astmt_str = "other found " ^ string_of_stmt s ^"\n" in
+    let helper s = 
+        (*let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
+        let astmt_str = "other found " ^ string_of_stmt s ^"\n" in*)
         match s with
         Local(_, _, _) -> (*print_string rstmt_str;*)false
       | List(_,_) -> (* print_string rstmt_str;*)false
@@ -823,10 +830,10 @@ let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] 
 List.iter (fun s -> print_string s) stmt_strings;
 *)
 let main = 
-    let stmt_strings =
+    (*let stmt_strings =
         let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
         in temp_list
-    in
+    in*)
 (*    List.iter print_string stmt_strings;*)
       {
           typ = Int;
