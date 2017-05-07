@@ -40,13 +40,32 @@ let _ =
                 | Translate | Compile | Run | Compare -> ();
             match action with
                 Ast -> ();
-                | Translate | Compile | Run | Compare -> let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;
+                | Translate | Compile | Run | Compare -> 
+                        let new_file_name = fullNameStub ^ ".c" in
+                        let oc = open_out new_file_name in 
+                        Printf.fprintf oc "%s" (Codegen.translate ast); 
+                        close_out oc;
+                        (*let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;*)
             match action with
                 Ast | Translate -> ();
-                | Compile | Run | Compare-> ignore(read_process "gcc -g -Wall -Wno-unused-variable -I stdlib/ -g -L stdlib/ out.c -lmylist -luv");
+                | Compile | Run | Compare-> 
+                        let new_file_name = fullNameStub ^ ".c"in
+                        let gen_o_file = 
+                            "gcc -g -Wall -Wno-unused-variable -c " ^ new_file_name in
+                        let gen_exec = 
+                            "gcc -g -Wall -Wno-unused-variable -I" ^ 
+                            "../stdlib/ -g -L../stdlib/ -o" ^ fullNameStub ^ " " ^
+                            new_file_name ^ " -lmylist -lfileIO -luv"
+                        in
+                        ignore(read_process gen_o_file);
+                        ignore(read_process gen_exec);
+                        (*ignore(read_process "gcc -g -Wall -Wno-unused-variable -I stdlib/ -g -L stdlib/ out.c -lmylist -luv"); *)
             match action with
                 Ast | Translate | Compile -> ();
-                | Run | Compare -> ignore(read_process ("./a.out > " ^ fullNameStub ^ ".out")); 
+                | Run | Compare -> 
+                 let executable = "./" ^ fullNameStub ^ " > " in
+                 ignore(read_process (executable ^ fullNameStub ^ ".out")); 
+                (*| Run | Compare -> ignore(read_process ("./a.out > " ^ fullNameStub ^ ".out")); *)
                 (* ignore(Unix.execv "./a.out" [| "./a.out"; "> stdout.txt" |]); *)
             match action with
                 Ast | Translate | Compile | Run -> ();
