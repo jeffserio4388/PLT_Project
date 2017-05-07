@@ -115,7 +115,7 @@ let reserved_funcs =
         }*)
     )))) 
 
-let init_struct_info map sdecl = print_string sdecl.sname; print_string " in init\n";
+let init_struct_info map sdecl = (* print_string sdecl.sname; print_string " in init\n"; *)
     let st_info = 
         let var_map = (* added _ for noexpr changed struct to var_init lists *) 
             List.fold_left (fun map (t, id, _) -> StringMap.add id t map) 
@@ -243,6 +243,11 @@ let find_var env id =
     else raise Not_found
 
 let check (globals, stmts, functions, pipes, structs) = 
+(*    let stmt_strings =
+        let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
+        in List.rev temp_list
+    in
+    List.iter print_string stmt_strings;*)
 (*    if List.length stmts < 1 
     then raise (Failure ("You must have at least 1 statement."))
     else ();*)
@@ -299,18 +304,36 @@ let check (globals, stmts, functions, pipes, structs) =
                 body = [] 
             }
    in
-     
+let fdecls = List.fold_left 
+                    (fun m fd -> StringMap.add fd.fname fd m) 
+                        StringMap.empty functions
+in
+let global_map = List.fold_left
+                 (fun map (t, id, _) -> StringMap.add id t map)
+                    StringMap.empty globals
+in
+let struct_map = 
+    List.fold_left 
+                 (fun map sd -> init_struct_info map sd)
+                      StringMap.empty structs
+in
+    
   let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
                          built_in_decls functions
-  in
+  in(*
     let main = 
+        let stmt_strings =
+            let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
+            in List.rev temp_list
+        in
+        List.iter print_string stmt_strings;
           {
               typ = Int;
               fname = "main";
               formals = [(Int, "argc"); (List_t(MyString), "argv")];
               body = stmts;
           }
-    in
+    in*)(*
     let fdecls = List.fold_left 
                         (fun m fd -> StringMap.add fd.fname fd m) 
                             StringMap.empty functions
@@ -323,21 +346,8 @@ let check (globals, stmts, functions, pipes, structs) =
         List.fold_left 
                      (fun map sd -> init_struct_info map sd)
                           StringMap.empty structs
-    in
+    in*)
     let init_env name = 
-       (* let fdecls = List.fold_left 
-                            (fun m fd -> StringMap.add fd.fname fd m) 
-                                StringMap.empty functions
-        in
-        let global_map = List.fold_left
-                         (fun map (t, id, _) -> StringMap.add id t map)
-                            StringMap.empty globals
-        in
-        let struct_map = 
-            List.fold_left 
-                         (fun map sd -> init_struct_info map sd)
-                              StringMap.empty structs
-        in*)
         {
             env_name            = name;
             env_funcs           = fdecls;
@@ -415,7 +425,7 @@ let check (globals, stmts, functions, pipes, structs) =
         then StringMap.find var struct_info.info_vars
         else raise Not_found
     in
-    let rec get_struct_var_t env struct_info var = print_string "in get_struct_var_t\n";
+    let rec get_struct_var_t env struct_info var = (*print_string "in get_struct_var_t\n";*)
             match var with
             Id s -> if StringMap.mem s struct_info.info_vars
                     then StringMap.find s struct_info.info_vars
@@ -435,7 +445,7 @@ let check (globals, stmts, functions, pipes, structs) =
           | Popright(_) -> raise Not_found
           | Concat(_, _) -> raise Not_found
           | Noexpr -> raise Not_found
-          | StructAccess(st, v) -> print_string "in struct_access\n";
+          | StructAccess(st, v) -> (*print_string "in struct_access\n";*)
                  let struct_inf = 
                      let struct_t = get_struct_var_t env struct_info st in
                      match struct_t with
@@ -581,17 +591,13 @@ let check (globals, stmts, functions, pipes, structs) =
                                           "but instead instead is of type "^
                                           string_of_typ list_typ ^ ".")) *)
                                            
-       | StructAccess(struct_name, var_name) -> print_string "in StructAccess\n";
-(*               let raise_error = 
-                   raise (Failure("illegal dot operator argument found in " ^
-                                  "expression  " ^ string_of_expr struct_name ^
-                                  "." ^ string_of_expr var_name)) 
-               in*)
-               print_string "after raise_error\n";
+       | StructAccess(struct_name, var_name) -> 
+               (*print_string "in StructAccess\n";
+               print_string "after raise_error\n";*)
                let struct_info = 
                    let struct_t = expr env struct_name in
                match struct_t with
-               Struct(s) -> print_string "in Struct(s) "; print_string s; print_string "\n";
+               Struct(s) -> (*print_string "in Struct(s) "; print_string s; print_string "\n";*)
                             if StringMap.mem s env.env_structs
                             then StringMap.find s env.env_structs
                             else raise Not_found
@@ -600,7 +606,7 @@ let check (globals, stmts, functions, pipes, structs) =
                              "type for argument in expr " ^ 
                              string_of_expr struct_name ^
                              "." ^ string_of_expr var_name))
-               in print_string(string_of_expr(var_name)); print_string "\n";
+               in (*print_string(string_of_expr(var_name)); print_string "\n";*)
              (*  let var_t = expr env var_name 
                in *)
                let senv = update_struct_check env struct_info.info_vars in
@@ -740,5 +746,94 @@ let check (globals, stmts, functions, pipes, structs) =
   List.iter print_string stmt_strings;
   *)
 (*  let printme = print_string "\n\n*****************\n\n" in*)
-  List.iter (fun f -> check_function (init_env f.fname) f) (functions @ [main] @ pipe_list)
-  (* List -> check the elements in a list *)
+List.iter (fun f -> check_function (init_env f.fname) f) (functions @ pipe_list);
+let locals_map = 
+    let helper s = let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
+        let astmt_str = "found " ^ string_of_stmt s ^"\n" in
+        match s with
+        Local(_, _, _) -> (*print_string astmt_str;*)true
+      | List(_,_) ->  (*print_string astmt_str;*)true
+      | _ -> (*print_string rstmt_str ;*) false
+    in
+    let helper2 s =
+        match s with
+        Local(t, id, _) -> (id, t)
+      | List(t, id) ->  (id, t)
+      | _ -> ("", Void)
+    in
+    List.fold_left (fun m s -> if  helper s 
+                               then let kv = helper2 s in 
+                               (fun (id, t) -> StringMap.add id t m ) kv
+                               else m) StringMap.empty stmts
+in
+let other_stmts = 
+    let helper s = let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
+        let astmt_str = "other found " ^ string_of_stmt s ^"\n" in
+        match s with
+        Local(_, _, _) -> (*print_string rstmt_str;*)false
+      | List(_,_) -> (* print_string rstmt_str;*)false
+      | _ -> (*print_string astmt_str ;*) true
+    in
+    List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
+in
+(*
+let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] other_stmts in
+List.iter (fun s -> print_string s) stmt_strings;
+*)
+let main = 
+    let stmt_strings =
+        let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
+        in List.rev temp_list
+    in
+    List.iter print_string stmt_strings;
+      {
+          typ = Int;
+          fname = "main";
+          formals = [(Int, "argc"); (List_t(MyString), "argv")];
+          body = other_stmts;
+      }
+in
+let main_env = 
+    {
+        env_name            = "main";
+        env_funcs           = fdecls;
+        env_structs         = struct_map;
+        env_pipes           = StringMap.empty;
+        env_locals          = locals_map;
+        env_parameters      = StringMap.empty;
+        env_globals         = global_map;
+        env_in_block        = false;
+        env_check_strct     = StringMap.empty;
+        env_reserved        = reserved_funcs;
+    }
+in
+(*print_string "omg" *)
+check_function main_env main
+
+(*check_function (init_env main.fname) main;*)
+(*let seed_env = init_env "main" in*)
+(*** plan is to add the locals to the env while removing them from the stmts list **)
+(*let init_main_env name = 
+    let main_vars env stmt =
+      | Local(t,id,e) -> if StringMap.mem  then raise 
+                                    (Failure("variable "^ id ^ " is a duplicate in scope "
+                                     ^ env.env_name ^ "."))
+                         else
+                             curr_env := update_locals !curr_env t id;
+                             ignore(expr !curr_env e)
+    {
+        env_name            = name;
+        env_funcs           = fdecls;
+        env_structs         = struct_map;
+        env_pipes           = StringMap.empty;
+        env_locals          = StringMap.empty;
+        env_parameters      = StringMap.empty;
+        env_globals         = global_map;
+        env_in_block        = false;
+        env_check_strct     = StringMap.empty;
+        env_reserved        = reserved_funcs;
+    }
+in
+check_function (init_env "main") { typ = Void; fname = "main"; 
+                                   formals = []; body = stmts;};
+  (* List -> check the elements in a list *)*)
