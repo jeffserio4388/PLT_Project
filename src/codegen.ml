@@ -99,7 +99,7 @@ let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
 
-let string_of_http http = "if (strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) {"^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "(result);} else"
+let string_of_http http = "if (!strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) { userResult = "^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "();} else"
 
 
 let construct_routing http_list = 
@@ -110,10 +110,40 @@ let string_of_pdecl_listen pdecl =
 "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
 "struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
 "uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req){
+    char *token;
+    char *method;
+    char *route;
+    char *protocol;
 
-"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req){ "^
-construct_routing (List.hd pdecl.listen).arg3 ^ 
-" if {//FILL UP THE ELSE} \n }
+    token = strtok(((struct Backpack*) (req->data))->data, \"\\n\");
+    fprintf(stderr, \"%s\\n\", token);
+
+    method = strtok(token, \" \");
+    fprintf(stderr, \"method: %s\\n\", method);
+
+    route = strtok(NULL, \" \");
+    fprintf(stderr, \"route: %s\\n\", route);
+
+    protocol = strtok(NULL, \" \");
+    fprintf(stderr, \"protocol: %s\\n\", protocol);\n
+    int methodLength = strlen(method);
+        int routeLength = strlen(route);
+            char userVariable[routeLength + methodLength + 1];
+                strcpy(userVariable, method);
+                    strcat(userVariable, route);
+                        fprintf(stderr, \"userVariable: %s\\n\", userVariable); 
+char* userResult = \"\";"^
+
+(construct_routing (List.hd pdecl.listen).arg3)  ^ 
+" { fprintf(stderr,\"no match\"); } \n 
+	write_req_t *req_send = (write_req_t*) malloc(sizeof(write_req_t));
+    char *result = makeHTTP(userResult);
+	req_send->buf = uv_buf_init(result, strlen(result));
+    req_send->data = (void *) backpack;
+	uv_write((uv_write_t*) req_send, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
+}
+
 
 void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
     if (nread > 0) {
@@ -259,6 +289,7 @@ typedef struct {
 
 void echo_write(uv_write_t *req, int status) {
     fprintf(stderr, \"I did print\\n\");
+    uv_close(((struct Backpack*) (req->data))->client, NULL);
     if (status) {
         fprintf(stderr, \"Write error %s\\n\", uv_strerror(status));
     }
