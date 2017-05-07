@@ -140,8 +140,8 @@ char* userResult = \"\";"^
 	write_req_t *req_send = (write_req_t*) malloc(sizeof(write_req_t));
     char *result = makeHTTP(userResult);
 	req_send->buf = uv_buf_init(result, strlen(result));
-    req_send->data = (void *) backpack;
-	uv_write((uv_write_t*) req_send, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
+    req_send->req.data = ((struct Backpack*) (req->data))->client;
+	uv_write((uv_write_t*) &req_send->req, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
 }
 
 
@@ -155,38 +155,39 @@ void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t
         uv_queue_work(loop, &req_listen_"^pdecl.pname^", post_listen_"^pdecl.pname^", after);
         return;
     }
-
-    void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
-        if (status < 0) {
-            fprintf(stderr, \"New connection error %s\", uv_strerror(status));
-            // error!
-            return;
-        }
-
-        uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
-        uv_tcp_init(loop, client);
-        if (uv_accept(server, (uv_stream_t*) client) == 0) {
-            uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
-        }
-        else {
-            uv_close((uv_handle_t*) client, NULL);
-        }
+    if (nread < 0) {
+        if (nread != UV_EOF)
+            fprintf(stderr, \"Read error %s\", uv_err_name(nread));
+        uv_close((uv_handle_t* ) client, NULL);
     }
 
+    // free(buf->base);
+}
+
+void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
+    if (status < 0) {
+        fprintf(stderr, \"New connection error %s\", uv_strerror(status));
+        // error!
+        return;
+    }
+
+    uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
+    uv_tcp_init(loop, client);
+    if (uv_accept(server, (uv_stream_t*) client) == 0) {
+        uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
+    }
+    else {
+        uv_close((uv_handle_t*) client, NULL);
+    }
+}
 
 
 
-    void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
-        uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
 
-        uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
+void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
+    uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
 
-        uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
-        int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
-        if (r) {
-            fprintf(stderr, \"Listen error %s\", uv_strerror(r));
-        }
-    }\n"
+    uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
 
     uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
     int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
@@ -289,7 +290,7 @@ typedef struct {
 
 void echo_write(uv_write_t *req, int status) {
     fprintf(stderr, \"I did print\\n\");
-    uv_close(((struct Backpack*) (req->data))->client, NULL);
+    uv_close((uv_handle_t *) req->data, NULL);
     if (status) {
         fprintf(stderr, \"Write error %s\\n\", uv_strerror(status));
     }

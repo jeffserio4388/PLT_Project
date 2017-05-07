@@ -258,7 +258,7 @@ let string_of_fdecl fdecl =
 
 let string_of_sdecl sdecl =
     "struct " ^ sdecl.sname ^ " {\n    " ^
-    String.concat "    " (List.map string_of_vdecl sdecl.vars) ^
+    String.concat "    " (List.map string_of_vdecl (List.map (fun (a, b, _) -> (a, b)) sdecl.vars)) ^
     "};\n"
 
 let string_of_program (vars, stmts, funcs, pipes, structs) =
