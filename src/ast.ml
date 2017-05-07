@@ -152,7 +152,6 @@ let rec string_of_stmt = function
   | Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
   | Add_right(e1, e2) -> "void *a782345765 = (void * )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
   | Find_node(e1, e2, e3) -> "void *a7b45765 = (void * )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
-  | Http (e1, e2, e3) -> e1 ^ " " ^ e2
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
