@@ -1,4 +1,3 @@
-
 struct A {
     int i;
     int k;
@@ -16,12 +15,12 @@ pipe {
 global int g = 1;
 pipe {
     int j = 1;
-    bool i = true;
+/*    bool i = true; */
 
 }
-function void foo() {
+function void foo(int x, int y) {
     int testlist[];
-    int i;
+    int i = x + y;
     addleft(testlist, 1);
     g = testlist[0];
     struct A a;
@@ -41,6 +40,8 @@ function void foo() {
         print_str("\n");
     }
 }
-foo();
+int testa;
+int testb = 1;
+foo(1, 2);
 /* g = a; */
 

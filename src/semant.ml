@@ -59,6 +59,18 @@ let reserved_funcs =
             formals = [(Bool, "x")];
             body    = [];
         }(
+    StringMap.add "len" {
+            typ     = Int;
+            fname   = "len";
+            formals = [(MyString, "x")];
+            body    = [];
+        }(
+    StringMap.add "cmp" {
+            typ     = Bool;
+            fname   = "print_bool";
+            formals = [(MyString, "x"); (MyString, "y")];
+            body    = [];
+        }(
     StringMap.singleton "open_file" {
             typ     = File;
             fname   = "fclose";
@@ -113,7 +125,7 @@ let reserved_funcs =
             formals = [(List, "x")];
             body = [];
         }*)
-    )))) 
+    )))))) 
 
 let init_struct_info map sdecl = (* print_string sdecl.sname; print_string " in init\n"; *)
     let st_info = 
@@ -198,6 +210,8 @@ let update_locals env typ_t id_t =
     }
 
 let update_formals env formals = 
+(*    let fstrlist = List.fold_left (fun l (t, id) -> id :: "\n" :: l) [] formals in
+print_string "in update_formals\n"; List.iter print_string fstrlist;*)
     let formal_map = List.fold_left 
                          (fun map (t, id) -> StringMap.add id t map)
                              StringMap.empty formals
@@ -231,10 +245,24 @@ let update_struct_check env var_map =
 
 
        
-let find_var env id = 
+let find_var env id =
+    (*print_string "in find_var\n";
+    print_string id;
+    if StringMap.mem id env.env_parameters 
+    then print_string " found\n"
+    else if StringMap.mem id env.env_locals
+    then print_string " found\n"
+    else if StringMap.mem id env.env_globals
+    then print_string " found\n"
+    else if StringMap.mem id env.env_check_strct
+    then print_string " found\n"
+    else print_string " not found\n";*)
+(*    if StringMap.mem id env.env_parameters
+    then print_string " found\n"
+    else print_string " not found\n";*)
     if StringMap.mem id env.env_parameters 
     then StringMap.find id env.env_parameters
-    else if StringMap.mem id env.env_locals 
+    else if StringMap.mem id env.env_locals
     then StringMap.find id env.env_locals
     else if StringMap.mem id env.env_globals
     then StringMap.find id env.env_globals
@@ -347,14 +375,17 @@ in
                      (fun map sd -> init_struct_info map sd)
                           StringMap.empty structs
     in*)
-    let init_env name = 
+    let init_env func =
+        let formals = List.fold_left (fun map (t, id) -> print_string id; StringMap.add id t map)
+                                     StringMap.empty func.formals 
+        in
         {
-            env_name            = name;
+            env_name            = func.fname;
             env_funcs           = fdecls;
             env_structs         = struct_map;
             env_pipes           = StringMap.empty;
-            env_locals          = StringMap.empty;
-            env_parameters      = StringMap.empty;
+            env_locals          = formals;
+            env_parameters      = formals;
             env_globals         = global_map;
             env_in_block        = false;
             env_check_strct     = StringMap.empty;
@@ -392,7 +423,7 @@ in
       (List.map snd func.locals);
     *)
     (* Type of each variable (global, formal, or local) *)
-    let symbols =  
+    (*let symbols =  
         let global_pair  = List.map (fun (a,b,c) -> (a,b)) globals in 
         List.fold_left (fun m (t, n) -> StringMap.add n t m) 
 	StringMap.empty (global_pair @ func.formals)
@@ -401,7 +432,7 @@ in
     let type_of_identifier s =
       try StringMap.find s symbols
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
-    in
+    in*)
 
     let get_ID_typ env s =
         (*print_string "in get_ID_typ\n"; 
@@ -746,7 +777,7 @@ in
   List.iter print_string stmt_strings;
   *)
 (*  let printme = print_string "\n\n*****************\n\n" in*)
-List.iter (fun f -> check_function (init_env f.fname) f) (functions @ pipe_list);
+List.iter (fun f -> check_function (init_env f) f) (functions @ pipe_list);
 let locals_map = 
     let helper s = let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "found " ^ string_of_stmt s ^"\n" in
@@ -774,18 +805,29 @@ let other_stmts =
       | List(_,_) -> (* print_string rstmt_str;*)false
       | _ -> (*print_string astmt_str ;*) true
     in
-    List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
+    let temp = List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
+    in List.rev temp
 in
 (*
-let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] other_stmts in
+let locals_stmts = 
+    let helper s = let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
+        let astmt_str = "other found " ^ string_of_stmt s ^"\n" in
+        match s with
+        Local(_, _, _) -> (*print_string rstmt_str;*)true
+      | List(_,_) -> (* print_string rstmt_str;*)true
+      | _ -> (*print_string astmt_str ;*) false
+    in
+    List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
+in
+let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] locals_stmts in
 List.iter (fun s -> print_string s) stmt_strings;
 *)
 let main = 
     let stmt_strings =
         let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
-        in List.rev temp_list
+        in temp_list
     in
-    List.iter print_string stmt_strings;
+(*    List.iter print_string stmt_strings;*)
       {
           typ = Int;
           fname = "main";

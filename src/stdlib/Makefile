@@ -27,11 +27,19 @@ libmylist.a: mylist.o
 
 # header dependency
 mylist.o: mylist.h
-mylist.o: mylist.h
+#mylist.o: mylist.h
+
+libfileIO.a: fileIO.o
+	ar rc libfileIO.a fileIO.o
+	ranlib libfileIO.a
+
+fileIO.o: fileIO.h
+
+
 .PHONY: clean
 clean:
-	rm -f *.o *~ a.out core libmylist.a mylist-test
+	rm -f *.o *~ a.out core libmylist.a libfileIO.a mylist-test
 
 .PHONY: all
-all: clean libmylist.a mylist-test
+all: clean libmylist.a libfileIO.a # mylist-test
 

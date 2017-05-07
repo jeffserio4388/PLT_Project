@@ -190,7 +190,7 @@ let string_of_pdecl_listen pdecl =
     let translate (globals, stmts, funcs, pipes, structs) =
      
         "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n
-        #include <string.h>\n#include \"stdlib/mylist.h\"\n#include \"stdlib/strop.h\"\n"^ 
+        #include <string.h>\n#include <string.h>\n#include \"stdlib/mylist.h\"\n#include \"stdlib/strop.h\"\n"^ 
 (*>>>>>>> master *)
    "#define DEFAULT_PORT 7000
     #define DEFAULT_BACKLOG 128
