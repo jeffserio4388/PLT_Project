@@ -224,7 +224,7 @@ static inline char *readln(void *fp){
 }
 
 static inline void writestr(char *str, FILE *fp){
-    fprintf(stderr, "in writestr");
+    /*fprintf(stderr, "in writestr");*/
     if(!(fputs(str, fp))){
         perror("File Read Error");
         exit(1);
@@ -232,14 +232,14 @@ static inline void writestr(char *str, FILE *fp){
 }
 
 static inline char *read_verbatum(void *fp, int n){
-    fprintf(stderr, "in read_verbatum\n");
+/*    fprintf(stderr, "in read_verbatum\n");*/
     File *file_object = (File *) fp;
     if( n > BUFSIZE - 1) {
         perror("the n passed as an argument is too large");
         exit(1);
     }
     if(!(fread((void *)file_object->buf, n, 1, file_object->fp))) {
-        fprintf(stderr, "in read_verbatum-if\n");
+  /*      fprintf(stderr, "in read_verbatum-if\n");*/
         if (!feof(file_object->fp)) {
             perror("File Read Error");
             exit(1);
@@ -247,12 +247,12 @@ static inline char *read_verbatum(void *fp, int n){
     }
     int end = (n < strlen(file_object->buf))? n: strlen(file_object->buf);
     file_object->buf[end] = '\0';
-    fprintf(stderr, "in read_verbatum-end: %s\n", file_object->buf);
+/*    fprintf(stderr, "in read_verbatum-end: %s\n", file_object->buf);*/
     return file_object->buf;
 }
 
 static inline void close_file(void * fp){
-    fprintf(stderr, "in close_file\n");
+/*    fprintf(stderr, "in close_file\n");*/
     File *file_object = (File *) fp;
     free(file_object->buf);
     fclose(file_object->fp);
