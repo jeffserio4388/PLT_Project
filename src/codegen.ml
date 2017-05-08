@@ -262,7 +262,6 @@ let string_of_pdecl_listen pdecl =
      
         "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n
         #include <string.h>\n#include <string.h>\n#include \"stdlib/mylist.h\"\n#include \"stdlib/strop.h\"\n"^ 
-(*>>>>>>> master *)
    "#define DEFAULT_PORT 7000
     #define DEFAULT_BACKLOG 128
     uv_loop_t *loop;
@@ -272,7 +271,6 @@ let string_of_pdecl_listen pdecl =
         String.concat "\n" (List.map string_of_global globals) ^ "\n" ^
         
         String.concat "\n" (List.map string_of_sdecl structs) ^ "\n" ^
-(*    \nint int_cast(void* data){ *)
 
 "\nint i_cast(void* data){
     return *(int * )data;
