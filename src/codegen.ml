@@ -270,16 +270,28 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
 let string_of_pdecl_no_listen pdecl = 
 (*    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ *)
     ignore(pdecl.pname);
-    String.concat "\n    " (List.map string_of_stmt pdecl.body)
+    String.concat "\n   " (List.map string_of_stmt pdecl.body)
 
  
 let string_of_pdecl pdecl = 
-    (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
+    (if ((List.length pdecl.listen) != 0) 
+    then (string_of_pdecl_listen pdecl) 
+    else "\n" ) ^ "\n" ^
     "void work_" ^ pdecl.pname ^
-
     "(uv_work_t *req) {    " ^ 
-    (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
-     String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ 
+        (if ((List.length pdecl.listen) == 0) 
+        then 
+            (string_of_pdecl_no_listen pdecl) 
+        else 
+            "listen_" ^ 
+            pdecl.pname ^ 
+            "(" ^ 
+            (List.hd pdecl.listen).arg1 ^ 
+            ", " ^ 
+            string_of_int (List.hd pdecl.listen).arg2 ^ 
+            ");"  ^ 
+            "\n" ^
+            String.concat "\n    " (List.map string_of_stmt pdecl.body)) ^ 
     "\n}"
  
 
@@ -309,7 +321,7 @@ let string_of_pdecl pdecl =
     let translate (globals, stmts, funcs, pipes, structs) =
      
         "#include <stdio.h>\n#include <unistd.h>\n#include <uv.h>\n#include <stdlib.h>\n
-        #include <string.h>\n#include <string.h>\n#include \"stdlib/mylist.h\"\n#include \"stdlib/strop.h\"\n"^ 
+        #include <string.h>\n#include <string.h>\n#include \"../src/stdlib/mylist.h\"\n#include \"../src/stdlib/strop.h\"\n"^ 
 (*>>>>>>> master *)
    "#define DEFAULT_PORT 7000
     #define DEFAULT_BACKLOG 128
