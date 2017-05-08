@@ -152,10 +152,10 @@ let rec string_of_stmt = function
   (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
                                         ^ (string_of_int (List.length intlist)) ^ ", 1);"
   | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
-                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"*)
-  | Add_left(e1, e2) -> "void *a7858585765 = (void *)" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
-  | Add_right(e1, e2) -> "void *a782345765 = (void *)" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
-  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void *)" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"
+                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
+  | Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
+  | Add_right(e1, e2) -> "void *a782345765 = (void * )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
+  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void * )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
@@ -187,7 +187,7 @@ let string_of_pdecl_listen pdecl =
     char *route;
     char *protocol;
 
-    token = strtok(((struct Backpack*) (req->data))->data, \"\\n\");
+    token = strtok(((struct Backpack* ) (req->data))->data, \"\\n\");
     fprintf(stderr, \"%s\\n\", token);
 
     method = strtok(token, \" \");
@@ -208,21 +208,21 @@ char* userResult = \"\";"^
 
 (construct_routing (List.hd pdecl.listen).arg3)  ^ 
 " { fprintf(stderr,\"no match\"); } \n 
-	write_req_t *req_send = (write_req_t*) malloc(sizeof(write_req_t));
+	write_req_t *req_send = (write_req_t* ) malloc(sizeof(write_req_t));
     char *result = makeHTTP(userResult);
 	req_send->buf = uv_buf_init(result, strlen(result));
-    req_send->req.data = ((struct Backpack*) (req->data))->client;
-	uv_write((uv_write_t*) &req_send->req, ((struct Backpack*) (req->data))->client, &req_send->buf, 1, echo_write);
+    req_send->req.data = ((struct Backpack* ) (req->data))->client;
+	uv_write((uv_write_t* ) &req_send->req, ((struct Backpack* ) (req->data))->client, &req_send->buf, 1, echo_write);
 }
 
 
 void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
     if (nread > 0) {
-        struct Backpack *backpack = (struct Backpack*) malloc(sizeof(struct Backpack));
+        struct Backpack *backpack = (struct Backpack* ) malloc(sizeof(struct Backpack));
         backpack->data = buf->base;
         backpack->client = client;
 
-        req_listen_"^pdecl.pname^".data = (void *) backpack;
+        req_listen_"^pdecl.pname^".data = (void * ) backpack;
         uv_queue_work(loop, &req_listen_"^pdecl.pname^", post_listen_"^pdecl.pname^", after);
         return;
     }
@@ -244,11 +244,11 @@ void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
 
     uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
     uv_tcp_init(loop, client);
-    if (uv_accept(server, (uv_stream_t*) client) == 0) {
-        uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
+    if (uv_accept(server, (uv_stream_t* ) client) == 0) {
+        uv_read_start((uv_stream_t* ) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
     }
     else {
-        uv_close((uv_handle_t*) client, NULL);
+        uv_close((uv_handle_t* ) client, NULL);
     }
 }
 
@@ -260,8 +260,8 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
 
     uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
 
-    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
-    int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
+    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr* ) &addr_" ^ pdecl.pname ^ ", 0);
+    int r = uv_listen((uv_stream_t* ) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
     if (r) {
         fprintf(stderr, \"Listen error %s\", uv_strerror(r));
     }
@@ -286,7 +286,7 @@ let string_of_pdecl pdecl =
     let string_of_pdecl_main pdecl = 
         "    int data_" ^ pdecl.pname ^ ";\n" ^ 
         "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
-        "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
+        "    req_" ^ pdecl.pname ^ ".data = (void * ) &data_" ^ pdecl.pname ^ ";\n" ^
         "    uv_queue_work(loop, &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
 
     let string_of_fdecl fdecl =
@@ -342,7 +342,7 @@ char *header =
 char *makeHTTP(char *body) {
     int headerLength = strlen(header);
         int bodyLength = strlen(body);
-    char *httpResult = (char*) malloc(headerLength + bodyLength + 1);
+    char *httpResult = (char* ) malloc(headerLength + bodyLength + 1);
     strcpy(httpResult, header);
     strcat(httpResult, body);
 
@@ -362,7 +362,7 @@ typedef struct {
 
 void echo_write(uv_write_t *req, int status) {
     fprintf(stderr, \"I did print\\n\");
-    uv_close((uv_handle_t *) req->data, NULL);
+    uv_close((uv_handle_t * ) req->data, NULL);
     if (status) {
         fprintf(stderr, \"Write error %s\\n\", uv_strerror(status));
     }
