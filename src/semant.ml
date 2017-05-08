@@ -67,14 +67,38 @@ let reserved_funcs =
         }(
     StringMap.add "cmp" {
             typ     = Bool;
-            fname   = "print_bool";
+            fname   = "cmp";
             formals = [(MyString, "x"); (MyString, "y")];
             body    = [];
         }(
-    StringMap.singleton "open_file" {
-            typ     = File;
-            fname   = "fclose";
-            formals = [(MyString, "file_name"); (MyString, "mode")];
+    StringMap.add "fread_line" {
+            typ     = MyString;
+            fname   = "fread_line";
+            formals = [(File, "file_obj")];
+            body    = [];
+        }(
+    StringMap.add "freadn" {
+            typ     = MyString;
+            fname   = "freadn";
+            formals = [(File, "file_obj"); (Int, "n")];
+            body    = [];
+        }(
+    StringMap.add "fwrite_str" {
+            typ     = Void;
+            fname   = "fwrite_str";
+            formals = [(MyString, "s"); (File, "file_obj")];
+            body    = [];
+        }(
+    StringMap.add "close_file" {
+            typ     = Void;
+            fname   = "close_file";
+            formals = [(File, "file_obj")];
+            body    = [];
+        }(
+    StringMap.singleton "init_file_obj" {
+            typ     = Void;
+            fname   = "init_file_obj";
+            formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }(*(
     StringMap.add "writeln" {
@@ -125,7 +149,7 @@ let reserved_funcs =
             formals = [(List, "x")];
             body = [];
         }*)
-    )))))) 
+    ))))))))))
 
 let init_struct_info map sdecl = (* print_string sdecl.sname; print_string " in init\n"; *)
     let st_info = 
@@ -728,9 +752,25 @@ in
       | While(p, s) -> let block_env = update_call_stack !curr_env true in
                                        check_bool_expr !curr_env p;
                                        stmt block_env s
-      | Local(t,id,e) -> if is_defined !curr_env id then raise 
+      | Local(t,id,Noexpr) -> if is_defined !curr_env id then raise 
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
+                         else
+                             curr_env := update_locals !curr_env t id(*;
+                             ignore(expr !curr_env e)*)
+      | Local(t,id,e) -> let uninitializable = function
+                            Struct(_) -> true
+                            | File -> true
+                            | _ -> false
+                         in
+                         if is_defined !curr_env id then raise 
+                                    (Failure("variable "^ id ^ " is a duplicate in scope "
+                                     ^ env.env_name ^ "."))
+                         else if uninitializable t 
+                         then raise (Failure("variable "^ id ^ " is of type " ^
+                                             string_of_typ t ^ " which cannot be " ^
+                                             "initialized and declared at the " ^
+                                             "time."))
                          else
                              curr_env := update_locals !curr_env t id;
                              ignore(expr !curr_env e)
