@@ -155,7 +155,7 @@ expr SEMI                                                     { Expr $1 }
 /*| LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) }*/ 
 /*| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
 | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
-| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
+| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }*/
 | typ ID SEMI                                                   {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List(List_t($1),$2)}

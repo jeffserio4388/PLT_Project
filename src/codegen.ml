@@ -195,9 +195,10 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
         fprintf(stderr, \"Listen error %s\", uv_strerror(r));
     }
 }\n"
-
+(******************************)
 let string_of_pdecl_no_listen pdecl = 
-    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ 
+(*    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ *)
+    ignore(pdecl.pname);
     String.concat "\n    " (List.map string_of_stmt pdecl.body)
 
  
@@ -212,7 +213,7 @@ let string_of_pdecl pdecl =
  
 
     let string_of_pdecl_main pdecl = 
-        "    int data_" ^ pdecl.pname ^ ";\n" ^
+        "    int data_" ^ pdecl.pname ^ ";\n" ^ 
         "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
         "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
         "    uv_queue_work(loop, &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
