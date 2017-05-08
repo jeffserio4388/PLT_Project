@@ -1,28 +1,4 @@
-\documentclass[11pt, oneside]{book}
-\usepackage{subfiles}
-\usepackage{mystyle}
-\usepackage{tabu}
-
-
-\graphicspath{ {images/} }
-\lstset{frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{dkgreen},
-  stringstyle=\color{mauve},
-  breaklines=true,
-  breakatwhitespace=true,
-  tabsize=4
-}
-\newlength{\drop}
-
-% The comment bellow has a list of usefull commands
+\documentclass[./LRM_main.tex]{subfiles}
 \begin{comment}
 If you want a box around your answer and that answer is an
 equation then use \boxed{$$ equation $$} 
@@ -65,24 +41,22 @@ ExampleCode(blah, blah)
 
 \end{comment}
 
+
 \begin{document}
 
-\frontmatter
+%\tableofcontents
 
-\subfile{LRM_Title}
+%\thispagestyle{empty}
+%\newpage
+% If you want to change how the subsubsection's are numbered
+%\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
-\tableofcontents
-
-\mainmatter
-
-\subfile{LRM_Ch_1}
-\subfile{LRM_Ch_2}
-\subfile{LRM_Ch_3}
-\subfile{LRM_Ch_4}
-\subfile{LRM_Ch_5}
-\subfile{LRM_Ch_6}
-\subfile{LRM_Ch_7}
-
-
+%\setcounter{page}{0}
+\chapter{Language Tutorial}
+%\section{}
+%\subsection{Identifiers}
+%\subsubsection{}
+%\subsection{subsection}
+%\subsubsection{subsubsection}
 \end{document}
 

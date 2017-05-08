@@ -18,6 +18,9 @@ pipe {
 /*    bool i = true; */
 
 }
+function void print_str(){
+    int fuck;
+}
 function void foo(int x, int y) {
     File file_test;
     /*File file_testa = file_test;*/

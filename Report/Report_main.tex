@@ -1,4 +1,28 @@
-\documentclass[./LRM_main.tex]{subfiles}
+\documentclass[11pt, oneside]{book}
+\usepackage{subfiles}
+\usepackage{mystyle}
+\usepackage{tabu}
+
+
+\graphicspath{ {images/} }
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+\newlength{\drop}
+
+% The comment bellow has a list of usefull commands
 \begin{comment}
 If you want a box around your answer and that answer is an
 equation then use \boxed{$$ equation $$} 
@@ -41,22 +65,25 @@ ExampleCode(blah, blah)
 
 \end{comment}
 
-
 \begin{document}
 
-%\tableofcontents
+\frontmatter
 
-%\thispagestyle{empty}
-%\newpage
-% If you want to change how the subsubsection's are numbered
-%\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
+\subfile{LRM_Title}
 
-%\setcounter{page}{0}
-\chapter{Tools for Web Developement}
-Pipeline is a language designed for backend web development. As such, there are certain tools necessary for the backend web programmer.
-\section{Comprehensive List of Tools for Web Development}
-\subsection{subsection}
-\subsubsection{subsubsection}
+\tableofcontents
+
+\mainmatter
+
+%\subfile{LRM_Ch_1}
+\subfile{Introduction}
+\subfile{LRM}
+\subfile{Lang_tutorial}
+\subfile{LRM_Ch_4}
+\subfile{LRM_Ch_5}
+\subfile{LRM_Ch_6}
+\subfile{LRM_Ch_7}
+
 
 \end{document}
 
