@@ -42,7 +42,7 @@ for file in testFiles:
 		if (len(s) == 0 ):
 			passed.append( 'PASSED for -- '+file)
 		else:
-			failed.append('**** FAILED for file - Different output than expected'+file+'\n' )
+			failed.append('**** FAILED for file - Different output than expected '+file+'\n' )
 	else :
 		failed.append('**** FAILED for file '+file+'\n')
 	i = i+1

@@ -51,9 +51,9 @@ let _ =
                 | Compile | Run | Compare-> 
                         let new_file_name = fullNameStub ^ ".c"in
                         let gen_o_file = 
-                            "gcc -g -Wall -Wno-unused-variable -c " ^ new_file_name in
+                            "gcc -g -Wno-unused-variable -Wno-unused-but-set-variable -c " ^ new_file_name in
                         let gen_exec = 
-                            "gcc -g -Wall -Wno-unused-variable -I" ^ 
+                            "gcc -g -Wno-unused-variable -I" ^ 
                             "../stdlib/ -g -L../stdlib/ -o" ^ fullNameStub ^ " " ^
                             new_file_name ^ " -lmylist -luv"
                         in
