@@ -586,12 +586,7 @@ in
                                              "time."))
                          else
                              curr_env := update_locals !curr_env t id;
-                             let t1 = expr !curr_env e in
-                             if t == t1 then ()
-                             else raise (Failure("illegal assignment in " ^
-                                         string_of_typ t ^ " " ^ id ^ " = " ^
-                                         string_of_expr e ^ " of type " ^ 
-                                         string_of_typ t1))
+                             ignore(expr !curr_env e)
       (*| Add_left(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Add_right(e1, e2) -> ignore(expr e1); ignore(expr e2)
       | Find_node(e1, e2, e3) -> ignore(expr e1); ignore(expr e2); 
@@ -665,7 +660,7 @@ let locals_map =
     in
     let helper2 s =
         match s with
-        Local(t, id, Noexpr) -> (id, t)
+        Local(t, id, _) -> (id, t)
       | List(t, id) ->  (id, t)
       | _ -> ("", Void)
     in
@@ -683,7 +678,7 @@ let other_stmts =
         (*let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "other found " ^ string_of_stmt s ^"\n" in*)
         match s with
-        Local(_, _, Noexpr) -> (*print_string rstmt_str;*)false
+        Local(_, _, _) -> (*print_string rstmt_str;*)false
       | List(_,_) -> (* print_string rstmt_str;*)false
       | Local(t, _, _) -> helpervoid t
       | _ -> (*print_string astmt_str ;*) true
