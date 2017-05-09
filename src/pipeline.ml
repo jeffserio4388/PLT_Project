@@ -48,7 +48,7 @@ let _ =
                         (*let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;*)
             match action with
                 Ast | Translate -> ();
-                | Compile | Run | Compare-> 
+                | Compile | Run -> 
                         let new_file_name = fullNameStub ^ ".c"in
                         let gen_o_file = 
                             "gcc -g -Wall -Wno-unused-variable -c " ^ new_file_name in
@@ -56,6 +56,18 @@ let _ =
                             "gcc -g -Wall -Wno-unused-variable -I" ^ 
                             "../stdlib/ -g -L../stdlib/ -o" ^ fullNameStub ^ " " ^
                             new_file_name ^ " -lmylist -luv"
+                        in
+                        ignore(read_process gen_o_file);
+                        ignore(read_process gen_exec);
+                | Compare->
+                        let new_file_name = fullNameStub ^ ".c"in
+                        let gen_o_file = 
+                            "gcc -g -Wall -Wno-unused-variable -c " ^ 
+                            new_file_name ^ " > " ^ fullNameStub ^ ".out 2>&1" in
+                        let gen_exec = 
+                            "gcc -g -Wall -Wno-unused-variable -I" ^ 
+                            "../stdlib/ -g -L../stdlib/ -o" ^ fullNameStub ^ " " ^
+                            new_file_name ^ " -lmylist -luv" ^ " > " ^ fullNameStub ^ ".out 2>&1" 
                         in
                         ignore(read_process gen_o_file);
                         ignore(read_process gen_exec);
@@ -69,7 +81,7 @@ let _ =
                 (* ignore(Unix.execv "./a.out" [| "./a.out"; "> stdout.txt" |]); *)
             match action with
                 Ast | Translate | Compile | Run -> ();
-                | Compare -> let a = "diff " ^ fullNameStub ^ ".out " ^ fullNameStub ^ ".expected > " ^ fullNameStub ^ ".diff" in 
+                | Compare -> let a = "diff " ^ fullNameStub ^ ".out 2>&1 " ^ fullNameStub ^ ".expected > " ^ fullNameStub ^ ".diff" in 
                     ignore(read_process a);
 
 
