@@ -22,8 +22,7 @@ for file in testFiles:
 	print file
         stub = (file.split("."))[0]
 	#For each test file perform the test. And print pass or failure
-	runStr = './pipeline -d ../basic_tests/' + file + " > " \
-                 + stub + ".out 2>&1"
+	runStr = './pipeline -d ../basic_tests/' + file
 
 	diff_file = file[:-2]+'diff'
 	string = '../basic_tests/'+diff_file

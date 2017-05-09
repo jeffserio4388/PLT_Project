@@ -51,10 +51,10 @@ let rec string_of_expr = function
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Concat(e1,e2) ->      "stringcat(" ^string_of_expr e1 ^","^ string_of_expr e2 ^")"
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
-    | Call("print_int",e) ->"printf(\"%d\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_str",e)-> "printf(\"%s\","^  String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_float",e) ->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
+    | Call("print_int",e) ->"fprintf(stderr, \"%d\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_str",e)-> "fprintf(stderr, \"%s\","^  String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_float",e) ->"fprintf(stderr, \"%f\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_bool",e) -> "fprintf(stderr, " ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
     | Call("init_file_obj", e) -> let string_of_actuals = List.map string_of_expr e 
                               in
                               let check_mode m = match m with
@@ -131,6 +131,7 @@ let rec string_of_expr = function
     | Call("sleep",e)       -> "sleep(" ^ String.concat ","(List.map string_of_expr e) ^  ")"
     | Call("print_error",e) -> "perror(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
     | Call("exit",e)        ->"exit(" ^ String.concat "," (List.map string_of_expr e)   ^ ")"
+    | Call("free_list",e)   -> "removeAllNodes(" ^ String.concat "," (List.map string_of_expr e) ^")"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
