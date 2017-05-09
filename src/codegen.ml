@@ -128,6 +128,9 @@ let rec string_of_expr = function
 
     | Call("len",e)        -> "strlen(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
     | Call("cmp",e)        -> "strcmp(" ^ String.concat ","(List.map string_of_expr e) ^ ")? 0:1"
+    | Call("sleep",e)       -> "sleep(" ^ String.concat ","(List.map string_of_expr e) ^  ")"
+    | Call("print_error",e) -> "perror(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
+    | Call("exit",e)        ->"exit(" ^ String.concat "," (List.map string_of_expr e)   ^ ")"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
