@@ -149,10 +149,13 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  (*| Http_put (e1, e2) -> "put"
-  | Http_get (e1, e2) -> "get"
-  | Http_post (e1, e2) -> "post"
-  | Http_delete (e1, e2) -> "delete"*)
+  (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
+                                        ^ (string_of_int (List.length intlist)) ^ ", 1);"
+  | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
+                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
+  | Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
+  | Add_right(e1, e2) -> "void *a782345765 = (void * )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
+  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void * )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
@@ -166,79 +169,136 @@ let string_of_global (t , id, e) = if e = Noexpr then
    string_of_typ t ^ " " ^ id ^";\n" else
    string_of_typ t ^ " " ^ id ^ "= "^ string_of_expr e ^ ";\n"
 
+
+let string_of_http http = "if (!strcmp(" ^ http.httpArg1^ http.httpArg2 ^", userVariable)) { userResult = "^ String.sub http.httpArg3 1 (String.length(http.httpArg3)-2) ^ "();} else"
+
+
+let construct_routing http_list = 
+      String.concat "\n    " (List.map string_of_http http_list)
+
+
 let string_of_pdecl_listen pdecl = 
 "uv_tcp_t tcp_" ^ pdecl.pname ^ ";\n" ^
 "struct sockaddr_in addr_" ^ pdecl.pname ^ ";\n" ^
 "uv_work_t req_listen_" ^ pdecl.pname ^ ";\n" ^
+"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req){
+    char *token;
+    char *method;
+    char *route;
+    char *protocol;
 
-"void post_listen_" ^ pdecl.pname ^ "(uv_work_t *req) {
-    // fprintf(stderr, \"%s\", req->data);
-    " ^ String.concat "\n    " (List.map string_of_stmt pdecl.body) ^ "
-} 
+    token = strtok(((struct Backpack* ) (req->data))->data, \"\\n\");
+    fprintf(stderr, \"%s\\n\", token);
 
-    void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
-        if (nread > 0) {
-            req_listen_" ^ pdecl.pname ^ ".data = (void *) buf->base;
-            uv_queue_work(loop, &req_listen_" ^ pdecl.pname ^ ", post_listen_" ^ pdecl.pname ^ ", after);
-            return;
-        }
-        if (nread < 0) {
-            if (nread != UV_EOF)
-                fprintf(stderr, \"Read error %s\", uv_err_name(nread));
-            uv_close((uv_handle_t*) client, NULL);
-        }
+    method = strtok(token, \" \");
+    fprintf(stderr, \"method: %s\\n\", method);
 
-        // free(buf->base);
+    route = strtok(NULL, \" \");
+    fprintf(stderr, \"route: %s\\n\", route);
+
+    protocol = strtok(NULL, \" \");
+    fprintf(stderr, \"protocol: %s\\n\", protocol);\n
+    int methodLength = strlen(method);
+        int routeLength = strlen(route);
+            char userVariable[routeLength + methodLength + 1];
+                strcpy(userVariable, method);
+                    strcat(userVariable, route);
+                        fprintf(stderr, \"userVariable: %s\\n\", userVariable); 
+char* userResult = \"\";"^
+
+(construct_routing (List.hd pdecl.listen).arg3)  ^ 
+" { fprintf(stderr,\"no match\"); } \n 
+	write_req_t *req_send = (write_req_t* ) malloc(sizeof(write_req_t));
+    char *result = makeHTTP(userResult);
+	req_send->buf = uv_buf_init(result, strlen(result));
+    req_send->req.data = ((struct Backpack* ) (req->data))->client;
+	uv_write((uv_write_t* ) &req_send->req, ((struct Backpack* ) (req->data))->client, &req_send->buf, 1, echo_write);
+}
+
+
+void onread_"^ pdecl.pname ^"(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
+    if (nread > 0) {
+        struct Backpack *backpack = (struct Backpack* ) malloc(sizeof(struct Backpack));
+        backpack->data = buf->base;
+        backpack->client = client;
+
+        req_listen_"^pdecl.pname^".data = (void * ) backpack;
+        uv_queue_work(loop, &req_listen_"^pdecl.pname^", post_listen_"^pdecl.pname^", after);
+        return;
+    }
+    if (nread < 0) {
+        if (nread != UV_EOF)
+            fprintf(stderr, \"Read error %s\", uv_err_name(nread));
+        uv_close((uv_handle_t* ) client, NULL);
     }
 
-    void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
-        if (status < 0) {
-            fprintf(stderr, \"New connection error %s\", uv_strerror(status));
-            // error!
-            return;
-        }
+    // free(buf->base);
+}
 
-        uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
-        uv_tcp_init(loop, client);
-        if (uv_accept(server, (uv_stream_t*) client) == 0) {
-            uv_read_start((uv_stream_t*) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
-        }
-        else {
-            uv_close((uv_handle_t*) client, NULL);
-        }
+void on_new_connection_" ^ pdecl.pname ^ "(uv_stream_t *server, int status) {
+    if (status < 0) {
+        fprintf(stderr, \"New connection error %s\", uv_strerror(status));
+        // error!
+        return;
     }
 
+    uv_tcp_t *client = (uv_tcp_t * ) malloc(sizeof(uv_tcp_t));
+    uv_tcp_init(loop, client);
+    if (uv_accept(server, (uv_stream_t* ) client) == 0) {
+        uv_read_start((uv_stream_t* ) client, alloc_buffer, onread_" ^ pdecl.pname ^ ");
+    }
+    else {
+        uv_close((uv_handle_t* ) client, NULL);
+    }
+}
 
 
 
-    void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
-        uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
 
-        uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
+void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
+    uv_tcp_init(loop, &tcp_" ^ pdecl.pname ^ ");
 
-        uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr*) &addr_" ^ pdecl.pname ^ ", 0);
-        int r = uv_listen((uv_stream_t*) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
-        if (r) {
-            fprintf(stderr, \"Listen error %s\", uv_strerror(r));
-        }
-    }\n"
+    uv_ip4_addr(ip_addr, port, &addr_" ^ pdecl.pname ^ ");
 
-    let string_of_pdecl_no_listen pdecl = 
-        "int _" ^ pdecl.pname ^ ";\n" ^ 
-        String.concat "\n    " (List.map string_of_stmt pdecl.body)
+    uv_tcp_bind(&tcp_" ^ pdecl.pname ^ ", (const struct sockaddr* ) &addr_" ^ pdecl.pname ^ ", 0);
+    int r = uv_listen((uv_stream_t* ) &tcp_" ^ pdecl.pname ^ ", DEFAULT_BACKLOG, on_new_connection_" ^ pdecl.pname ^ ");
+    if (r) {
+        fprintf(stderr, \"Listen error %s\", uv_strerror(r));
+    }
+}\n"
+(******************************)
+let string_of_pdecl_no_listen pdecl = 
+(*    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ *)
+    ignore(pdecl.pname);
+    String.concat "\n   " (List.map string_of_stmt pdecl.body)
 
-    let string_of_pdecl pdecl = 
-        (if ((List.length pdecl.listen) != 0) then (string_of_pdecl_listen pdecl) else "\n" ) ^ "\n" ^
-        "void work_" ^ pdecl.pname ^
-        "(uv_work_t *req) {    " ^ 
-        (if ((List.length pdecl.listen) == 0) then (string_of_pdecl_no_listen pdecl) else "listen_" ^ pdecl.pname ^ "(" ^ (List.hd pdecl.listen).arg1 ^ ", " ^ string_of_int (List.hd pdecl.listen).arg2 ^ ");" ) ^ "\n" ^
+ 
+let string_of_pdecl pdecl = 
+    (if ((List.length pdecl.listen) != 0) 
+    then (string_of_pdecl_listen pdecl) 
+    else "\n" ) ^ "\n" ^
+    "void work_" ^ pdecl.pname ^
+    "(uv_work_t *req) {    " ^ 
+        (if ((List.length pdecl.listen) == 0) 
+        then 
+            (string_of_pdecl_no_listen pdecl) 
+        else 
+            "listen_" ^ 
+            pdecl.pname ^ 
+            "(" ^ 
+            (List.hd pdecl.listen).arg1 ^ 
+            ", " ^ 
+            string_of_int (List.hd pdecl.listen).arg2 ^ 
+            ");"  ^ 
+            "\n" ^
+            String.concat "\n    " (List.map string_of_stmt pdecl.body)) ^ 
     "\n}"
  
 
     let string_of_pdecl_main pdecl = 
-        "    int data_" ^ pdecl.pname ^ ";\n" ^
+        "    int data_" ^ pdecl.pname ^ ";\n" ^ 
         "    uv_work_t req_" ^ pdecl.pname ^ ";\n" ^
-        "    req_" ^ pdecl.pname ^ ".data = (void *) &data_" ^ pdecl.pname ^ ";\n" ^
+        "    req_" ^ pdecl.pname ^ ".data = (void * ) &data_" ^ pdecl.pname ^ ";\n" ^
         "    uv_queue_work(loop, &req_" ^ pdecl.pname ^ ", work_" ^ pdecl.pname ^ ", after);\n"
 
     let string_of_fdecl fdecl =
@@ -284,6 +344,43 @@ char * c_cast(void* data){
     return *(char ** )data;
 }
 
+char *header =
+\"HTTP/1.0 200 OK\\n\"
+\"Date: Fri, 31 Dec 1999 23:59:59 GMT\\n\"
+\"\\n\";
+
+char *makeHTTP(char *body) {
+    int headerLength = strlen(header);
+        int bodyLength = strlen(body);
+    char *httpResult = (char* ) malloc(headerLength + bodyLength + 1);
+    strcpy(httpResult, header);
+    strcat(httpResult, body);
+
+    return httpResult;
+}
+
+
+struct Backpack {
+    uv_stream_t *client;
+    char *data;
+};
+
+typedef struct {
+    uv_write_t req;
+    uv_buf_t buf;
+} write_req_t;
+
+void echo_write(uv_write_t *req, int status) {
+    fprintf(stderr, \"I did print\\n\");
+    uv_close((uv_handle_t * ) req->data, NULL);
+    if (status) {
+        fprintf(stderr, \"Write error %s\\n\", uv_strerror(status));
+    }
+    // free_write_req(req);
+}
+
+
+uv_loop_t *loop;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char * ) malloc(suggested_size);
@@ -305,7 +402,6 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
 
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
-
 
 
 

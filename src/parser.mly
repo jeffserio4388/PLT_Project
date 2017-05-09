@@ -15,7 +15,7 @@
 	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
-	%token PIPE FUNCTION LISTEN HTTPGET HTTPPUT HTTPDELETE HTTPPOST
+	%token PIPE FUNCTION LISTEN HTTP
     %token ADDLEFT ADDRIGHT POPLEFT POPRIGHT
 	%token <int> LITERAL
 	%token <float> FLOAT_LIT
@@ -60,16 +60,29 @@ STRUCT ID LBRACE vdecl_list RBRACE SEMI
 
 
 listen:
-LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI
+LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI http_list
 {{
 	arg1 = $3;
 	arg2 = $5;
+	arg3 = $8;
 }}
+
+http:
+    HTTP LPAREN STR_LIT COMMA STR_LIT COMMA STR_LIT RPAREN SEMI    
+    {{ 
+        httpArg1 = $3; 
+        httpArg2 = $5;
+        httpArg3 = $7;
+    }}
+
+http_list:
+    /* nothing */       {[]}
+    | http_list http    { $2 :: $1}
 
 listen_opt:
     /* nothing */   { [] }
     | listen   { [$1] }
-
+ 
 
 pdecl:
 PIPE LBRACE listen_opt stmt_list RBRACE
@@ -142,12 +155,8 @@ expr SEMI                                                     { Expr $1 }
 /*| LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) }*/ 
 /*| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
 | ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
-| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }
-| HTTPGET LPAREN expr COMMA expr RPAREN SEMI 		      { Http_get($3, $5) }
-| HTTPPUT LPAREN expr COMMA expr RPAREN SEMI		      { Http_put($3, $5) }
-| HTTPDELETE LPAREN expr COMMA expr RPAREN SEMI		      { Http_delete($3, $5) }
-| HTTPPOST LPAREN expr COMMA expr RPAREN SEMI		      { Http_post($3, $5) }*/
-| typ ID SEMI                                             {Local($1,$2, Noexpr)}
+| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }*/
+| typ ID SEMI                                                   {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List(List_t($1),$2)}
 /*| STRUCT ID ID SEMI                                       {Struct($2,$3)} */
