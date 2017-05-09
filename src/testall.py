@@ -52,6 +52,9 @@ for file in testFiles:
 
 runStr = 'rm ../basic_tests/*.c'
 os.system(runStr)
+
+runStr = 'rm *o'
+os.system(runStr)
 #Printing the results
 
 print '\n---------- PASSED TESTS ------------'
