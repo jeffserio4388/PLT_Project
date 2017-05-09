@@ -182,7 +182,8 @@ let update_globals env global_map =
         env_reserved    = env.env_reserved;
     }
 
-let update_locals env typ_t id_t = 
+let update_locals env typ_t id_t =
+    if typ_t = Void then raise (Failure(id_t ^" is an illegal void type variable")) else ();
     {
         env_name        = env.env_name;
         env_funcs       = env.env_funcs;
@@ -557,7 +558,8 @@ in
       | While(p, s) -> let block_env = update_call_stack !curr_env true in
                                        check_bool_expr !curr_env p;
                                        stmt block_env s
-      | Local(t,id,Noexpr) -> if is_defined !curr_env id then raise 
+      | Local(t,id,Noexpr) -> 
+                         if is_defined !curr_env id then raise 
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else
@@ -568,7 +570,7 @@ in
                             | File -> true
                             | _ -> false
                          in
-                         if is_defined !curr_env id then raise 
+                         if is_defined !curr_env id || t = Void then raise 
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else if uninitializable t 
@@ -634,11 +636,15 @@ in
 (*  let printme = print_string "\n\n*****************\n\n" in*)
 List.iter (fun f -> check_function (init_env f) f) (functions @ pipe_list);
 let locals_map = 
+    let helpervoid = function
+        Void -> raise (Failure("illegal void type found"))
+      | _ -> true
+    in
     let helper s = 
         (*let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "found " ^ string_of_stmt s ^"\n" in*)
         match s with
-        Local(_, _, _) -> (*print_string astmt_str;*)true
+        Local(t, _, Noexpr) -> (*print_string astmt_str;*) helpervoid t
       | List(_,_) ->  (*print_string astmt_str;*)true
       | _ -> (*print_string rstmt_str ;*) false
     in
@@ -654,12 +660,17 @@ let locals_map =
                                else m) StringMap.empty stmts
 in
 let other_stmts = 
+    let helpervoid = function
+        Void -> raise (Failure("illegal void type found"))
+      | _ -> true
+    in
     let helper s = 
         (*let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "other found " ^ string_of_stmt s ^"\n" in*)
         match s with
         Local(_, _, Noexpr) -> (*print_string rstmt_str;*)false
       | List(_,_) -> (* print_string rstmt_str;*)false
+      | Local(t, _, _) -> helpervoid t
       | _ -> (*print_string astmt_str ;*) true
     in
     let temp = List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
