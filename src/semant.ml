@@ -297,9 +297,11 @@ let struct_map =
                       StringMap.empty structs
 in
     let init_env func = if StringMap.mem func.fname reserved_funcs 
-                        then raise (Failure("duplicate"))
-                        else print_string "no...\n";
-        let formals = List.fold_left (fun map (t, id) -> print_string id; StringMap.add id t map)
+                        then raise (Failure("illegal function definition. " ^
+                                             "function " ^ func.fname ^
+                                             "is the name of a built_in function"))
+                        else ();
+        let formals = List.fold_left (fun map (t, id) ->  StringMap.add id t map)
                                      StringMap.empty func.formals 
         in
         {

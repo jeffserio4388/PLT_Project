@@ -2,26 +2,29 @@
 #define _STROP_H_
 #include<string.h>
 
+static char *STR_BUF[4097];
+static int count = 0;
 
-static char* _STR_BUF[4097];
-char ** count = _STR_BUF;
-*_STR_BUF = '\0';
+void Free_strs(){
+    char **p = (char **) STR_BUF;
+    while(*p)
+        free(*p++);
+}
 
 char* stringcat(const char* a, const char* b){
     char tmp[strlen(a)+strlen(b)];
     strcpy(tmp,a);
     strcat(tmp,b);
     char * ptr = strdup(tmp);
-    *count = ptr;
-    return *count++;
+    char **p = (char **) STR_BUF;
+    if( count > 4096 ) {
+        Free_strs();
+        count = 0;
+    }
+    p[count++] = ptr;
+    p[count] = NULL;
+    return ptr;
     
 }
 
-void Free_strs(){
-    while(*_STR_BUF)
-        free(*_STR_BUF++);
-}
-void foo(){
-    Free_strs();
-}
 #endif
