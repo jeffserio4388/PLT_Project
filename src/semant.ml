@@ -88,13 +88,31 @@ let reserved_funcs =
             formals = [(File, "file_obj")];
             body    = [];
         }(
+    StringMap.add "sleep" {
+            typ     = Void;
+            fname   = "sleep";
+            formals = [(Int, "x")];
+            body    = [];
+        }(
+    StringMap.add "print_error" {
+            typ     = Void;
+            fname   = "print_error";
+            formals = [(MyString, "x")];
+            body    = [];
+        }(
+    StringMap.add "exit" {
+            typ     = Void;
+            fname   = "exit";
+            formals = [(Int, "x")];
+            body    = [];
+        }(
     StringMap.singleton "init_file_obj" {
             typ     = Void;
             fname   = "init_file_obj";
             formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }
-    ))))))))))
+    )))))))))))))
 
 let init_struct_info map sdecl = 
     let st_info = 
