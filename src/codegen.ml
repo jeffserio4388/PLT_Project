@@ -400,7 +400,6 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
-
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
 
 
