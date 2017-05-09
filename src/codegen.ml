@@ -51,9 +51,9 @@ let rec string_of_expr = function
     | Unop(o, e) ->         string_of_uop o ^ string_of_expr e
     | Concat(e1,e2) ->      "stringcat(" ^string_of_expr e1 ^","^ string_of_expr e2 ^")"
     | Assign(v, e) ->       v ^ " = " ^ string_of_expr e
-    | Call("print_int",e) ->"printf(\"%d\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_str",e)-> "printf(\"%s\\n\","^  String.concat ","  (List.map string_of_expr e)^")"
-    | Call("print_float",e) ->"printf(\"%f\\n\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_int",e) ->"printf(\"%d\"," ^ String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_str",e)-> "printf(\"%s\","^  String.concat ","  (List.map string_of_expr e)^")"
+    | Call("print_float",e) ->"printf(\"%f\"," ^ String.concat ","  (List.map string_of_expr e)^")"
     | Call("print_bool",e) -> "printf(" ^ String.concat "," (List.map string_of_expr e) ^ "? \"true\\n\":\"false\\n\")"
     | Call("init_file_obj", e) -> let string_of_actuals = List.map string_of_expr e 
                               in
@@ -400,7 +400,6 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n    " (List.rev (List.map string_of_stmt stmts)) ^ "\n" ^
    
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
-
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
 
 
