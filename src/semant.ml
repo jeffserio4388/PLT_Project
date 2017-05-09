@@ -619,7 +619,16 @@ in
     in
     stmt env (Block func.body)
   in
+  let listen_check l = 
+        let helper arg = 
+            if StringMap.mem arg fdecls then ()
+            else if StringMap.mem arg reserved_funcs then ()
+            else raise (Failure("illegal http function argument " ^ arg ))
+        in
+        List.iter (fun h ->  helper h.httpArg3) l.arg3
+  in               
   let pdecl_to_fdecl p =
+      List.iter listen_check p.listen;
       {
           typ = Void;
           fname = p.pname;
