@@ -28,6 +28,12 @@ type env =
 
 (* Makes a list of fdecls for all reserved functions *)
 let reserved_funcs = 
+    StringMap.add "print_unbuf" {
+        typ = Void;
+        fname = "print_unbuf";
+        formals = [(MyString, "x")];
+        body = [];
+        }(
     StringMap.add "print_str" {
         typ = Void;
         fname = "print_str";
@@ -112,7 +118,7 @@ let reserved_funcs =
             formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }
-    )))))))))))))
+    ))))))))))))))
 
 let init_struct_info map sdecl = 
     let st_info = 
@@ -653,7 +659,7 @@ let locals_map =
         (*let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "found " ^ string_of_stmt s ^"\n" in*)
         match s with
-        Local(t, _, Noexpr) -> (*print_string astmt_str;*) helpervoid t
+        Local(t, _, _) -> (*print_string astmt_str;*) helpervoid t
       | List(_,_) ->  (*print_string astmt_str;*)true
       | _ -> (*print_string rstmt_str ;*) false
     in
