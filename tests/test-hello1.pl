@@ -1,16 +1,17 @@
-void world() {
+function void world() {
     sleep(3);
-    fprintf(stderr, "world\n");
+    print_str("world\n");
 }
-printf("above\n");
 
-pipe world {
+print_str("above\n");
+
+pipe {
     world();
 }
 
-pipe hello {
-    fprintf(stderr, "hello ");
+pipe {
+    print_str("hello ");
 }
 
-printf("below\n");
+print_str("below\n");
 

@@ -19,7 +19,7 @@ function string get_school() {
 }
 
 pipe {
-    listen("127.0.0.1", 8080);
+    listen("0.0.0.0", 80);
     http("GET", "/animals", "get_animals");
     http("GET", "/dogs", "get_dogs");
     http("GET", "/pizza", "get_pizza");
