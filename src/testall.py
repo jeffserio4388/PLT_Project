@@ -46,6 +46,10 @@ for file in testFiles:
 	else :
 		failed.append('**** FAILED for file '+file+'\n')
 	i = i+1
+        runStr = 'rm ../basic_tests/' + file[:-3]
+        print(runStr)
+        os.system(runStr)
+
 runStr = 'rm ../basic_tests/*.c'
 os.system(runStr)
 #Printing the results
