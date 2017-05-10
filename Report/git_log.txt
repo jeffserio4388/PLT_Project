@@ -1,0 +1,2425 @@
+commit 05ab3b227df9e0ba108e7fadff0dcbab7d8b8c7e
+Merge: 1185aee e34b784
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 15:31:05 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 1185aeef26fbef28ce0362a7c9aad611e0bfb85b
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 15:23:08 2017 -0400
+
+    added .expected for fail cases
+
+commit e34b78434f1b20314800b56a21377a5e43602408
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 15:11:19 2017 -0400
+
+    almost finished the test plan
+
+commit 2d27f47693ea727a243ec824ee3bdcb669babfa5
+Merge: 2e05a33 71b03b1
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:53:27 2017 -0400
+
+    Merge sharelatex-2017-05-10-1853 into master
+
+commit 71b03b1dcc21e2c28b05de1255bbe6f618bf7044
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:53:26 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit 2e05a33af44c7a742db443fedaac63bd53f0c487
+Merge: ce42e23 e99c808
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 18:52:42 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit ce42e23d3df5efcdb2f359643a31c5c019abd875
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 18:52:24 2017 +0000
+
+    second sample program
+
+commit e99c808280e25fa0a3a20eb106013646427ec86e
+Merge: 1874aca 58da5e6
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:46:52 2017 -0400
+
+    Merge sharelatex-2017-05-10-1846 into master
+
+commit 58da5e6b43859cbe36b5ceca6c5dd70d4e9e08bf
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:46:51 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit 1874acacd0fd3db891eba873e9f1ce8e2682b577
+Merge: 74de47b a4d19ab
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 18:46:15 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 74de47b70eabc204a5d3c9f16042c53951a37574
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 18:45:39 2017 +0000
+
+    sample programs for test_plan
+
+commit a4d19abd44ddc09f14fe1fdbec6fe59f38948de8
+Merge: 1cef249 8ce9200
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 14:11:26 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 1cef249d1e88b1413d6ceada6447b3b391a775c8
+Merge: dd076f5 ad987f1
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 14:11:14 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 8ce9200760cea593441475a6cb7660a55003659c
+Merge: ad987f1 6a47312
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:09:14 2017 -0400
+
+    Merge sharelatex-2017-05-10-1809 into master
+
+commit 6a473121c39930283abfb3cedd85fa1f55f7b9c9
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 14:09:12 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit dd076f513b8707b42c3c71c508a7ef2a8279d588
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 14:05:41 2017 -0400
+
+    finished LRM up to pipes, fixed tests for globals and fileIO, and also took out popright from ast, semant, parser, scanner and codegen
+
+commit ad987f1021f7852c864ce4dc375f69d6fbb4f2a8
+Merge: 710480b 26faa6e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 17:23:06 2017 +0000
+
+    Merge branch 'bugfix'
+
+commit 710480bc9f3d0c3b88fee8c2acca3672b81f7dcb
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 17:22:50 2017 +0000
+
+    deleted .diff from git
+
+commit 0b0b4ebef2af9d5fed22fba4e0f5faa668d8a324
+Merge: e997da0 4541dfe
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 17:09:10 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit e997da026e1a53d5df1521ce5424b8d574eb5f4d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 17:08:56 2017 +0000
+
+    removed extra files
+
+commit 4541dfe68da13ab945a83b00f171fbbf2c800f79
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Wed May 10 13:08:38 2017 -0400
+
+    test script
+
+commit 26faa6e3165267ee07f7bf284828d162a0f4ae7d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 16:59:18 2017 +0000
+
+    fixed string return
+
+commit 87ef69fd6ece5f73bc0d73e50cea51984e529b42
+Merge: 71cdba9 3c17551
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Wed May 10 12:49:52 2017 -0400
+
+    merge
+
+commit 71cdba943b21e72d44b6e2ac69e51918d78427ba
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Wed May 10 12:47:11 2017 -0400
+
+    new test suite
+
+commit 3c1755108e0d63a1bc90731657597540cbbb09a1
+Merge: 2579675 a5f8c1d
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 11:41:04 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 25796757813a91cec2fa4a8a9f4a82e0fe766fa6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 11:40:58 2017 -0400
+
+    added modular arithmetic
+
+commit a5f8c1d5ca6c3f28dc115f5c9bf5f3562d5ec378
+Merge: 3ea0212 bddeb06
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed May 10 11:16:53 2017 -0400
+
+    Merge sharelatex-2017-05-10-1516 into master
+
+commit bddeb0666eb2842e7fe42b5aa0ab3d742cc349f1
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed May 10 11:16:52 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit 3ea0212a102a3a878dd8fca9c652ee52c0e444e4
+Merge: 1107787 72110d2
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 10:06:12 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 1107787633a5e8ff7f7dd3fc1e2a2d59a1bf9a50
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 10:05:09 2017 -0400
+
+    added the std libraries
+
+commit 72110d23f0d7f4a2f3ea7603f610fd423f03361e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 10 06:05:16 2017 -0400
+
+    tutorial, appendix and the structure of the report
+
+commit 5c5603312d092d69d07910b00301d4deabb259a7
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 00:18:16 2017 -0400
+
+    cleaned up code and added makefile in main
+
+commit 2875c63b36f36ff73318418af6dbf7a2865349cc
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 10 00:16:19 2017 -0400
+
+    cleaned up files and added a makefile in the main folder
+
+commit fe94a0409957dd8f6b33e588e2f901da8516e32f
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 23:57:37 2017 -0400
+
+    Started LRM and made a grammars.txt for all of our grammars
+
+commit 573f1202f0a6c3e5fa473d4ee7b615c2cebb3a50
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 22:38:37 2017 -0400
+
+    formatted the report and import codes directly
+
+commit c849bea70c783978d9ef3e4a6c9f58337d3ac8f1
+Merge: 6c22be3 5c13923
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 22:37:15 2017 -0400
+
+    Merge sharelatex-2017-05-10-0237 into master
+
+commit 5c139232739cf179605841d29fad81d22b6ec37e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 22:37:14 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit 6c22be3f2c743dcdacead939ab74ff8dd522ae1f
+Merge: 7ce04c3 cfd5a5b
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 22:16:43 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 7ce04c30f9b30d2031296acb7e8e45bc5956c0d8
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 22:16:39 2017 -0400
+
+    changed tests to reflect new syntax
+
+commit cfd5a5b6dfd38385b0600d4939e7f85898e31000
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 21:59:38 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit 11b56c1ac5ccfb4dc983f61f4bb462e10a058da6
+Merge: c61b588 3401110
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 21:55:01 2017 -0400
+
+    Merge sharelatex-2017-05-10-0154 into master
+
+commit 3401110712491d6e3241b46c83aa3912cb067871
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 21:55:00 2017 -0400
+
+    Updates from ShareLaTeX
+
+commit c61b58828f6c78dc642415b7ebc37056624a2765
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 21:53:30 2017 -0400
+
+    made it so that all statements that are not in a function a pipe or a block
+
+commit 703753a987cc93542db03205e8d73586de873f4a
+Author: Ubuntu <ubuntu@ip-172-31-25-193.ec2.internal>
+Date:   Tue May 9 22:25:03 2017 +0000
+
+    changed to fprintf and flushing stdout now
+
+commit 2e501cebe113d924811b6890221de16122a4b622
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 17:53:44 2017 -0400
+
+    fixed wierd semant error with strings and added print_unbuf
+
+commit 1557abab9e4f1b0de4560529623051fd9a1848dc
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 17:45:35 2017 -0400
+
+    changed the print statements back to printf because it was interferring with the test suite, I will instead add print_unbuf function for strings only
+
+commit 5316dd1f371eff28781f44b6b36be8b3c35a47e0
+Merge: bdf9a01 dc37743
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 17:18:55 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit bdf9a01f7043e0ef52aa800d5e844d3ffdede994
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 17:17:47 2017 -0400
+
+    added listen testing functionality to semcheck, but it needs to be tested
+
+commit dc3774328cd67387e18e2ad8fa7514ef777e1780
+Author: Ubuntu <ubuntu@ip-172-31-25-193.ec2.internal>
+Date:   Tue May 9 18:54:55 2017 +0000
+
+    minor pre-demo changes
+
+commit 983b23257ce20a9a095efc26b1d1ce638d2763e7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 17:53:41 2017 +0000
+
+    fixed test script
+
+commit 61ecd0f0baa208280518507680772acc1affe26e
+Merge: 6d68a87 bf65e80
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 17:53:10 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit bf65e800b38aee5b3c355c46d8adfa351f400f54
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 13:48:24 2017 -0400
+
+    added semcheck test-cases to basic-tests
+
+commit 6d68a87036e69f71cfb85b7040e6adb79b0d479f
+Merge: 8ca399c 2453b7e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 17:46:12 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 2453b7e568e4a4e16dea99d2e783df4cbcf0ed03
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 13:27:59 2017 -0400
+
+    found another unchecked void case in the semcheck and fixed it
+
+commit a28cd42c57965f2a854ad2024848874b3490b344
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 12:44:41 2017 -0400
+
+    found unchecked type of statement and added it to codegen
+
+commit 1d7f9aa31a9ef00465982866f7f3d08964cb77a6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 03:40:07 2017 -0400
+
+    added all tests and made it so that strings do not cause memory leaks
+
+commit 8ca399cfd70fb7dd7c58bac237546999a62f1f77
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 06:51:50 2017 +0000
+
+    edited codegen
+
+commit a7412d41d6139d183e9962a9e0246d97888154dc
+Merge: 4055028 662739b
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 06:22:57 2017 +0000
+
+    Merge branch 'sleep'
+
+commit 4055028b0ad7919b5966981edfeb172c7dcf26c6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 02:22:23 2017 -0400
+
+    added sleep, exit and print_error
+
+commit 662739b73d705910dc4c8d9c0400dbbfe6a4f317
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 06:21:53 2017 +0000
+
+    added some buildins
+
+commit 7b45fab8a0836894eda0ca90d1ca537b30f16f46
+Merge: 8f8178f a52c7f1
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 01:54:21 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 8f8178f41a370cfe6ff2c9dc1e9adc9ee050ecd7
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue May 9 01:53:54 2017 -0400
+
+    added extra outputting for errors
+
+commit a52c7f1314b3d1243a3332a01f5cf3de3e3b3ffb
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 05:50:56 2017 +0000
+
+    edited stdlib
+
+commit 33fd529fe46b39de1ecd7127f123590bb1dc9f97
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 04:59:03 2017 +0000
+
+    99 bottle expected file
+
+commit 69ccd2e56c492464d3a2163f3e072b6e51cff089
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 04:58:27 2017 +0000
+
+    changed to desired output
+
+commit 98a6a4299c70c2b38350bdc8000a3a55bda969af
+Merge: 472ba7f e47cf07
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 03:02:15 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 472ba7f16d56f0b588a0e42914d860effd61fdcc
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 03:01:56 2017 +0000
+
+    removed extra tests
+
+commit 33ed101acef31ef738db5cd06f401bfa8999508d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 02:56:00 2017 +0000
+
+    removes .o file
+
+commit 38788b819c2bd961db76f321cfdf23d59b4c59f0
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 02:47:33 2017 +0000
+
+    added test for loops
+
+commit e47cf07a5678b5827fe44d6a2a3dbe092f47d040
+Merge: 282eb20 ee00026
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Mon May 8 22:20:49 2017 -0400
+
+    merged brandon branch into master
+
+commit 0ace63d188a2ea64d4dfee1fd38b222299a51550
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 9 01:53:42 2017 +0000
+
+    removes executeable
+
+commit 282eb20c0855978d0bcfdb0fe784a8062a977732
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Mon May 8 20:47:43 2017 -0400
+
+    99 bottles
+
+commit 3c770a8103839218e3df7926db97147c71994b60
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon May 8 23:45:57 2017 +0000
+
+    edited testall
+
+commit ee00026de978ef62cdf594bf1ec82f9e35165547
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon May 8 19:25:31 2017 -0400
+
+    added new test
+
+commit d7b4601b7a490368ad73086589d2bec2981d3e3f
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Mon May 8 19:09:57 2017 -0400
+
+    recursion commit
+
+commit 162b714d79f2555980d01dc41d01ef7204f5462f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon May 8 21:59:02 2017 +0000
+
+    codegen modify
+
+commit e056312233d6559cd842816cb9b0071fe8c39276
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon May 8 17:38:29 2017 -0400
+
+    edited report
+
+commit 3659ff59d3306d72938df4e3bb12a85c15a5b9b6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Mon May 8 00:49:43 2017 -0400
+
+    started final report structure
+    and cleaned up semant.ml a little
+
+commit 952b70580d194541c5db75bf20cd3c22e46c04bf
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon May 8 00:23:28 2017 -0400
+
+    fixed duplication error in pipes
+
+commit fa18219ff512164ee7da0037b75a954973616e4b
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 22:33:49 2017 -0400
+
+    commented out superfluos stmt statements and altered the rest of the file and the codegen, also made all non comment *) in the casting statements into * )
+
+commit c09e545609efb3b61693eed8039ac811577680f8
+Merge: e2343c1 e559099
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 22:16:00 2017 -0400
+
+    Merge branch 'file_dev' into brandon
+
+commit e2343c17dcbcf4ede26dc87421074d37641674ce
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 22:15:28 2017 -0400
+
+    found rogue comment in parser that made it so that only globals could parse, and found a way to get rid of the random int in the pipes
+
+commit e559099a9425739b81c1c7af497a393896a91875
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 19:55:16 2017 -0400
+
+    fully tested fileio and got rid of some debugging print statements
+
+commit e1f5fd6c2afcc53bd6cbe390063fd7f21b98f179
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 19:40:20 2017 -0400
+
+    finished fileIO and added the types that can be declared but not initialized at once to the semcheck
+
+commit 63ef5341c9726965d92a1aec8978d7a121c7cf44
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun May 7 16:24:32 2017 -0400
+
+    fixed up routing problem
+
+commit 8307e3732cc8aff74106e013ca9478eb3a3973ab
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 15:45:01 2017 -0400
+
+    made it so that ./pipeline outputted a program with the file's name instead of out.c and a.out. To do this so that it worked with basic_tests I had to copy stdlib into the main folder so that they both had easy access to the .h files
+
+commit c09618c504e21189f27fa22cc331bc0334a86ac0
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun May 7 15:29:00 2017 -0400
+
+    small change
+
+commit b2efb39a4ef05d7d57eca83e4e2c642eec66f3a6
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 20:09:14 2017 -0400
+
+    pretty much done with routing
+
+commit 0040c9dc016165054b72dbeceb95ca2769579097
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 18:28:15 2017 -0400
+
+    backpack added
+
+commit 9b4f9b629ba696fa6d828fb629a702dca6b5200f
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 18:14:09 2017 -0400
+
+    backpack
+
+commit f9cb2b4005421e6186285cac1dcb6f5776bd5c91
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 17:57:14 2017 -0400
+
+    small change
+
+commit a84fb568f4e2d0bce953c30e5d31b439a4949c3e
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 17:55:47 2017 -0400
+
+    changed back
+
+commit 67e735eab97f5bdcdbac5166cfcc93055a596297
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat May 6 17:49:32 2017 -0400
+
+    minor error
+
+commit 404945b921a71bb265ee073b08135cc9216cc2ff
+Author: Somya Vasudevan <somyavasudevan@dyn-209-2-210-238.dyn.columbia.edu>
+Date:   Wed May 3 18:18:26 2017 -0400
+
+    lsiten in the codegen working
+
+commit 272681f7eb331ca06c115b35ad1d4f5a22e55115
+Author: Somya Vasudevan <somyavasudevan@dyn-209-2-210-238.dyn.columbia.edu>
+Date:   Wed May 3 17:54:10 2017 -0400
+
+    http stuff
+
+commit b4eee1fe8f3b8b1415c418a77ae132629aa2ac1e
+Author: Somya Vasudevan <somyavasudevan@dyn-209-2-210-238.dyn.columbia.edu>
+Date:   Wed May 3 17:32:48 2017 -0400
+
+    moved to codegen
+
+commit 107082e26258e33213fa909d735502d805620691
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed May 3 17:18:23 2017 -0400
+
+    small change
+
+commit 8d6a9348ee857da74db64c740481b9788cf78c06
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed May 3 15:50:38 2017 -0400
+
+    added header function
+
+commit 55f26e84ca570560713aafa7823c2406bdafdf28
+Author: Somya Vasudevan <somyavasudevan@dyn-209-2-210-238.dyn.columbia.edu>
+Date:   Wed May 3 17:14:21 2017 -0400
+
+    http concat
+
+commit 4018d4c3a331cf5f601bb03bdbc02119cc24ae3c
+Author: Somya Vasudevan <somyavasudevan@Somyas-MacBook-Pro.local>
+Date:   Wed May 3 14:30:54 2017 -0400
+
+    http codegen
+
+commit e59fabc82e7298ebbd1f74dba3c9696e5332e268
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun May 7 15:15:07 2017 -0400
+
+    fixed merge conf
+
+commit 896ff6a5efc0175b971816d9c393329162cada6d
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 15:05:03 2017 -0400
+
+    got rid of warnings in semant, and commented out all of the http gets, posts, and deletes because I know they have been replaced
+
+commit 37f645b6e613606740a406495e99e189584182b7
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 14:40:50 2017 -0400
+
+    fixed strop issues with codegen and the issue with formals not being recognized
+
+commit fbc21e666df5b566272ab3b340e7330e46c3b294
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 03:18:28 2017 -0400
+
+    edit
+
+commit 6cbef78acd33aadf5c9efdb5db6bd56f8828afb2
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun May 7 02:29:47 2017 -0400
+
+    fixed issue with non-global variables outside of functions not being checked
+
+commit 6587f7e1e197bf9dde9203cac52f16f16842e3ae
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat May 6 17:10:52 2017 -0400
+
+    added concat semchecking and formated the pritty printer in the ast to be our language for error messages in the semcheck
+
+commit 04443e32e134c4e85dfb3daba714f37e3197bfa3
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat May 6 14:35:20 2017 -0400
+
+    sem check for accessing list element worksw
+
+commit 2609cca6db48405ee8c4afe42517afe504180aef
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat May 6 14:18:04 2017 -0400
+
+    got semcheck to work for pop operations
+
+commit b0abd3346030e63bd4b1b59e33a3a88eb8d8add4
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat May 6 13:31:19 2017 -0400
+
+    made a List_t type for the semant checker that is really just a patch for the previous List structure
+
+commit b03c6c09d6e613c0f42cd1958845a893aca8a182
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat May 6 10:59:00 2017 -0400
+
+    found extra DOT statement in parser
+
+commit 6fbd65d10d2ccd77ceeaad8115b2459d93645920
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Fri May 5 23:50:12 2017 -0400
+
+    test commit
+
+commit 46e4efe6780d6e61ea6790d1ee817eb3802449ca
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri May 5 22:55:13 2017 -0400
+
+    merged master successfully into struct_dev
+
+commit f250695a801b3d636bab37b1ec7c41254c1a4978
+Merge: d69f716 ebb2b9a
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri May 5 22:06:30 2017 -0400
+
+    Merge branch 'master' into struct_dev
+
+commit d69f71659c605730a68e9d6044693f4281f3be10
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri May 5 21:04:08 2017 -0400
+
+    added Dot to ast.ml
+
+commit 8cb9d9dfb93e3d1104265d4d7bcf2be49f1b1a74
+Merge: b4e3686 2b40cee
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri May 5 21:02:20 2017 -0400
+
+    Merge branch 'master' into struct_dev
+
+commit b4e36862f02c6a4f1dc1506dfc54c099c3065d33
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri May 5 20:44:28 2017 -0400
+
+    finished struct dev
+
+commit ebb2b9abaaa50fa740f754c7ae2d0d44e984352a
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 08:21:30 2017 +0000
+
+    added testing cases and implimented string cat with $
+
+commit d1d98f597c82c9107d83bd7a4b5bea033c1f4d3e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:41:06 2017 +0000
+
+    added scanner.mll for string concat
+
+commit 3e16d71717a48a67ffc43c70a26d74bf16b010c3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:40:41 2017 +0000
+
+    removed scanner.ml
+
+commit e5ad49e05fcfcd35199b7a699cf24eb3f2e8a96e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:39:33 2017 +0000
+
+    added parser.mly
+
+commit a2a209318ee1818f0365a2affea6891599bd25db
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:39:08 2017 +0000
+
+    rmoved parser.ml
+
+commit 2a874ed4846f366ca619171c8f1bd43c5fd230bc
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:38:21 2017 +0000
+
+    string concat with $
+
+commit b1f50037296f08f15c45ac1af6e970e33594ee84
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 07:20:56 2017 +0000
+
+    implimented strcmp
+
+commit 65833598462485f80741674fb6df2fa57412e1d2
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 06:19:32 2017 +0000
+
+    implimented strlen
+
+commit 646202d05b67b4bae58f54f1bf964e3644dff7c7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri May 5 03:05:03 2017 +0000
+
+    all tests are PASSING
+
+commit 289d1aa2e7c715120afa70a2ee56333edae6b6d0
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu May 4 20:39:36 2017 -0400
+
+    parser support for structs and fileio added
+
+commit 9dd42191c1d05e0fe80bd08b71d71f5a7c2bd9c1
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu May 4 20:38:48 2017 -0400
+
+    added struct support
+
+commit 2b40ceeb2e2c34ae2f1aba45054cafd02a44dcb6
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu May 4 07:48:17 2017 +0000
+
+    struct implimented
+
+commit beddb4c80684acfe0ac3d6f9914a6f1f232cab1d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu May 4 07:07:19 2017 +0000
+
+    fixed string list issues
+
+commit 4c2cbaa71950cb5e6bc2b594f07439ec3830f286
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu May 4 06:19:23 2017 +0000
+
+    add struct decl to scanner and parser
+
+commit 3bd79439dd211dff22018c76e2b850cd6d4139dc
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu May 4 05:52:56 2017 +0000
+
+    removed scanner.ml
+
+commit 480d77613c31d32dbb3f13d8259eaabaad61d708
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Wed May 3 23:21:44 2017 -0400
+
+    re-enabled semcheck
+
+commit 1a07547b68e6a244e298b6d7629b28178b811baa
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 21:15:45 2017 -0400
+
+    added preliminaries for checking structs
+
+commit f2a1dfbfa09890521263698416218e5ab2417661
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 17:04:35 2017 -0400
+
+    changed reserved word file to File, and fixed a typo in the ast
+
+commit b17e0fb68298d6f6a02a6af5c35c1d6f11eb5566
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 17:01:21 2017 -0400
+
+    fixed typo in semcheck
+
+commit c3356ab7d577cab617a701349d9528632d5975c3
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 13:45:56 2017 -0400
+
+    deleting accidental add of scaner.ml
+
+commit c4f75ea191cca18c846361dae4d42f505d35e85a
+Merge: bb05898 36fa548
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 10:42:10 2017 -0400
+
+    Merge branch 'sem_dev'
+
+commit 36fa548d9696a944cc01109265f737ae48440d4e
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed May 3 10:41:29 2017 -0400
+
+    added infrastructure for fileIO
+
+commit bb05898dfd1de4b79c88b9b1746d0c286c8688af
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed May 3 02:44:17 2017 +0000
+
+    implimented generic access
+
+commit 69d26378d16d1466832d1902bd7beffb352fb313
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 2 23:21:27 2017 +0000
+
+    implimented print_bool and fixed testing code
+
+commit f4d659c747cdae1cce4cec10f62c64cd92375339
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 2 22:58:45 2017 +0000
+
+    modified testing code
+
+commit 99f5a7241cf5e3c007b7047e72b1150634bcebe2
+Merge: 8ecdfa6 a814b31
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 2 22:54:35 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 8ecdfa61e11d539344251399229d2207cfee554f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue May 2 22:53:58 2017 +0000
+
+    deleted .diff files
+
+commit a814b31ad4195cdd0174896b903ca2383ea2aadc
+Merge: a02bd40 99481a5
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Mon May 1 19:24:32 2017 -0400
+
+    Merge branch 'sem_dev'
+
+commit 99481a517ec2ff16a3cb5d11658dba3870a0e1a2
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Mon May 1 19:18:08 2017 -0400
+
+    added to semant and fixed small codegen errors
+
+commit a02bd40b3017cbd59031b0b5e481bf7875cb1cf0
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Apr 30 13:37:33 2017 -0400
+
+    fixed issue with float operations, fixed bug where scanner only scanned floats with less than 2 numbers after decimal point, and added a _ to the begining of the strange integer name in all the pipes so that it would compile in c
+
+commit a246d7cb8208a23c8928e0255d5905f06955bca1
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 23:55:58 2017 -0400
+
+    commented out debug statements
+
+commit 10b92d5e45dfb74a08e205ab54677407f2b25acc
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 20:40:01 2017 -0400
+
+    found bug with duplicates that was fixed
+
+commit 03f4be51055ae1a4071a3a9da9db14ca15af40f4
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 18:07:39 2017 -0400
+
+    added Float type
+
+commit e260f5974bfa4faeaf70aa800a4a410f4c92dae1
+Merge: 40d35ff 0f9f63c
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 18:04:41 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 0f9f63c185010c3274899921d380ae2e7bb5704e
+Merge: 33f0a82 d34d020
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat Apr 29 18:04:18 2017 -0400
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 40d35ff252ce121eeabdcf73e95834458a90c93e
+Merge: d34d020 2853cf4
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 18:04:17 2017 -0400
+
+    Merge branch 'sem_dev'
+
+commit 2853cf402900a6ff1a9ba6951cbdb228744644c8
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 18:01:37 2017 -0400
+
+    Got the semchecker environments and scopes to work
+
+commit 33f0a8264a856c6eca48f732a3925bfacd1e3e1a
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat Apr 29 18:01:25 2017 -0400
+
+    binop
+
+commit 1bbf34fa148ba138482be5a0b9a78d103509994e
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat Apr 29 18:00:38 2017 -0400
+
+    binop
+
+commit b56cde31681b12d616957bb3ef94e11e05108243
+Author: somyavasudevan <somyvasu@gmail.com>
+Date:   Sat Apr 29 17:51:05 2017 -0400
+
+    test suite
+
+commit d34d020778377f27f4e42612d2e40fc2c1a66cbd
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 21:41:04 2017 +0000
+
+    fixed array and everything is working
+
+commit addb01bb252d8d98c340398f790fde39ea0f0722
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 29 12:26:49 2017 -0400
+
+    have the environment in the function
+
+commit 7ab56ada0f3023d447bd6b8c284c82a9b64d0896
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri Apr 28 23:51:35 2017 -0400
+
+    made env structure
+
+commit e95c477bbbfdeb48939025da70cae3e5388650f1
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 03:47:15 2017 +0000
+
+    modified scanner
+
+commit f03a47d853560c27a2ba03df97fa9f917523ce12
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 03:45:46 2017 +0000
+
+    added popfront and popback
+
+commit 120225a9731e9e520464fa4a4c9932027a1c56ff
+Merge: fb8033c 7ef8f84
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 02:09:06 2017 +0000
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit fb8033cb316e655a6afa6be109b02f8bb539c845
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 02:08:08 2017 +0000
+
+    test for the c list library
+
+commit 3d120d03034d7a44f1ccb9e33cc63a394eebd618
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 02:07:24 2017 +0000
+
+    implimented list access in the codegen
+
+commit b9f2b8a877d04618fb80c7234093a8ccfadf4d51
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 01:40:18 2017 +0000
+
+    the make file of the c list lib
+
+commit 7dd7cbf29fb477b5a00675492f3a992d110094ee
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 01:39:31 2017 +0000
+
+    implimented list access and the c list library
+
+commit 7ef8f84810d72181f176429c40137462814fb17e
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Fri Apr 28 21:25:46 2017 -0400
+
+    readded the LRM that was deleted from main
+
+commit b74866fd7f085eedb7a89a5b9796a6287eeb9191
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sat Apr 29 00:00:19 2017 +0000
+
+    added libmylist.a
+
+commit 4a8f3c3628b90d39a3809ee21537bd8fc7d2dce0
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 23:56:48 2017 +0000
+
+    added newline for printings
+
+commit 89391a183c0dd786610c40595b384be2700efb15
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 23:30:01 2017 +0000
+
+    added addback function and test cases for list
+
+commit 695a8e1d0772d47c5be1b6e2e9a543f79be636de
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 21:50:42 2017 +0000
+
+    corrected gcc compiling issue with listlib
+
+commit 39b846c01b5bcd10737e99649daddd316f3252d8
+Merge: 664e523 1b61761
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Fri Apr 28 15:57:32 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit 1b6176150c30e755a1e4d9ea349665dd4a523a76
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 09:06:10 2017 +0000
+
+    changed back open Ast
+
+commit e96004a0957070a0edb9311fde96f1b3898d2609
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 09:04:30 2017 +0000
+
+    corrected typ printing
+
+commit 8ec824132d0223f150bd44908fc5e9b619014bc5
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 08:56:27 2017 +0000
+
+    added print_str and print_float tests
+
+commit a574925b0e9221a06c6eb07b8c9674c1b4c98fc5
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 08:55:23 2017 +0000
+
+    added print_str and print_float
+
+commit 68d3dcdf34ea4d1c4b380779a65dc46a64ec6052
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 08:29:34 2017 +0000
+
+    implimented print_int and the test case for it
+
+commit b1ca4c2e983338a84c613d0528a9f76075517c9b
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 07:34:06 2017 +0000
+
+    fixed warnings
+
+commit a9e8687ef74650e19a77ee8d588eac858c8538cd
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 04:09:14 2017 +0000
+
+    added test-list.pl
+
+commit be4dfc5bf668c2bc4079b0c34b57ae38e2d0e963
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 04:08:30 2017 +0000
+
+    codegen format
+
+commit 8f1bc8b57109fe8d3cdbd4925f5b8a9472ec2a88
+Merge: 947af24 543a4b0
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 04:07:21 2017 +0000
+
+    added list codegen
+
+commit 947af24725fa489c19605206be0b21ab5cce59d7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 03:56:00 2017 +0000
+
+    changed list grammer
+
+commit 543a4b0b7ca5a67147b4083d0388cd7f4bef9de5
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu Apr 27 23:39:22 2017 -0400
+
+    added user space linux list header file
+
+commit 44959675ed5a80263818bbe1e0c7b4560a0442a1
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 02:28:04 2017 +0000
+
+    added void check to formals
+
+commit beea51ea22bc8d980e5ab204761670bbfd37acbc
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu Apr 27 22:23:31 2017 -0400
+
+    added checking for lists and get requests
+
+commit 53604381e0773996e070f5bf69a6a79361605aa7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 02:18:31 2017 +0000
+
+    modifed ast for float
+
+commit 845f029fc3e12b10fb5d902c7bed5e140196cd50
+Merge: 25e9109 0b97f58
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu Apr 27 21:39:11 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit 25e9109bc9062cb6f81dfee3b7d8521e2b341b2b
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Thu Apr 27 21:38:43 2017 -0400
+
+    got rid of pipe naming
+
+commit 0b97f58e271dc20c042812cd1410b14a2e518c7e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 00:50:38 2017 +0000
+
+    testcase init
+
+commit 77079819d76fd9c770edea6b3a3b0fa4b8fddd09
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 00:29:31 2017 +0000
+
+    changed test
+
+commit 94561ce6140cdd8292a964056051edb3d3ca5813
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Fri Apr 28 00:28:28 2017 +0000
+
+    codegen chenge
+
+commit 1de878206eef38e05f1261d1e204eab49e211684
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 23:22:41 2017 +0000
+
+    added binop test
+
+commit 2de1b3007c62401fce275dcc132104d7d43d3e74
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 23:21:27 2017 +0000
+
+    binop in stmts
+
+commit d2e5e91df01c58750bfa4166ada84f62d6e75d1f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 22:17:39 2017 +0000
+
+    added def test cases
+
+commit 101de33e5cc0d27031aa4a391f2ef6f10113dd1a
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 22:16:39 2017 +0000
+
+    string def added
+
+commit 261203dbd977f75a7ee5900469131368b1f9b1d3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 21:56:13 2017 +0000
+
+    implimented bool type
+
+commit a83476f33af69a89d5f31e5e0c04df620ecaf97b
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 21:20:19 2017 +0000
+
+    implimented float and float literals
+
+commit 1835b2abc18f9a11df1b64cb03ac59b8e26a4bc5
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 20:48:16 2017 +0000
+
+    added global basic_test
+
+commit 67f3e10725381fee3aa6af0093004cf62dbddca1
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 20:44:40 2017 +0000
+
+    duplicated global checked
+
+commit 81fe6b9431ccd0d4760bbf62175b31dd09b9e457
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 20:41:33 2017 +0000
+
+    added global test
+
+commit b102b48f1f06d200d5f24b3a3153fb39b5932c84
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 20:40:22 2017 +0000
+
+    codegen for globals
+
+commit eba663ff2d9f9a02467766e51cbea73b6f16f2d3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 05:08:43 2017 +0000
+
+    chenged parser
+
+commit e7c9166167b19f1fe695fbea259dfb286b08ef9d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 05:02:13 2017 +0000
+
+    removed parser.ml
+
+commit dd67ba91e775ae3dfe5b5a9f5aac81a9ebed59d0
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 04:52:45 2017 +0000
+
+    working semant and everything else
+
+commit 192f8f20f91a91aa0b84229464e5bb20ed6e0498
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 00:55:41 2017 +0000
+
+    added globals and mix statements
+
+commit 31a7cea86b5c5eab251dcc21142e20c87dc78fb3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 00:29:03 2017 +0000
+
+    working sement.ml
+
+commit 664e52382fe997948f1def2d365657856d2114be
+Merge: c25d48b 1ac81d9
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Apr 26 20:20:13 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit 1ac81d9eecabc559390100f6e7e4589f09ab9e69
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Apr 27 00:18:04 2017 +0000
+
+    moved codegen to codegen
+
+commit c25d48b4fd262fc800536fd37948ad3a48e8772b
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Apr 26 16:53:09 2017 -0400
+
+    small changes
+
+commit a5c5427c68538649bbdff2e61653851a1a42c625
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 20:45:11 2017 -0400
+
+    added http response code to routing.c
+
+commit f2090f64d33713667bc945d0aa8aa668371813d4
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 16:08:39 2017 -0400
+
+    working on routing now
+
+commit ffb8fc6b8af16ef38e84e87895a7cb77b38385cb
+Merge: 1155bd2 4379122
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 15:28:59 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit 1155bd2e49b686d827da4edfeee6d69ea49f00b5
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 15:26:57 2017 -0400
+
+    working on routing now
+
+commit 12af0db051cb5269a81361affea00a50955237c9
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 14:52:38 2017 -0400
+
+    finished with listen
+
+commit b533b5cde2f924e140ea91b226923ae027f8d392
+Merge: 513d136 6e89b54
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 13:51:28 2017 -0400
+
+    Merge branch 'somya' into brandon
+
+commit 6e89b543cae7606a98fc32b06262c79365162127
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 13:48:09 2017 -0400
+
+    fixed listen if statement
+
+commit 513d136f5a28df620ec23624c8cb6d0c9918a501
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 13:20:07 2017 -0400
+
+    changed stdlib makefile a bit
+
+commit 5f8696f7f3f4e80fcef72c6f30456c245637e2d2
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Thu Apr 20 20:43:54 2017 -0400
+
+    working on listen addition
+
+commit 4379122baf8c6071e1e9ed5ef10d99e1944a8e6d
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 23 13:20:07 2017 -0400
+
+    changed stdlib makefile a bit
+
+commit af496f4248e672516ab42840362df4994391c437
+Merge: 697845f ad76ea2
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 20 21:39:16 2017 -0400
+
+    merged
+
+commit 697845fc76dac630a538b2754b6d0fbabafb1485
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 20 21:36:18 2017 -0400
+
+    listen bool not working
+
+commit ad76ea26804bf76355e3e92324e1eb14f1ab9d6e
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Thu Apr 20 20:50:43 2017 -0400
+
+    fixed simple mistake
+
+commit a0de164145650fbf50479dc6fcdc87ac9a44de33
+Merge: 6e9ec1c a567c25
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Thu Apr 20 20:47:37 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit 9a58ece22d980da65409f13f37d715c850025be4
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 20 20:45:40 2017 -0400
+
+    my changes
+
+commit 6e9ec1c2263fafe0d18a3c8975566cdd8aeeb78a
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Thu Apr 20 20:43:54 2017 -0400
+
+    working on listen addition
+
+commit a567c254d762f1487d8a8db33e1902d6d2182865
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 20 20:43:33 2017 -0400
+
+    listen causing problems in ast
+
+commit 6257d910eb74b65f43b6f755d1480054ba8e6687
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 20 20:04:18 2017 -0400
+
+    listen to parser
+
+commit c7f16bdc1397c6b24c77eb65ca335d73170017c0
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Thu Apr 20 19:25:05 2017 -0400
+
+    fixed parser
+
+commit 5059ea132bb8c04779f1ccde0d1a581b5148b9e6
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 18:09:49 2017 -0400
+
+    added tests
+
+commit 38ddb527ea7c35650aabb2a9da7f852f2b733bf2
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 18:04:11 2017 -0400
+
+    everything
+
+commit 9028686a5502e992d0af10458482bbb00c3bc142
+Merge: b48d155 906b8ac
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 17:59:45 2017 -0400
+
+    merging
+
+commit 906b8ac2da96d17e5bd16100b94d0e61a1f14378
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 17:57:53 2017 -0400
+
+    changing stuff
+
+commit b48d155b1b80aa801b020c01b6063d4e08561646
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 17:56:21 2017 -0400
+
+    sk
+
+commit 793b510515f026800d21ddf557453e9de46153cd
+Merge: aeaa49b eba5be8
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 17:51:13 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit eba5be8e939c13c2ee7851b56afeb9104503f038
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 17:51:05 2017 -0400
+
+    get put in paresr, scanner ast
+
+commit aeaa49b174588a1d677471d6b23c4f12ddbe14a2
+Merge: ce497cd 1041338
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 17:50:59 2017 -0400
+
+    good
+
+commit ce497cdf027cd232fb1609179de56f0ddf8aaa94
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 17:48:07 2017 -0400
+
+    moving more stuff
+
+commit a6e614019be2ffd721b90041c4710a7b67b29d3a
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 17:45:57 2017 -0400
+
+    moved stuff around
+
+commit 10413389cda0d850ad3ba9d7d9463d050baa0186
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 17:43:44 2017 -0400
+
+    addleft right, etc
+
+commit 5477fc34638610b0a309719fd720daac3d109ee7
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 17:03:37 2017 -0400
+
+    addLeft to parser
+
+commit c5e51c95fdfabc1cfb43e74c80829bdb7c5ddf93
+Merge: 80e386d 850ac84
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 15:42:25 2017 -0400
+
+    pulling
+
+commit 80e386d7f79316cbcdf37de5bde703b205a3095a
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 15:40:27 2017 -0400
+
+    pulling
+
+commit 850ac8420cac6f29f5d5cc9b6a2b522b6c12dd20
+Merge: ea36d6a b2ad476
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 15:22:25 2017 -0400
+
+    Merge branch 'brandon' of https://github.com/jeffserio4388/PLT_Project into brandon
+
+commit ea36d6a2e7600b9651f362354214da3c4d5e4d7e
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Apr 16 15:20:46 2017 -0400
+
+    list is up and running
+
+commit b2ad4768e94930361676932e8ae455032b71dcc2
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 14:24:35 2017 -0400
+
+    moving files
+
+commit 4072da33c761390453dc0f2f7ad5fb8a8804b29e
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Sun Apr 16 14:22:36 2017 -0400
+
+    moving files around
+
+commit 61e1a067bdf1b8e88e6a337c55919b721786e1b8
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 13 20:26:30 2017 -0400
+
+    list.h error
+
+commit 0c548a4f5a9b7996999976832eece8abc714583e
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 13 19:35:12 2017 -0400
+
+    list added
+
+commit 97c78a71f86ce2adb9a02dd014771233f1935093
+Author: somyavasudevan <somyavasudevan@github.com>
+Date:   Thu Apr 13 18:37:02 2017 -0400
+
+    list in ast
+
+commit ff0c6182f1b6596f808f129c8463b65ec1dc9abe
+Author: somya <somyavasudevan@github.com>
+Date:   Thu Apr 13 18:06:23 2017 -0400
+
+    list
+
+commit 0399300ce76aad6700219e64fbff9b9e263bcf02
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Apr 4 22:27:56 2017 -0400
+
+    trying to switch up list decl
+
+commit 63a1706dc9fbf0766fc0bedc07140af5113dc324
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Apr 4 21:52:39 2017 -0400
+
+    adding list
+
+commit ed44114492b17e90998ad666173846670557d4f3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue Apr 4 19:55:41 2017 +0000
+
+    add list and struct
+
+commit f44a35b0664bd99039bb04388b5fd58aaa9fce78
+Author: somya <somyavasudevan@github.com>
+Date:   Mon Apr 3 19:29:39 2017 -0400
+
+    new test script and test files
+
+commit b76660fef067a564e3a0b46aae13314705df04f2
+Author: somya <somyavasudevan@github.com>
+Date:   Mon Apr 3 02:01:48 2017 -0400
+
+    struct added
+
+commit 6fb12af32a4c97604b1e86156f8c5665db558d0f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Sun Apr 2 22:26:28 2017 +0000
+
+    added struct to parser
+
+commit 1f609afd6fa09081c6703a3481111aed4c4c8f9f
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 1 20:55:25 2017 -0400
+
+    got the bare bones of the semantic checker done, to be honest it is essentially the one that was there
+
+commit 619b86185a77d3d6d365eb1182b52c49fa843876
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Apr 1 17:16:35 2017 -0400
+
+     Changed the Function definition to reflect the LRM
+
+commit eea72bd11fabd0f0a0523f2fcd6dcfa6cdc5fc1d
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sat Apr 1 16:40:59 2017 -0400
+
+    fixed fundamental problem with c code generated
+
+commit 4c9e651a997d3826d6172491cef8a32cb795d6a8
+Merge: 0704fd9 6390ef3
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sat Apr 1 16:18:44 2017 -0400
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit 0704fd918f82a64af4404187b00f58c50a428637
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sat Apr 1 16:18:41 2017 -0400
+
+    added new tests
+
+commit 6390ef335576dfc403b924e2e9f801bc678ebd2d
+Merge: 8d09a77 f2194fd
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Mar 30 01:31:07 2017 +0000
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit 8d09a77567f8c7622d04f9127b9bab37baf9096e
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Mar 30 01:29:54 2017 +0000
+
+    edited function decl and added function keyword
+
+commit f2194fd4cc7a6d4bf297ed1ad4e892a9cacfe275
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 21:02:35 2017 -0400
+
+    bab
+
+commit 6d5de8852c824d4b7a174106aff6fc6244438c4f
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 17:14:47 2017 -0400
+
+    mostly finished with testing suite
+
+commit 4f3bcd055e91e4ba1109e542d1a7917b3356971c
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 16:43:11 2017 -0400
+
+    finishing up pipeline.ml for testing
+
+commit 994cdf3483f199a91ddf8a80ee5ecfe9f1bb7c44
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 16:00:17 2017 -0400
+
+    still adding stuff to pipeline.ml
+
+commit fc8527fcf3db473162c963a188f51d93ff8e27d6
+Merge: 4834b7a 3bea368
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 15:23:12 2017 -0400
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit 4834b7a3e2a768e62508b62f1b40fd8841367256
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 15:23:02 2017 -0400
+
+    building up pipeline.ml to be used in test suite
+
+commit 3bea368608a2087383d500e3286c224b92f2803d
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Mar 29 14:44:23 2017 -0400
+
+    added linked list
+
+commit 316a61071cfb4b0dad25d4bcb67ee81a24c0aa66
+Merge: f6d72b1 8b263be
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Mar 29 13:49:30 2017 -0400
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit f6d72b14ee8f365dd3f86669bbeed2873db4fe8b
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Mar 29 13:48:46 2017 -0400
+
+    added linked list assignment from AP
+
+commit 8b263be8a342ddd85aaaaadabdd87cefc570b7b7
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Mar 29 13:41:33 2017 -0400
+
+    adding compile and run capability to pipeline.ml
+
+commit d3f0c96f814647dbfc28d01ffaa39678a901622d
+Merge: e65abf8 71346cd
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Mar 28 20:50:14 2017 -0400
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit e65abf8f64f7583b96b725ce1ccf745d189ffbf9
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Mar 28 20:49:08 2017 -0400
+
+    reorganized folders to make merge with master branch easier
+
+commit 71346cd5696984fb32061a7718c2fe95c60dd4bb
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Mar 28 16:20:23 2017 -0400
+
+    commented out pdecl_list
+
+commit c6177fbf88af622d91860f60e3277faa805d740d
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Mar 28 16:07:06 2017 -0400
+
+    removed unecessary files
+
+commit d3683c2253a759f92b8169d196bdd174ac86c947
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Mar 28 15:48:21 2017 -0400
+
+    made a file test-hello2.pl
+
+commit 03f47ebb40d90eef0978335b3f240c752cfb28c7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue Mar 28 15:08:11 2017 +0000
+
+    fixed r/r errors
+
+commit ec726cc43028c533677c2de5346116d5bdcee1a0
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon Mar 27 15:01:12 2017 -0400
+
+    made output c code prettier
+
+commit dc2da76ea460314aa101abee3a5c3055b952c1e0
+Merge: 2649ccc c233c8f
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Mar 26 21:24:49 2017 -0400
+
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit 2649ccc33df28d4a228fac1d1dc9dca43415d8c8
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Mar 26 21:19:37 2017 -0400
+
+    rigged pipeline and codegen
+
+commit c233c8f77bb6d53c0eeb5b9e5b9719eb5f656b12
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon Mar 27 01:11:46 2017 +0000
+
+    adding stuff
+
+commit c12d8d2a09dff2febb628a04d66ad9a12d54c535
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Mar 26 21:11:23 2017 -0400
+
+    codegen hack
+
+commit 7a43c8aaac9361f0930ee75f16a02750d89beaf6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Mar 26 21:09:08 2017 -0400
+
+    Makefile change and added pipeline.ml
+
+commit b7834ef6a74f3034c8c0fbbf5fd24b367e1170e2
+Merge: 47a399a c12d8d2
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon Mar 27 01:08:34 2017 +0000
+
+    ok
+    Merge branch 'microc' of https://github.com/jeffserio4388/PLT_Project into microc
+
+commit 47a399a83319f42718b9888776f358e38660f2ed
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Mon Mar 27 01:07:10 2017 +0000
+
+    finished with hello world
+
+commit 587dbe1e4d93b34a40b78591bdf857dd95be170e
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Mar 26 20:28:27 2017 -0400
+
+    implemented pipes
+
+commit cdbcfd7fb488d25c0b776f5f924cd55b2316336b
+Author: somya <somyavasudevan@github.com>
+Date:   Sun Mar 26 18:58:28 2017 -0400
+
+    changed prog structure
+
+commit 29c99545926301350a131924bfe5344ee9116891
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Mar 26 22:04:34 2017 +0000
+
+    going to make big change
+
+commit 9de2c78190069fd8afc38f49b1d6dd40d30ab031
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Mar 26 21:03:24 2017 +0000
+
+    making progress
+
+commit cb47bb1cadf8d7df8ccc8add267ff731bbc7a271
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Mar 26 20:45:15 2017 +0000
+
+    pipes almost working
+
+commit c3a24fa36f9a107264ef30b767cb6caafa215a76
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Mar 26 20:09:27 2017 +0000
+
+    adding pipes
+
+commit df69637bf4394bb190e1ae8b8c184694628a627e
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Sun Mar 26 19:43:30 2017 +0000
+
+    microc branch init
+
+commit 007e5098f73b95da5ea2f091c05bcbf3ff46da7f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Thu Mar 16 09:39:25 2017 -0400
+
+    initial parer commit
+
+commit 0550f7a636c6c0274655ff2720e89f12cec89aaf
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Mar 15 15:52:36 2017 -0400
+
+    edited scanner.mll
+
+commit cdbf8ef0fe5fcb9ca9491b0fa8c5e851a5d47aa3
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Tue Mar 7 13:56:28 2017 -0500
+
+    Update LRM_Ch_2.tex
+
+commit 62cb754e637a7cd661a910bcb6209898cd4bd739
+Merge: a2c249e 7d5ace9
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Tue Mar 7 03:39:06 2017 -0500
+
+    Merge sharelatex-2017-03-07-0839 into master
+
+commit 7d5ace9596f6f69db1a51ccdb48b4e5852164632
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Tue Mar 7 03:39:06 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit a2c249e5d7bb591ca2cca350adad7759a29da0e3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue Mar 7 02:10:13 2017 -0500
+
+    Modification to grammar and Chapter 4
+
+commit 95e0e2d938dfe6af36ab871dd4bc1ebbcf1986cc
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue Mar 7 02:08:03 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit f8df906840026f34ae3c061122d493d69856de16
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Tue Mar 7 00:10:35 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit ddedcf82ad42f12a63211fe41cb36ce03d2b0ff7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Mar 6 23:50:53 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 682469c22a0e06f349c5c042d0ec986994d840ee
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Mar 6 23:49:56 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 54e52299d83fd6ff5cf7e469093ec94c0d059d4d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Mar 6 03:13:43 2017 -0500
+
+    added ast.ml
+
+commit dfcee53023327cef6ee8f2f9111763523964c4bb
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Mar 6 03:10:15 2017 -0500
+
+    initial commit for ast.ml
+
+commit b0f4dbec89d8b1bbcf71584fd61c6314649905f6
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Mon Feb 27 19:40:20 2017 -0500
+
+    Update scanner.mll
+
+commit 02ada86773d9916e57adbca229677940d0eb1110
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Mon Feb 27 19:39:13 2017 -0500
+
+    Update scanner.mll
+
+commit 072b6187bc6eb3c8edc5efaa87088eac3b0b4c83
+Author: somya <somyavasudevan@github.com>
+Date:   Mon Feb 27 19:36:49 2017 -0500
+
+    Error file
+
+commit 88f8e2132563b42cf23cb7b17fc306bff0d12b32
+Author: somya <somyavasudevan@github.com>
+Date:   Mon Feb 27 19:34:02 2017 -0500
+
+    First commit !
+
+commit e451fc03264afdde899f49dcfae82dbf5bedde07
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 21:32:20 2017 -0500
+
+    typos
+
+commit 61b8cecbc3c3a1aace9faa53cf8c9b0072dfd194
+Merge: 5cea45a 0762141
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 21:25:45 2017 -0500
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 5cea45a80fe9393996d970b8368d02354758e540
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 21:25:25 2017 -0500
+
+    final first draft
+
+commit 0762141cc3db991c5ac48585e3a9d155afb8d97e
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 21:06:00 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 3a0449d2384e8ea3db27b3bc398cf5d42a2acbf0
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 21:03:40 2017 -0500
+
+    tuple
+
+commit efdec628477fdf41773e7de891e2735831e6fbc3
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:55:06 2017 -0500
+
+    final commit
+
+commit c74097fa56dde4bb8254f09f9cebbe5dc11f0b36
+Merge: fb49a4f 93b6570
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:54:51 2017 -0500
+
+    Merge sharelatex-2017-02-23-0154 into master
+
+commit 93b6570fb0ba161202914ae6ed89301522df71dc
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:54:51 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit fb49a4fef0443c373941737889e0d1ccb31cfab2
+Merge: 87a9f54 c3c3943
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Feb 22 20:45:49 2017 -0500
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 87a9f548438aa88d2118f7e95a3356e5f15c66fc
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Feb 22 20:45:37 2017 -0500
+
+    compiled to pdf
+
+commit c3c39432927847027eba51168da6d8a268f9a1fa
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:39:04 2017 -0500
+
+    a
+
+commit 58db111a9c44b83c5608e4517f5be16ff166d35c
+Merge: b6a5dd8 b8b00f9
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:38:36 2017 -0500
+
+    Merge sharelatex-2017-02-23-0138 into master
+
+commit b8b00f99e2a899b83ada69b9ec14c85841e41c44
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:38:35 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit b6a5dd87e0e0e3e293e51ccf3f70d417cbd6b7b1
+Merge: 8ad4a56 9538e47
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Feb 22 20:34:51 2017 -0500
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit 8ad4a56a82d3d67a66a5fb00e4a48b0235b62fe1
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Wed Feb 22 20:34:40 2017 -0500
+
+    added error catching to pipes
+
+commit 9538e47e607c065588817d572eeaecde5bff30a6
+Merge: 3ebed56 5daaf94
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 20:08:08 2017 -0500
+
+    Merge sharelatex-2017-02-23-0108 into master
+
+commit 5daaf94df4807912abbab04181620dd329042082
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 20:08:07 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 3ebed56cbb04944259f2435a40eab095e7ca6ca0
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:06:51 2017 -0500
+
+    typos
+
+commit 3450b8da854d43102da72427ea3e18c65be0fdd2
+Merge: c556c4f fccd846
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:06:35 2017 -0500
+
+    Merge sharelatex-2017-02-23-0106 into master
+
+commit fccd846d50e7e669f4f8c01741556b5e030ab922
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:06:35 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit c556c4f4c5e51bdbc53384ba085cfab056d103e8
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 20:05:21 2017 -0500
+
+    spell checked for chap 5 and 6
+
+commit bc1a5c6a7a484c40ee176ed709b7fd99c2c63ddd
+Merge: 49b1982 8057818
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 20:05:08 2017 -0500
+
+    Merge sharelatex-2017-02-23-0105 into master
+
+commit 80578189e726312d3aacaa2b15638a0a9f9c0c24
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 20:05:07 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 49b1982bfe85ad3f37d5cbd3f66922c3eda7ef9b
+Merge: 25fe8ba 85bece7
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:01:25 2017 -0500
+
+    Merge sharelatex-2017-02-23-0101 into master
+
+commit 85bece794c99316ab71d592acf74ecb020461530
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 20:01:24 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 25fe8ba1d1f35a551d4a451423a8f403a136fe87
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 19:58:14 2017 -0500
+
+    edited chap4
+
+commit 89acf55f946123f60d70f836c40e84e7fb01c498
+Merge: 756a75c 6dd07ab
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 19:46:47 2017 -0500
+
+    Merge sharelatex-2017-02-23-0046 into master
+
+commit 6dd07abdff2640e8eccbf52d2aad5cfdf130be1a
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 19:46:47 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 756a75c2198d139ac067db78c58bb184aee55b38
+Merge: 2914b93 aef39aa
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 19:45:43 2017 -0500
+
+    Merge sharelatex-2017-02-23-0045 into master
+
+commit aef39aa6ec02375ed1900472f28544be3bec850d
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 19:45:43 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 2914b9311377b73632b0bee4df1acf4c2a32b24a
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 18:45:19 2017 -0500
+
+    ch 2
+
+commit 9d59def1c3566e958ca1208a4595b5158e0889af
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 18:45:06 2017 -0500
+
+    struct addition to chapter 2
+
+commit 1d2f11da5b10dd7ff81d10fcc7ba705a92e4d3a6
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 17:29:49 2017 -0500
+
+    fixed typo
+
+commit a872ada34aecb367b2bd1b779bd690d7f44ce15d
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 17:15:10 2017 -0500
+
+    finished chapter 5 and 6
+
+commit effefdd3481e17a70532cdeadbaba1e7c8dbe361
+Merge: 9b043fd a39f55f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 15:30:56 2017 -0500
+
+    Merge sharelatex-2017-02-22-2030 into master
+
+commit a39f55f8870b5ea473df0429bfc72d1da594b6c3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 15:30:55 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 9b043fd8799a48f25009331b27eea6d7ca8969b0
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 13:30:29 2017 -0500
+
+    formatting
+
+commit 2c308f9d5eb8a55df6d22ab4827314a14e7e3c35
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 22 13:25:51 2017 -0500
+
+    formatting
+
+commit 5989b06d3a76d0654f35b1bb123cf2a973452cf9
+Merge: 96bb9de 58f4486
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 11:43:44 2017 -0500
+
+    Merge sharelatex-2017-02-22-1643 into master
+
+commit 58f44869fdefba5b61c96145d9768a3f994d47f3
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 11:43:43 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit 96bb9de62e6e4f86cc57e024c09f20114da8df34
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 01:08:04 2017 -0500
+
+    chaapter4
+
+commit d6ef5ac6c1cb9bcd05ce9e9a8fe8384515aedf27
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 01:03:43 2017 -0500
+
+    added token to chapter 1
+
+commit 06bef26e413a15a596551001b4a00d4394c6a435
+Merge: d6ef5ac 54c0b59
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 01:03:43 2017 -0500
+
+    Merge sharelatex-2017-02-22-0603 into master
+
+commit 54c0b59d1db8ceb6a1fc83fa404cd96db0f957a7
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Wed Feb 22 01:03:43 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit e48a2d8f73b460604749419c8c6945678c7878b4
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 00:55:07 2017 -0500
+
+    finished chapter 4
+
+commit 9103a79ea682cecd279b00d5db327ae5769d5fa7
+Merge: cf22f5d 950f3b7
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 00:54:53 2017 -0500
+
+    Merge sharelatex-2017-02-22-0554 into master
+
+commit 950f3b7c8d3a22594760fd1ed4d20b92401e2427
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Wed Feb 22 00:54:52 2017 -0500
+
+    Updates from ShareLaTeX
+
+commit cf22f5dff8ffdf6822202a3af0d4757f754f5168
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Tue Feb 21 23:49:30 2017 -0500
+
+    chapter 2
+
+commit 4958340d23a461dfde66a1a8b6ad1b6b2ceee734
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Feb 21 23:11:41 2017 -0500
+
+    added periods to some sentences
+
+commit 810a6f7cdf050951dc43ab863a997ab6d24b54d0
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Feb 21 23:06:06 2017 -0500
+
+    updated chapter again
+
+commit 503721c0edf1258fb75830a0791c7db224aaf868
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Feb 21 22:44:00 2017 -0500
+
+    updated pdf file
+
+commit 47a03b0094520e74244ff00bcc8ca8c1c6e48f11
+Merge: f1ea36d 3518757
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Feb 21 22:39:16 2017 -0500
+
+    Merge branch 'master' of https://github.com/jeffserio4388/PLT_Project
+
+commit f1ea36d1dcdbf1df15135cd55c3822587e891501
+Author: brandonbakhshai <brandon.bakhshai@columbia.edu>
+Date:   Tue Feb 21 22:38:59 2017 -0500
+
+    updated my chapter
+
+commit 351875748ebcc78e092fa6436a46c2636f133c6e
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Feb 21 22:08:38 2017 -0500
+
+    86'ed the Stdlib and web-dev chapters and fixed main. Going to add grammars to 5 and 6 tomorrow
+
+commit 4ca47356090f07e7380ae7dd19c6a51f5130252f
+Author: Brandon Bakhshai <brandonbakhshai@users.noreply.github.com>
+Date:   Tue Feb 21 21:12:47 2017 -0500
+
+    Update LRM_Ch_7.tex
+
+commit 241a95ff5260e8570c1c7f172d3a94f0bee3ee30
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Feb 21 17:21:11 2017 -0500
+
+    added the actual title page file
+
+commit 9c17d8b3cf56d2b7424ddb6eff60984e715df76a
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Feb 20 23:00:17 2017 -0500
+
+    finished first 9 sections
+
+commit 8c034573d92a0e714c47c67b5f38bc9dbf0bcf5f
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Feb 20 21:42:41 2017 -0500
+
+    updated chapter4
+
+commit f1b5d24ef5d8f7dcab4b9978c02922a0861c7f52
+Author: bl-2633 <bl2633@columbia.edu>
+Date:   Mon Feb 20 21:10:37 2017 -0500
+
+    add expression and assignment operator
+
+commit 3a9cb82336086b261b9e7aed8fc7cc160e76d309
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Mon Feb 20 19:12:31 2017 -0500
+
+    Completed ch 5 and did most of ch 6
+
+commit 255d873233077a0d5c2469a7d7bbb4e58e897d0a
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sun Feb 19 22:26:37 2017 -0500
+
+    Finished most of chapter 5, and refined structure for chapter 6
+
+commit 5393f767a8c07b6a1e8b75ea998925ba89e4078f
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Feb 18 23:15:30 2017 -0500
+
+    Updated pdf
+
+commit 6af560374c98b5dd6ea19abc41cf71e1da07bbed
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Feb 18 22:39:41 2017 -0500
+
+    added the session file
+
+commit 28f3b76783c659630187b5dfd570dc75cdc84184
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Feb 18 22:32:39 2017 -0500
+
+    made some alterations to ch. 1
+
+commit e93836b67a855ec3fc5bdac2c6638ca37f66351a
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Feb 18 22:10:49 2017 -0500
+
+    Put together LRM structure and wrote in the outlines
+
+commit 882ace83626ffeff2db40e9e907a1a618a3e7185
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Sat Feb 18 19:58:34 2017 -0500
+
+    added LRM
+
+commit 46a673e7d7d5e49a4929bd9266a1045e3048e4f2
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 8 20:19:44 2017 -0500
+
+    final-ish draft
+
+commit f06296d5e2d110700d640d8ba69ada435576d0a7
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 8 19:28:07 2017 -0500
+
+    added pdf of my proposed changes, but the tex code remains unchanged
+
+commit c814d0abbaf1182267deb73ff84d5b3ae4ee6f3a
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 8 14:22:31 2017 -0500
+
+    changed some formatting and commented out server example
+
+commit 5a8f33ec2e55291f5f7b0192f433700ab8419f32
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Wed Feb 8 13:54:16 2017 -0500
+
+    fixed typo
+
+commit 61b8e11e2565e0385bed82c391ac6f48ef2f4d9a
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Feb 7 12:17:35 2017 -0500
+
+    added the pdf
+
+commit 7043265cc83e8c1a67a719da1658984b7d8d7b63
+Author: Jeffrey Serio <jjs2240@columbia.edu>
+Date:   Tue Feb 7 12:16:33 2017 -0500
+
+    made some formatting changes to the document
+
+commit 0213184516f69165e8a590e77a93ea820192ab77
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Mon Feb 6 22:37:47 2017 -0500
+
+    Update Project_proposal.tex
+
+commit 7853614f0fa25a8566a5e85d8b260147a228ba41
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Mon Feb 6 22:33:17 2017 -0500
+
+    Update Project_proposal.tex
+
+commit e0b1a0b394880850a359ba4c0bd739708b0da022
+Author: Somya Vasudevan <somyvasu@gmail.com>
+Date:   Mon Feb 6 22:28:36 2017 -0500
+
+    Update Project_proposal.tex
+
+commit 7cc0458e082c120bdfc608280768fce8e7d6eec4
+Merge: 766bcd8 fd5971b
+Author: blai13 <blai13@simons-rock.edu>
+Date:   Mon Feb 6 22:00:25 2017 -0500
+
+    added types
+
+commit fd5971bd823d49e4f5e940273922cfe6f731d435
+Author: Brandon Bakhshai <brandonbakhshai@users.noreply.github.com>
+Date:   Mon Feb 6 21:53:56 2017 -0500
+
+    Update Project_proposal.tex
+
+commit 766bcd8188c40d54f06172498bdd707db8d27a28
+Author: blai13 <blai13@simons-rock.edu>
+Date:   Mon Feb 6 21:52:50 2017 -0500
+
+    added data types
+
+commit dd1c0e80eb9411fe53fd1e75801762dc4f6b58b6
+Author: Brandon Bakhshai <brandonbakhshai@users.noreply.github.com>
+Date:   Mon Feb 6 20:36:32 2017 -0500
+
+    Update Project_proposal.tex
+
+commit a636453ecf49b9b71486374b3198a2c92d3e9053
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Mon Feb 6 20:17:40 2017 -0500
+
+    added somya's uni
+
+commit 1dbd0e1218093ea46b662af7cc088dcce460b216
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Mon Feb 6 19:28:07 2017 -0500
+
+    latex project proposal
+
+commit 5ed07f563a6bd28b2ece1c5457d4b39698e45bbd
+Author: jeffserio4388 <jjs2240@columbia.edu>
+Date:   Thu Feb 2 19:53:33 2017 -0500
+
+    Initial commit
