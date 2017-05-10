@@ -1,45 +1,5 @@
 \documentclass[./Report_main.tex]{subfiles}
-\begin{comment}
-If you want a box around your answer and that answer is an
-equation then use \boxed{$$ equation $$} 
 
-if you want to indent a block of text:
-\begin{adjustwidth}{cm of right indent}{cm of left indent}
-% paragraph to be indented
-\end{adjustwidth}
-
-if you just want one indent for one line 
-use \indent per intended indent per line
-
-A sections numbers automatically, so if the number of 
-the problem is out of order it would be easier to 
-just indent and bold the sections and subsections
-and not use the \section{} kind of commands
-
-\newpage makes a new page
-
-$normal math mode$
-$$Special math mode$$
-
-to include an image use
-\includegraphics{image_name}
-image_name is the file name (.png) without the extension. The file
-name cannot have any spaces or any periods other than the one before
-the file extension.
-
-To include a codeblock use
-\begin{lstlisting}
-ExampleCode(blah, blah)
-{
-	it does tabbing and everything;
-	for (coloring of major languages like java){
-		add the folloing to the \lstset tuple:
-			language=<name_of_language>;
-	}
-}
-\end{lstlisting}
-
-\end{comment}
 
 
 \begin{document}
@@ -736,7 +696,9 @@ Pipeline is a language designed for backend web development. As such, there are 
 
 \subsection{Full Grammar}
 Associativity in order (if associativity is not stated it is left associative)
-\begin{lstlisting}
+\begin{verbatim}
+    
+
     1) "."
 	2) right "!" for not and "-" for negative
 	3) "*" multiplication "/" division
@@ -874,6 +836,6 @@ actuals_opt:
 actuals_list:
     expr
     | actuals_list , expr
-\end{lstlisting}
+\end{verbatim}
    
 \end{document}
