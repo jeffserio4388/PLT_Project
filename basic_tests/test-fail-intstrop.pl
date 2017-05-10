@@ -1,1 +1,1 @@
-int i = 1 + "hello";
+{ int i = 1 + "hello"; }

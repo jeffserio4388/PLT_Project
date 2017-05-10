@@ -8,10 +8,11 @@ function int fib(int x){
     }
     return fib(x-1)+fib(x-2);
 }
-
+{
 int c = fib(4);
 
 print_int(c);
+}
 
 
 

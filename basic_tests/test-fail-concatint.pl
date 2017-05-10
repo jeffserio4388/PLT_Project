@@ -1,1 +1,1 @@
-string s = "a" $ "b" $ 4;
+{string s = "a" $ "b" $ 4;}

@@ -1,4 +1,4 @@
-int i;
+global int i;
 for (i = 99; i >0; i = i-1)
     {       
 
