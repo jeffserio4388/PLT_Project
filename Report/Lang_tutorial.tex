@@ -170,7 +170,107 @@ If a list is declared, it must be freed in order to prevent memory leak in the p
     list_free(a)//release the memory of a and prevent memory leak
 \end{lstlisting}
 \subsection{struct}
+Structs are a way for the user to define his/her own aggregate data type. It is a collection of variables that can be called and used for whatever purpose a user needs. \\
+A struct must first be defined in the outermost scope before it can be used. It cannot be defined within a block, function or pipe. A struct can only contain a File, int, float, bool or string type, and only declarations without initialization may be used in the struct. The syntax to define a struct is with the \testtt{struct} keyword followed by the name of the struct and a block of statements between curly-braces and after the last curly brace there is a semicolon.
+\begin{lstlisting}
+/* struct definition */
+struct struct_name {
+     [declaration statements]
+};
+\end{lstlisting}
+To use your struct in the body of your function simply use the \texttt{keyword} followed by the name of the variable. A struct variable must be declared in pipeline first, and it can never be initialized with a struct literal.
+\begin{lstlisting}
+/* proper struct declaration */
+struct struct_name;
+/* improper struct declaration */
+struct struct_name = { [statements] };
+\end{lstlisting}
+the second case will fail compilation. In order to use the variables inside of the struct you simple use the struct variable name followed by dot operator "." and the name of the struct variable.
+\begin{lstlisting}
+/* struct use */
+struct_name.variable = expr;
+expr = struct_name.variable;
+expr = expr + struct_name.variable; 
+/* etc... */
+\end{lstlisting}
+Here is an example program that uses a struct:
+\begin{lstlisting}
+/* define the struct */
+struct Example {
+    int i;
+    float f;
+    bool b;
+    string s;
+    struct A a;
+    File fl;
+};
+{
+	struct Example e;
+	e.s = "Hello World\n";
+	e.i = 1;
+	int i = e.1 + 1;
+	if ( e.i < 3 ) {
+	    print_string(e.s);
+	}
+}
+\end{lstlisting}
 \subsection{file}
+File IO is done with a File object. First you must declare a File object and then use the init\_file\_obj function to initialize the file object and open the file. A file object cannot be initialized and declared in one statement.
+\begin{lstlisting}
+/* File declaration and initialization */
+	File file_object;
+	init_file_obj(file_object, file_name, file_mode);
+\end{lstlisting}
+for the init_file_obj you give it first the name of the file object, then a sting containing the name of the desired file, and lastly a string that represents the mode it can it is opened in. pipeline uses the standard c modes, so the mode must be one of the following strings:
+\begin{lstlisting}
+	mode	| mode description
+	--------------------------------------------------------------------------------
+	"r" 	| read-only mode
+	"rb"	| read-only mode for a binary/unix style file
+	"r+"	| read-mode but writing is also allowed
+	"rb+"	| the same as "r+" but for binary/unix style files
+	"w"		| write-only mode that creates a file or overwrites an existing file
+	"wb"	| write-only but for binary/unix files
+	"w+"	| write-mode that also allows reading
+	"wb+"	| same as "w+" but for binary files
+	"a"		| append-mode opens an existing file in write-only mode without overwriting the file
+	"ab"	| same as "a" but for binary files
+	"a+"	| append-mode with reading allowed
+	"ab+"	| same as "a+" but for binary files
+\end{lstlisting}
+To write to a file you use the fwrite_str function, which takes a string and a file object as an argument, and then writes that string to a file.
+\begin{lstlisting}
+	fwrite_str(given_string, file_object);
+\end{lstlisting}
+To read a line from a file use the fread_line function which takes only the file object and returns a string. It reads up to the next newline character. To read up to 4095-bytes from a file in one chunk use the freadn function which takes a file object and an integer as an argument.
+\begin{lstlisting}
+	string s = fread_ln(file_object);
+	s = freadn(file_object, number_of_bytes);
+\end{lstlisting}
+When you are done you must close the file to both prevent memory leaks and to ensure that the contents of the buffer are fully read into the file. To close a file object, use the function close_file which takes a file object as an argument and closes the file.
+\begin{lstlisting}
+	close_file(file_object);
+\end{lstlisting}
+In order to avoid memory leaks or file problems it is recomended that for write operations you open the file in either "w" or "a" mode write your strings and then 
+close the file before you do any read operations, and for reading it is recommended to open in "r" or "rb" mode and do your read operations and then close the file before you do any write operations.\\
+here is an example program:
+\begin{lstlisting}
+{
+	File test_file;
+	init_file_obj(test_file, "test-fileIO.txt", "w+");
+	fwrite_str("Hello World\n", test_file);
+	close_file(test_file);
+	init_file_obj(test_file, "test-fileIO.txt", "r+");
+	string s = fread_line(test_file);
+	print_str(s);
+	close_file(test_file);
+	init_file_obj(test_file, "test-fileIO.txt", "r+");
+	s = freadn(test_file, 4);
+	print_str(s);
+	print_str("\n");
+	close_file(test_file);
+}
+\end{lstlisting}
 \section{control flow}
 control flow in pipeline works similar as C, it has for and wile loop and if, else selection\\
 \begin{lstlisting}
@@ -225,14 +325,6 @@ The following program prints the lyrics for 99-bottles of beers.\\
 \end{lstlisting}
 \section{function}
 while pipeline has many buildin functions, it also allows custom function declaration. The fallowing function calculates the gcd of two given numbers and returns the result.\\
-\textbf{IMPORTANT:} If a function has type string, it \textbf{must} return rt\_string(string) instead of string to prevent corrupted data.\\
-Examples:\\
-\begin{lstlisting}
-function string test(){
-    string a = "hello";
-    return rt_string(a); // return rt_string(a) instead of a here
-}
-\end{lstlisting}
 \begin{lstlisting}
 function int gcd(int a, int b){
     while(a != b){
@@ -266,54 +358,7 @@ function int fib(int x){//function the calculates the nth Fibonacci numbers
  print_int(c);
  }
 \end{lstlisting}
-
-%pipe section.
 \section{pipe}
-The block of code that the user wants to run asynchronously goes into a pipe.\\
-\begin{lstlisting}
-pipe{
-	int a = 5;
-	int b = 3;
-	sleep(10);
-	print_int(a+b);
-}
-
-pipe {
-    print_str("Hello "); 
-}
-
-// prints out Hello 8
-
-\end{lstlisting}
-
-% Routing
-\section{Routing}
-The following routing functions are supported inside a pipe - LISTEN, GET, PUT, POST, DELETE. These functions can be declared only inside a pipe, where listen has to be the first statement in the pipe.
-
-\begin{lstlisting}
-function string get_user_handler(){
-    return "You sent me a GET request !!!???! ";
-}
-function string put_user_handler(){
-    return "You sent me a PUT request !!!???! ";
-}
-function string post_user_handler(){
-    return "You sent me a POST request !!!???! ";
-}
-function string delete_user_handler(){
-    return "You sent me a DELETE request !!!???! ";
-}
-
-pipe {
-    listen("127.0.0.1",8080);
-    http("GET","/user","get_user_handler");
-    http("PUT","/user","put_user_handler");
-    http("POST","/user","post_user_handler");
-    http("DELETE","/user","delete_user_handler");
-
-}
-\end{lstlisting}
-
 \section{build-in functions}
 build-in functions provided by the pipeline language:\\
 \begin{itemize}
