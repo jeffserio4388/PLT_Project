@@ -7,3 +7,6 @@ function void foo(int y){
     print_int(y);
     print_str("\n");
 }
+{
+print_str("failed\n");
+}

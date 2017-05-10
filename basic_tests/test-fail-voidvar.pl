@@ -1,1 +1,4 @@
-{ void i; }
+{ 
+void i; 
+print_str("failed\n");
+}
