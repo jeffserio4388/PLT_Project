@@ -1,3 +1,4 @@
+{
 string a[];
 
 addright(a,"1");
@@ -7,3 +8,4 @@ int i = 0;
 print_str(a[0]);
 print_str(a[1]);
 print_str(a[2]);
+}

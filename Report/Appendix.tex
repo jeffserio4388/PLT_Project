@@ -52,12 +52,22 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{Test plan}
-\section{source to target}
-\section{test suites and why}
-\section{test automation}
-\section{who did what}
-%\section{}
+\chapter{Appendix}
+\section*{Code Listing}
+\textbf{scanner.mll}
+\lstinputlisting[language=Ocaml]{../src/scanner.mll}
+\textbf{parser.mly}
+\lstinputlisting[language=Ocaml]{../src/parser.mly}
+\textbf{ast.ml}
+\lstinputlisting[language=Ocaml]{../src/ast.ml}
+\textbf{semant.ml}
+\lstinputlisting[language=Ocaml]{../src/semant.ml}
+\textbf{codegen.ml}
+\lstinputlisting[language=Ocaml]{../src/codegen.ml}
+\textbf{pipeline.ml}
+\lstinputlisting[language=Ocaml]{../src/pipeline.ml}
+\textbf{mylist.c}
+%\lstinputlisting[language=C]{../stdlib/mylist.c}
 %\subsection{Identifiers}
 %\subsubsection{}
 %\subsection{subsection}

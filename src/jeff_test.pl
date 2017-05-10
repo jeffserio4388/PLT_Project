@@ -1,4 +1,4 @@
-void sdhjkshdjhfskdjfhw = 1;
+{int sdhjkshdjhfskdjfhw = 1;}
 struct A {
     int i;
     int k;
@@ -31,12 +31,13 @@ pipe {
     print_str(test_readn);
     close_file(file_test);
 }
+global int snfjkahbugipquwnavjuqer =1;
 function void foo(int x, int y) {
     File file_test;
     /*File file_testa = file_test;*/
     init_file_obj(file_test, "test_file.txt", "r+");
     string test_file_string = fread_line(file_test);
-    void idfjaisodfjiasodf;
+/*    void idfjaisodfjiasodf;*/
     string file_write_str = "\n That's not my name \n";
     fwrite_str(file_write_str, file_test);
     print_str(test_file_string);
@@ -63,8 +64,11 @@ function void foo(int x, int y) {
         print_str("\n");
     }
 }
+{
 int testa;
 int testb = 1;
 foo(1, 2);
+testb = 1;
 /* g = a; */
+}
 

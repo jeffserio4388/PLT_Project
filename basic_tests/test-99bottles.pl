@@ -1,3 +1,4 @@
+{
 int i;
 for (i = 99; i >0; i = i-1)
     {       
@@ -25,4 +26,5 @@ for (i = 99; i >0; i = i-1)
         print_str(nomore $ ", no more bottle of beer"$"\n");
         print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
         }
+    }
     }

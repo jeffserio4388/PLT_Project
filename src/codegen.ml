@@ -58,7 +58,6 @@ let rec string_of_expr = function
     | Call("init_file_obj", e) -> let string_of_actuals = List.map string_of_expr e 
                               in
                               let check_mode m = match m with
-                                  (*function*)
                                   "\"r\""   -> ()
                                  |"\"w\""   -> ()
                                  |"\"a\""   -> ()
@@ -79,7 +78,6 @@ let rec string_of_expr = function
                               function
                               [file_obj; filename; filemode] ->
                                             check_mode filemode; 
-                                            (*"File " ^ file_obj ^ ";\n" ^*)
                                             "init_file_obj(&" ^ file_obj ^ ");\n" ^
                                             file_obj ^ ".fp = fopen(" ^ filename ^
                                             ", " ^ filemode ^ ");\n"
@@ -94,11 +92,9 @@ let rec string_of_expr = function
                                in
                                file_obj ^ ".readln((void * ) &" ^ 
                                file_obj ^ ");\n"
-(* lets the user read n bits where n < 4096 -- the max size of the buffer*)
     | Call("freadn", e)    ->  let string_of_actuals = List.map string_of_expr e
                                in
                                let expr_string = function
-                               (*match string_of_actuals with*)
                                    [file_obj; n] -> file_obj ^ ".readn((void * ) &" ^ 
                                                               file_obj ^ "," ^ n ^
                                                                 ");\n"
@@ -153,18 +149,10 @@ let rec string_of_stmt = function
   | If(e, s1, s2) ->        "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->   "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^ string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) ->          "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  (*| Int_list_decl(listid, intlist) ->   "struct List *" ^ listid ^ " = initialize((int[]) {" ^ (String.concat ", " (List.map string_of_int intlist)) ^ "}, " 
-                                        ^ (string_of_int (List.length intlist)) ^ ", 1);"
-  | Str_list_decl(listid, strlist) ->   "struct List *" ^ listid ^ " = initialize((char*[]) {" ^ (String.concat ", " strlist) ^ "}, " 
-                                        ^ (string_of_int (List.length strlist))  ^ ", 0);"
-  | Add_left(e1, e2) -> "void *a7858585765 = (void * )" ^string_of_expr e2^ "; \n addLeft(" ^ string_of_expr e1 ^" ,"^ "a7858585765"^ ");"
-  | Add_right(e1, e2) -> "void *a782345765 = (void * )" ^string_of_expr e2^ "; \n addRight(" ^ string_of_expr e1 ^" ,"^ "a782345765"^ ");"
-  | Find_node(e1, e2, e3) -> "void *a7b45765 = (void * )" ^string_of_expr e2^ "; \n findNode(" ^ string_of_expr e1 ^" ,"^ "a7b45765, "^ string_of_expr e3 ^");"*)
   | Local (t,n,Noexpr) -> string_of_typ t ^ " " ^  n ^";\n"
   | Local(t,n,e) -> string_of_typ t ^" " ^ n ^" = " ^string_of_expr e^";\n"
   | List(t,n) -> "struct "^String.sub (string_of_typ t) 0 1^ "_list " ^ n ^ ";\n" ^ "initList(&"^ n ^ ".list);\n" ^ string_of_typ t ^" " ^"ARRAY_FOR_LIST_"^ n ^ "[100000];\n"
                  ^ string_of_typ t ^"* " ^ "PTR_ARRAY_FOR_LIST_"^ n ^ "=" ^ "&ARRAY_FOR_LIST_" ^ n ^ "[0];\n" ^n^".cast = "^String.sub (string_of_typ t) 0 1^"_cast;"
-(*  | Struct(sid, vid) -> "struct " ^sid^" "^ vid^";" *)
 let string_of_vdecl (t, id) = string_of_typ t ^ " " ^ id ^ ";\n"
 
 let string_of_formal (t,id) = string_of_typ t ^ " " ^ id
@@ -270,9 +258,7 @@ void listen_" ^ pdecl.pname ^ "(char *ip_addr, int port) {
         fprintf(stderr, \"Listen error %s\", uv_strerror(r));
     }
 }\n"
-(******************************)
 let string_of_pdecl_no_listen pdecl = 
-(*    "int a3918723981723912_" ^ pdecl.pname ^ ";\n" ^ *)
     ignore(pdecl.pname);
     String.concat "\n   " (List.map string_of_stmt pdecl.body)
 
@@ -406,9 +392,3 @@ void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
   	String.concat "\n" (List.map string_of_pdecl_main pipes) ^ "\n" ^
     "    Free_strs();\n" ^
    	"    return uv_run(loop, UV_RUN_DEFAULT);\n}\n"
-
-
-
-
-
-

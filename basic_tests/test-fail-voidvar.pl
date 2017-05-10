@@ -1,1 +1,1 @@
-void i;
+{ void i; }

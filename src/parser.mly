@@ -146,20 +146,13 @@ expr SEMI                                                     { Expr $1 }
 | RETURN SEMI                                                 { Return Noexpr }
 | RETURN expr SEMI                                            { Return $2 }
 | LBRACE stmt_list RBRACE                                     { Block(List.rev $2) }
-/*| LBRACE stmt_list RBRACE                                   { Block($2) }*/
 | IF LPAREN expr RPAREN stmt %prec NOELSE                     { If($3, $5, Block([])) }
 | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
 | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
 | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
-/*| LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6) }*/
-/*| LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) }*/ 
-/*| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
-| ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
-| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }*/
 | typ ID SEMI                                                   {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List(List_t($1),$2)}
-/*| STRUCT ID ID SEMI                                       {Struct($2,$3)} */
 
 expr_opt:
 /* nothing */ { Noexpr }

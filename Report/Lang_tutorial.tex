@@ -1,4 +1,4 @@
-\documentclass[./LRM_main.tex]{subfiles}
+\documentclass[./Report_main.tex]{subfiles}
 \begin{comment}
 If you want a box around your answer and that answer is an
 equation then use \boxed{$$ equation $$} 
@@ -53,7 +53,223 @@ ExampleCode(blah, blah)
 
 %\setcounter{page}{0}
 \chapter{Language Tutorial}
-%\section{}
+\section{Setup}
+\section{Program composition}
+All statements in a pipeline program must be in one of the following blocks(function, pipe, anonymous block) with global variables as exception.\\
+\begin{lstlisting}
+    global int x = 10; // global variable not in a block, allowed
+    
+    
+    
+    function string hello(){
+            return "hello" // statement in a function block, allowed
+    }
+    
+    
+    {
+    int a;    //statements in anonymous block, allowed
+    print_a
+    }
+    
+    
+    pipe{
+        print_str("stmt in a pipe")// statement in a pipe block, allowed
+    }
+    
+    
+    print_int(x)// illegal, statement that's not in any block and not a global variable declaration.
+\end{lstlisting}
+\section{Variable declaration and assignment}
+\subsection{primitive types}
+pipeline has 4 primitive types:
+\begin{itemize}
+    \item int
+    \item float
+    \item string
+    \item boolean
+\end{itemize}
+variable declaration for primitive types works as follow:
+\begin{lstlisting}
+    
+int a; // type var-name for variable declaration
+    
+int b = 1;// type var-name expr, for variable declaration and initialization
+    
+a = 10; //variable assignment
+\end{lstlisting}
+\subsection{string manipulation}
+String type supports the following operations:\\
+\begin{itemize}
+    \item len
+    \item sub
+    \item cmp
+    \item concat(with \$)
+\end{itemize}
+\begin{lstlisting}
+    string a = "hello";//declare string variable a
+    
+    string b = " world";//declare string variable b
+    
+    int length;
+    
+    length = len(a); // length = 5
+    
+    bool str;
+    
+    str = cmp(a,b);//str = false
+    
+    str = sub(a,b);//str = false
+    
+    string c = a$b;// c = "hello world" $
+\end{lstlisting}
+\subsection{global variables}
+global variables in pipeline is declared with the \textbf{global} keyword and assessable throughout the program.\\
+Also, global variable declaration need not to be inside a block.\\
+\begin{lstlisting}
+    global int a = 10;//global variable a.
+    function int foo(){
+            return a;//global variable a is accessible.
+    }
+\end{lstlisting}
+\subsection{List}
+List is a compound type that can be applied all primitive types. List cannot be declared globally like primitive types\\
+The pipeline list is a singly likened list supports the the following operation:\\
+\begin{itemize}
+    \item addleft
+    \item addright
+    \item popleft
+    \item list\_free
+    \item access
+\end{itemize}
+\textbf{list-declaration}
+\begin{lstlisting}[]
+    int a[]; //int-list declaration
+    
+    float b[]; //float-list declaration
+    
+    string c[]; //string-list declaration
+    
+    bool d[]; //boo-list declaration
+\end{lstlisting}
+\textbf{list-append}
+\begin{lstlisting}
+    addleft(a,1) //append 1 to the left of a, a = [1]
+    addright(a,2) // append 2 to the right of a, a = [1,2]
+    popleft(a) // pop the left-most element in a, a = [2]
+\end{lstlisting}
+\textbf{list-access}
+\begin{lstlisting}
+    // let a = [1,2,3,4,5]
+    a[0] //1
+    a[1] //2
+    a[4] //5
+\end{lstlisting}
+If a list is declared, it must be freed in order to prevent memory leak in the program
+\textbf{list-free}
+\begin{lstlisting}
+    list_free(a)//release the memory of a and prevent memory leak
+\end{lstlisting}
+\subsection{struct}
+\subsection{file}
+\section{control flow}
+control flow in pipeline works similar as C, it has for and wile loop and if, else selection\\
+\begin{lstlisting}
+{
+    int a; 
+    for(a = 0;a<10;a=a+1){// a for loop that loops over 10 times
+        print_int(a);
+    }
+    a = 0;
+    while(a<10){// a while loop that loops over 10 times
+        print_int(a);
+    }
+    if(true){// an if selection that will always print false
+        print_bool(false);
+    }else{
+        print_bool(true);
+    }
+}
+\end{lstlisting}
+The following program prints the lyrics for 99-bottles of beers.\\
+\begin{lstlisting}
+ {
+ int i;
+ for (i = 99; i >0; i = i-1)
+     {
+ 
+     string wall = " bottles of beer on the wall";
+     string beer = " bottles of beer.";
+     string pass = "Take one down and paas it around, ";
+     string nomore = "No more bottle of beer on the wall";
+     if(i>1){
+         print_int(i);
+         print_str(wall$", ");
+         print_int(i);
+         print_str(beer$"\n");
+         print_str(pass);
+         print_int(i-1);
+         print_str(wall$".\n\n");
+         }
+     else{
+         print_int(i);
+         print_str(wall$",");
+         print_int(i);
+         print_str(beer$"\n");
+         print_str(pass);
+         print_str(nomore$"\n\n");
+         print_str(nomore $ ", no more bottle of beer"$"\n");
+         print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
+         }
+     }
+     }
+\end{lstlisting}
+\section{function}
+while pipeline has many buildin functions, it also allows custom function declaration. The fallowing function calculates the gcd of two given numbers and returns the result.\\
+\begin{lstlisting}
+function int gcd(int a, int b){
+    while(a != b){
+        if(a>b){
+            a = a-b;
+        }else{
+            b = b-a;
+        }
+    }
+    return a;
+}
+{
+int result = gcd(14,21)// result = 7
+}
+\end{lstlisting}
+pipeline also supports recursive functions.\\
+\begin{lstlisting}
+function int fib(int x){//function the calculates the nth Fibonacci numbers
+ 
+     if(x==0){
+         return 0;
+     }
+     if (x==1){
+         return 1;
+     }
+     return fib(x-1)+fib(x-2);
+ }
+ {
+ int c = fib(4);
+ 
+ print_int(c);
+ }
+\end{lstlisting}
+\section{pipe}
+\section{build-in functions}
+build-in functions provided by the pipeline language:\\
+\begin{itemize}
+    \item print\_int(int) - print a int to stdout
+    \item print\_float(float) - print a float to stdout
+    \item print\_bool(bool) - print a bool to stdout
+    \item print\_string(string) - print a string to stdout
+    \item print\_error(string) - print a string to stderr
+    \item sleep(int) - block the program for a given number of seconds
+    \item exit(int) - exit the program with given status
+\end{itemize}
 %\subsection{Identifiers}
 %\subsubsection{}
 %\subsection{subsection}

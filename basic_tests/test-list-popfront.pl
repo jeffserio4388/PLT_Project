@@ -1,3 +1,4 @@
+{
 int list [];
 int a = 1;
 addleft(list,a);
@@ -10,3 +11,4 @@ popleft(list);
 print_int(list[0]);
 popleft(list);
 print_int(list[0]);
+}
