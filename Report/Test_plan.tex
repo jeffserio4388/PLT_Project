@@ -53,7 +53,28 @@ ExampleCode(blah, blah)
 
 %\setcounter{page}{0}
 \chapter{Test plan}
-\section{source to target}
+\section{Automated Tests}
+While working with a version control system such as GitHub, it is desirable to test, for each change the code of the project goes through, if all the test files are still providing the expected
+output.
+It is clear that, as the number of test files increase, the whole compile, test and evaluate
+process becomes impractical to be performed by hand, and especially test by test, manually.
+This was the main motivation to incorporate Regression Tests in the project. That is, we
+need a tool to perform automatically all the necessary steps that are usually performed
+repeatedly to test our compiler and the test cases, which can be as many as desired.
+For that purpose, a python script was developed. This script has two main parts.
+
+This part of the script is responsible for compiling the source code for the Pipeline
+compiler and generating the executable pipeline, which, given a .pl (Pipeline source code extension) file, will compile it to a .c file.With the executable compiler in hands, we can test all the test files. For that, thescript will look for all .pl files in a particular test folder and, for each one of them, it will:
+
+\begin{itemize}
+    \item Compile from .pl to .c using pipeline compiler.
+    \item Compile the .c file generated on the last step and generate an executable file.
+    \item Run the executable file and store its output in a temporary file.
+    \item Look for a file that corresponds to the expected output for this executable. This file must have the same name as the original .pl file, but with extension .expected.
+    \item Compare the output in .out file with the .expected file.
+    \item Store the differences in the two outputs in a .diff file.
+\end{itemize}
+
 \section{test suites and why}
 \section{test automation}
 \section{who did what}
