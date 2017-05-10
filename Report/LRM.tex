@@ -348,10 +348,10 @@ actuals_list:
 
 \end{lstlisting}
 \subsection{List appending, access, and popping}
-Pipeline list is maintained as a singly linked list that operates on the heap. Each time a element is appended, appropriate space will be allocated in the heap for both the list node and the actual data point. User need to apply list\_free() too all the declared list in order to prevent memory leak issue.\\   
+Pipeline list is maintained as a singly linked list that operates on the heap. Each time a element is appended, appropriate space will be allocated in the heap for the list node. User need to apply list\_free() too all the declared list in order to prevent memory leak issue.\\   
 Pipeline uses subscript to access element in a List. A[i] will access the ith element in List A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 attempting to access elements outside of the list bound is undefined.\\
-The built-in functions addleft, addright, popleft and popright  are really part of the expression grammar
+The built-in functions addleft, addright, popleft are really part of the expression grammar
 %\pagebreak\\
 Example:
 \begin{lstlisting}
