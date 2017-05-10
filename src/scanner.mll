@@ -54,7 +54,7 @@ rule token = parse
 | "addleft"             {ADDLEFT}
 | "addright"            {ADDRIGHT}
 | "popleft"             {POPLEFT}
-| "popright"            {POPRIGHT}
+(*| "popright"            {POPRIGHT}*)
 | "string"		        { STRING }
 | "struct"              { STRUCT }
 | "pipe"                { PIPE }

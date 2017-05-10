@@ -189,7 +189,7 @@ LITERAL                         { Literal($1) }
 | ADDLEFT LPAREN ID COMMA expr RPAREN  {Addleft($3,$5)}
 | ADDRIGHT LPAREN ID COMMA expr RPAREN {Addright($3,$5)}
 | POPLEFT LPAREN ID   RPAREN {Popleft($3)}
-| POPRIGHT LPAREN ID  RPAREN {Popright($3)}
+/*| POPRIGHT LPAREN ID  RPAREN {Popright($3)} */
 
 
 actuals_opt:

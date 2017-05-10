@@ -27,7 +27,7 @@ type expr =
     | Addleft of string * expr
     | Addright of string * expr
     | Popleft of string
-    | Popright of string
+(*    | Popright of string *)
     | StructAccess of expr * expr
     | Concat of expr * expr 
     | Noexpr
@@ -129,7 +129,7 @@ let rec string_of_expr = function
     | Addleft(n,e) ->      "addleft("^ n ^ ", "  ^string_of_expr e ^")"
     | Addright(n,e) ->      "addright("^ n ^ ", "  ^string_of_expr e ^ ")"
     | Popleft(n) ->        "popeft("^n^")"
-    | Popright(n) ->       "popright("^n^")"
+    (*| Popright(n) ->       "popright("^n^")"*)
     | Noexpr ->             ""
     | StructAccess(s, e) -> string_of_expr s ^ "." ^ string_of_expr e
 
