@@ -112,13 +112,19 @@ let reserved_funcs =
             formals = [(Int, "x")];
             body    = [];
         }(
+    StringMap.add "rt_string" {
+            typ = MyString;
+            fname = "rt_string";
+            formals = [(MyString,"x")];
+            body   = [];
+    }(
     StringMap.singleton "init_file_obj" {
             typ     = Void;
             fname   = "init_file_obj";
             formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }
-    ))))))))))))))
+    )))))))))))))))
 
 let init_struct_info map sdecl = 
     let st_info = 

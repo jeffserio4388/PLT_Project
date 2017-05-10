@@ -129,6 +129,7 @@ let rec string_of_expr = function
     | Call("print_error",e) -> "perror(" ^ String.concat ","(List.map string_of_expr e) ^ ")"
     | Call("exit",e)        ->"exit(" ^ String.concat "," (List.map string_of_expr e)   ^ ")"
     | Call("free_list",e)   -> "removeAllNodes(" ^ String.concat "," (List.map string_of_expr e) ^")"
+    | Call("rt_string",e)   -> "strdup(" ^ String.concat "," (List.map string_of_expr e) ^")"
     | Call(f, el) ->        f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
     | Access(ln,n) ->       ln ^".cast("^ "accessL(&"^ ln ^ ".list," ^ string_of_int n ^"))"
     | Addleft(n,e) ->      "*PTR_ARRAY_FOR_LIST_"^ n ^ "="  ^string_of_expr e ^";\n" ^ "addLeft(&" ^ n ^".list,(void *)PTR_ARRAY_FOR_LIST_"^ n ^");\n"
