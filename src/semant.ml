@@ -706,6 +706,15 @@ let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] 
 List.iter (fun s -> print_string s) stmt_strings;
 *)
 let main = 
+    
+      let helper = function
+          Block(_) -> ()
+        | _ -> raise (Failure("illegal syntax, statement found outside of a "^
+                              "block. All statements in main must be" ^
+                              " either global, a function a pipe or in a block" ^
+                               " inside of braces"))
+      in
+      List.iter helper stmts;
     (*let stmt_strings =
         let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
         in temp_list
