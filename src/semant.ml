@@ -400,6 +400,11 @@ in
         | Sub -> match_helper (t1,t2)
         | Mult -> match_helper (t1,t2)
         | Div -> match_helper (t1,t2)
+        | Mod -> if t1 = Int && t2 = Int then Int
+                 else raise ((Failure ("illegal binary operator " ^
+                              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                              string_of_typ t2 ^ " in " ^ string_of_expr e)))
+
     	| Equal | Neq when t1 = t2 -> Bool
 	    | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
     	| And | Or when t1 = Bool && t2 = Bool -> Bool

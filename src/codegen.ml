@@ -24,6 +24,7 @@ let string_of_op = function
     | And -> "&&"
     | Or -> "||"
     | Dot -> "."
+    | Mod -> "%"
 
 
 let string_of_uop = function
