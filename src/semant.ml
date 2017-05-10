@@ -28,12 +28,6 @@ type env =
 
 (* Makes a list of fdecls for all reserved functions *)
 let reserved_funcs = 
-    StringMap.add "print_unbuf" {
-        typ = Void;
-        fname = "print_unbuf";
-        formals = [(MyString, "x")];
-        body = [];
-        }(
     StringMap.add "print_str" {
         typ = Void;
         fname = "print_str";
@@ -118,7 +112,7 @@ let reserved_funcs =
             formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }
-    ))))))))))))))
+    )))))))))))))
 
 let init_struct_info map sdecl = 
     let st_info = 
@@ -188,8 +182,7 @@ let update_globals env global_map =
         env_reserved    = env.env_reserved;
     }
 
-let update_locals env typ_t id_t =
-    if typ_t = Void then raise (Failure(id_t ^" is an illegal void type variable")) else ();
+let update_locals env typ_t id_t = 
     {
         env_name        = env.env_name;
         env_funcs       = env.env_funcs;
@@ -564,8 +557,7 @@ in
       | While(p, s) -> let block_env = update_call_stack !curr_env true in
                                        check_bool_expr !curr_env p;
                                        stmt block_env s
-      | Local(t,id,Noexpr) -> 
-                         if is_defined !curr_env id then raise 
+      | Local(t,id,Noexpr) -> if is_defined !curr_env id then raise 
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else
@@ -576,7 +568,7 @@ in
                             | File -> true
                             | _ -> false
                          in
-                         if is_defined !curr_env id || t = Void then raise 
+                         if is_defined !curr_env id then raise 
                                     (Failure("variable "^ id ^ " is a duplicate in scope "
                                      ^ env.env_name ^ "."))
                          else if uninitializable t 
@@ -620,16 +612,7 @@ in
     in
     stmt env (Block func.body)
   in
-  let listen_check l = 
-        let helper arg = 
-            if StringMap.mem arg fdecls then ()
-            else if StringMap.mem arg reserved_funcs then ()
-            else raise (Failure("illegal http function argument " ^ arg ))
-        in
-        List.iter (fun h ->  helper h.httpArg3) l.arg3
-  in               
   let pdecl_to_fdecl p =
-      List.iter listen_check p.listen;
       {
           typ = Void;
           fname = p.pname;
@@ -646,15 +629,11 @@ in
 (*  let printme = print_string "\n\n*****************\n\n" in*)
 List.iter (fun f -> check_function (init_env f) f) (functions @ pipe_list);
 let locals_map = 
-    let helpervoid = function
-        Void -> raise (Failure("illegal void type found"))
-      | _ -> true
-    in
     let helper s = 
         (*let rstmt_str = "rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "found " ^ string_of_stmt s ^"\n" in*)
         match s with
-        Local(t, _, _) -> (*print_string astmt_str;*) helpervoid t
+        Local(_, _, _) -> (*print_string astmt_str;*)true
       | List(_,_) ->  (*print_string astmt_str;*)true
       | _ -> (*print_string rstmt_str ;*) false
     in
@@ -670,17 +649,12 @@ let locals_map =
                                else m) StringMap.empty stmts
 in
 let other_stmts = 
-    let helpervoid = function
-        Void -> raise (Failure("illegal void type found"))
-      | _ -> true
-    in
     let helper s = 
         (*let rstmt_str = "other rejected " ^ string_of_stmt s ^"\n" in
         let astmt_str = "other found " ^ string_of_stmt s ^"\n" in*)
         match s with
         Local(_, _, _) -> (*print_string rstmt_str;*)false
       | List(_,_) -> (* print_string rstmt_str;*)false
-      | Local(t, _, _) -> helpervoid t
       | _ -> (*print_string astmt_str ;*) true
     in
     let temp = List.fold_left (fun l s -> if helper s then s :: l else l) [] stmts
@@ -701,11 +675,11 @@ let stmt_strings = List.fold_left (fun l s -> string_of_stmt s :: "\n" :: l) [] 
 List.iter (fun s -> print_string s) stmt_strings;
 *)
 let main = 
-    (*let stmt_strings =
-        let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] stmts 
+    let stmt_strings =
+        let temp_list =List.fold_left (fun l s -> string_of_stmt s :: l) [] other_stmts 
         in temp_list
-    in*)
-(*    List.iter print_string stmt_strings;*)
+    in
+    List.iter print_string stmt_strings;
       {
           typ = Int;
           fname = "main";
