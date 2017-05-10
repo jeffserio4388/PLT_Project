@@ -68,7 +68,7 @@ ExampleCode(blah, blah)
 \lstinputlisting[language=C]{../sample_programs/99blttles.c}
 \section{Test Suites}
 The test suites is one of the most crucial parts in the development process. We wrote a test case for every new feature we implemented and also for the corresponding semantic check. We first wrote the test case the intended to pass and then multiple cases that are suppose to fail. Since all the passing cases can be in the same program but we need to check the failing cases separately for different errors.\\
-If a file starts with "test-" it should pass the test, if a file starts with "test-fail-" it should fail the test.\\
+If a file starts with "pass-test" it should pass the test, if a file starts with "test-fail-" it should fail the test.\\
 In addition to small tests for individual feature, we also wrote some program that integrates multiple features, for example, the Fibonacci number program and the 99-bottle of beer program.\\
 We managed to pass all the test cases at the end. All the test files are included in the appendix.\\
 \vspace{5mm}\\
