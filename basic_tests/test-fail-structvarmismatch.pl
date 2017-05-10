@@ -5,4 +5,6 @@ struct A{
 string s = "hello";
 struct A a;
 a.i = s;
+print_str("failed\n");
+
 }

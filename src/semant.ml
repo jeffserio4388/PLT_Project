@@ -112,13 +112,19 @@ let reserved_funcs =
             formals = [(Int, "x")];
             body    = [];
         }(
+    StringMap.add "rt_string" {
+            typ = MyString;
+            fname = "rt_string";
+            formals = [(MyString,"x")];
+            body   = [];
+    }(
     StringMap.singleton "init_file_obj" {
             typ     = Void;
             fname   = "init_file_obj";
             formals = [(File, "x"); (MyString, "file_name"); (MyString, "mode")];
             body = [];
         }
-    ))))))))))))))
+    )))))))))))))))
 
 let init_struct_info map sdecl = 
     let st_info = 
@@ -400,6 +406,11 @@ in
         | Sub -> match_helper (t1,t2)
         | Mult -> match_helper (t1,t2)
         | Div -> match_helper (t1,t2)
+        | Mod -> if t1 = Int && t2 = Int then Int
+                 else raise ((Failure ("illegal binary operator " ^
+                              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                              string_of_typ t2 ^ " in " ^ string_of_expr e)))
+
     	| Equal | Neq when t1 = t2 -> Bool
 	    | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
     	| And | Or when t1 = Bool && t2 = Bool -> Bool
@@ -438,8 +449,8 @@ in
        | Addright(s, e) -> list_op_test "addleft" s e
        | Popleft(s) -> let operation = "popleft(" ^ s ^")" in 
                        check_list_typ operation s 
-       | Popright(s) -> let operation = "popright(" ^ s ^")" in
-                        check_list_typ operation s 
+(*       | Popright(s) -> let operation = "popright(" ^ s ^")" in
+                        check_list_typ operation s *)
        | Access(list_id, number) -> let operation = list_id ^ "[" 
                                         ^ string_of_int number ^ "]"
                                     in check_list_typ operation list_id

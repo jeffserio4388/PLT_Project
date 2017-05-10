@@ -225,6 +225,14 @@ The following program prints the lyrics for 99-bottles of beers.\\
 \end{lstlisting}
 \section{function}
 while pipeline has many buildin functions, it also allows custom function declaration. The fallowing function calculates the gcd of two given numbers and returns the result.\\
+\textbf{IMPORTANT:} If a function has type string, it \textbf{must} return rt\_string(string) instead of string to prevent corrupted data.\\
+Examples:\\
+\begin{lstlisting}
+function string test(){
+    string a = "hello";
+    return rt_string(a); // return rt_string(a) instead of a here
+}
+\end{lstlisting}
 \begin{lstlisting}
 function int gcd(int a, int b){
     while(a != b){
@@ -258,7 +266,54 @@ function int fib(int x){//function the calculates the nth Fibonacci numbers
  print_int(c);
  }
 \end{lstlisting}
+
+%pipe section.
 \section{pipe}
+The block of code that the user wants to run asynchronously goes into a pipe.\\
+\begin{lstlisting}
+pipe{
+	int a = 5;
+	int b = 3;
+	sleep(10);
+	print_int(a+b);
+}
+
+pipe {
+    print_str("Hello "); 
+}
+
+// prints out Hello 8
+
+\end{lstlisting}
+
+% Routing
+\section{Routing}
+The following routing functions are supported inside a pipe - LISTEN, GET, PUT, POST, DELETE. These functions can be declared only inside a pipe, where listen has to be the first statement in the pipe.
+
+\begin{lstlisting}
+function string get_user_handler(){
+    return "You sent me a GET request !!!???! ";
+}
+function string put_user_handler(){
+    return "You sent me a PUT request !!!???! ";
+}
+function string post_user_handler(){
+    return "You sent me a POST request !!!???! ";
+}
+function string delete_user_handler(){
+    return "You sent me a DELETE request !!!???! ";
+}
+
+pipe {
+    listen("127.0.0.1",8080);
+    http("GET","/user","get_user_handler");
+    http("PUT","/user","put_user_handler");
+    http("POST","/user","post_user_handler");
+    http("DELETE","/user","delete_user_handler");
+
+}
+\end{lstlisting}
+
 \section{build-in functions}
 build-in functions provided by the pipeline language:\\
 \begin{itemize}

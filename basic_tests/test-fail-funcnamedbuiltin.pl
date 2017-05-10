@@ -1,3 +1,6 @@
-function int print_str(){
-    print_str("This should fail");
+function int print_str(string s){
+  print_str("failed\n");
+}
+{
+ print_str("failed\n");
 }

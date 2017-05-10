@@ -1,4 +1,6 @@
-{int sdhjkshdjhfskdjfhw = 1;}
+{int sdhjkshdjhfskdjfhw = 3 % "asd";
+    print_int(sdhjkshdjhfskdjfhw);
+}
 struct A {
     int i;
     int k;

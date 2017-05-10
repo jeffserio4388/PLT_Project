@@ -30,7 +30,7 @@ rule token = parse
 | '$'                   { CONCAT}
 | '='                   { ASSIGN }
 | '.'                   { DOT }
-(*| '^'                   { CONCAT } *)
+| '%'                   { MOD }
 | "=="                  { EQ }
 | "!="                  { NEQ }
 | '<'                   { LT }
@@ -54,7 +54,7 @@ rule token = parse
 | "addleft"             {ADDLEFT}
 | "addright"            {ADDRIGHT}
 | "popleft"             {POPLEFT}
-| "popright"            {POPRIGHT}
+(*| "popright"            {POPRIGHT}*)
 | "string"		        { STRING }
 | "struct"              { STRUCT }
 | "pipe"                { PIPE }

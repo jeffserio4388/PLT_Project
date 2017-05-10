@@ -12,7 +12,7 @@
 %}
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
-	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
+	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT MOD 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTP
@@ -31,7 +31,7 @@
 	%left EQ NEQ
 	%left LT GT LEQ GEQ
 	%left PLUS MINUS CONCAT
-	%left TIMES DIVIDE
+	%left TIMES DIVIDE MOD
 	%right NOT NEG
     %left DOT
 
@@ -177,6 +177,7 @@ LITERAL                         { Literal($1) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
 | expr OR     expr              { Binop($1, Or,    $3) }
+| expr MOD    expr              { Binop($1, Mod,   $3) }
 | expr DOT    expr              { StructAccess($1, $3) }
 | expr CONCAT expr              { Concat($1,$3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }
@@ -188,7 +189,7 @@ LITERAL                         { Literal($1) }
 | ADDLEFT LPAREN ID COMMA expr RPAREN  {Addleft($3,$5)}
 | ADDRIGHT LPAREN ID COMMA expr RPAREN {Addright($3,$5)}
 | POPLEFT LPAREN ID   RPAREN {Popleft($3)}
-| POPRIGHT LPAREN ID  RPAREN {Popright($3)}
+/*| POPRIGHT LPAREN ID  RPAREN {Popright($3)} */
 
 
 actuals_opt:
