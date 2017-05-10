@@ -1,45 +1,5 @@
 \documentclass[./Report_main.tex]{subfiles}
-\begin{comment}
-If you want a box around your answer and that answer is an
-equation then use \boxed{$$ equation $$} 
 
-if you want to indent a block of text:
-\begin{adjustwidth}{cm of right indent}{cm of left indent}
-% paragraph to be indented
-\end{adjustwidth}
-
-if you just want one indent for one line 
-use \indent per intended indent per line
-
-A sections numbers automatically, so if the number of 
-the problem is out of order it would be easier to 
-just indent and bold the sections and subsections
-and not use the \section{} kind of commands
-
-\newpage makes a new page
-
-$normal math mode$
-$$Special math mode$$
-
-to include an image use
-\includegraphics{image_name}
-image_name is the file name (.png) without the extension. The file
-name cannot have any spaces or any periods other than the one before
-the file extension.
-
-To include a codeblock use
-\begin{lstlisting}
-ExampleCode(blah, blah)
-{
-	it does tabbing and everything;
-	for (coloring of major languages like java){
-		add the folloing to the \lstset tuple:
-			language=<name_of_language>;
-	}
-}
-\end{lstlisting}
-
-\end{comment}
 
 
 \begin{document}
@@ -388,9 +348,10 @@ actuals_list:
 
 \end{lstlisting}
 \subsection{List appending, access, and popping}
+Pipeline list is maintained as a singly linked list that operates on the heap. Each time a element is appended, appropriate space will be allocated in the heap for the list node. User need to apply list\_free() too all the declared list in order to prevent memory leak issue.\\   
 Pipeline uses subscript to access element in a List. A[i] will access the ith element in List A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 attempting to access elements outside of the list bound is undefined.\\
-The built-in functions addleft, addright, popleft and popright  are really part of the expression grammar
+The built-in functions addleft, addright, popleft are really part of the expression grammar
 %\pagebreak\\
 Example:
 \begin{lstlisting}
@@ -656,7 +617,8 @@ formal_list:
 
 \end{lstlisting}
 \subsubsection{Parameters and Return values}
-Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.
+Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.\\
+\textbf{IMPORTANT:} When a function has type string, it \textbf{must} return rt\_string(string) instead of the local string in order to prevent data currouption.\\
 \subsubsection{The "main" function}
 The main function does not really exist in pipeline, but is rather any blocked code that exists outside of any function or pipe. All the code outside of these functions and inside of these blocks is aggregated and executed at run-time. The main function has no real parameters, and does not support command line arguments.
 \subsection{Scope}
@@ -734,7 +696,9 @@ Pipeline is a language designed for backend web development. As such, there are 
 
 \subsection{Full Grammar}
 Associativity in order (if associativity is not stated it is left associative)
-\begin{lstlisting}
+\begin{verbatim}
+    
+
     1) "."
 	2) right "!" for not and "-" for negative
 	3) "*" multiplication "/" division
@@ -872,6 +836,6 @@ actuals_opt:
 actuals_list:
     expr
     | actuals_list , expr
-\end{lstlisting}
+\end{verbatim}
    
 \end{document}
