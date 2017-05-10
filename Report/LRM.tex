@@ -623,8 +623,59 @@ Pipeline is a pass by value language, meaning that whenever a value is passed to
 The main function does not really exist in pipeline, but is rather any blocked code that exists outside of any function or pipe. All the code outside of these functions and inside of these blocks is aggregated and executed at run-time. The main function has no real parameters, and does not support command line arguments.
 \subsection{Scope}
 The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am referring to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function. Also within function, any variable declared within a block ( between curly braces ) exists from when it is declared until the end of that block, this includes for, while, and if blocks.
+
+
 \section{Pipes}
-TODO: Add pipe grammars and a subsection about the listen and http routing.
+
+
+\subsection{Anatomy of a Pipe}
+A pipe in pipeline is defined with the keyword \texttt{pipe} followed by open brace to start a block of statements. In general the pipe definition has the following Grammar and syntax:\\
+
+
+\subsection{Grammar}
+\begin{lstlisting}
+PIPE LBRACE listen_opt stmt_list RBRACE
+{ 
+    pipe_name := !pipe_name + 1;
+    { 
+    	pname = "pipe_" ^ string_of_int !pipe_name;
+    	listen = $3;
+    	body = List.rev $4;
+    }
+}
+\end{lstlisting}
+
+The includes statements list and optional listen function, which goes at the beginning of the pipe.
+
+\subsection{ LISTEN and HTTP}
+Listen and Http, go only inside a pipe, and can not be used anywhere outside. The following is the grammar for Listen and http : 
+
+
+
+\begin{lstlisting}
+LISTEN LPAREN STR_LIT COMMA LITERAL RPAREN SEMI http_list
+{{
+	arg1 = $3;
+	arg2 = $5;
+	arg3 = $8;
+}}
+\end{lstlisting}
+
+\begin{lstlisting}
+http:
+    HTTP LPAREN STR_LIT COMMA STR_LIT COMMA STR_LIT RPAREN SEMI    
+    {{ 
+        httpArg1 = $3; 
+        httpArg2 = $5;
+        httpArg3 = $7;
+    }}
+
+\end{lstlisting}
+
+
+
+
+
 \begin{comment}
 % Most of this is meant for the tutorial, but I left it here so that you
 % guys could grab what you needed from it
@@ -635,6 +686,7 @@ Async control flow is incredibly useful when dealing with I/O operations, which 
 Consider the following example pipeline:
 
 \begin{lstlisting}
+
 pipe {
 	tuple a0 = readFile("/home/user/you/data.txt"); 
  	tuple a1 = processData(a); 
