@@ -225,6 +225,14 @@ The following program prints the lyrics for 99-bottles of beers.\\
 \end{lstlisting}
 \section{function}
 while pipeline has many buildin functions, it also allows custom function declaration. The fallowing function calculates the gcd of two given numbers and returns the result.\\
+\textbf{IMPORTANT:} If a function has type string, it \textbf{must} return rt\_string(string) instead of string to prevent corrupted data.\\
+Examples:\\
+\begin{lstlisting}
+function string test(){
+    string a = "hello";
+    return rt_string(a); // return rt_string(a) instead of a here
+}
+\end{lstlisting}
 \begin{lstlisting}
 function int gcd(int a, int b){
     while(a != b){
