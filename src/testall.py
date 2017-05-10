@@ -7,7 +7,7 @@ if len(sys.argv)>1:
 else:
 	#Get all the files in the tests dir
 	testFiles = os.listdir('../basic_tests/')
-	passTestFiles = [ x for x in testFiles if ( x[-2:]=='pl' and x[:9]=='test-pass')]
+	passTestFiles = [ x for x in testFiles if ( x[-2:]=='pl' and x[:9]=='pass-test')]
         failTestFiles = [ x for x in testFiles if ( x[-2:]=='pl' and x[:9]=='test-fail')]
 
 nof = len(testFiles)
