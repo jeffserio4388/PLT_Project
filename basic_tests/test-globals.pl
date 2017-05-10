@@ -1,9 +1,10 @@
 global int a = 10;
-
-function void test(){
-    print_int(a);
-
+global int b = 11;
+function void foo(){
+    int i = a + b;
+    print_int(i);
+    print_str("\n");
 }
 {
-    test();
+    foo();
 }

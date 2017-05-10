@@ -449,8 +449,8 @@ in
        | Addright(s, e) -> list_op_test "addleft" s e
        | Popleft(s) -> let operation = "popleft(" ^ s ^")" in 
                        check_list_typ operation s 
-       | Popright(s) -> let operation = "popright(" ^ s ^")" in
-                        check_list_typ operation s 
+(*       | Popright(s) -> let operation = "popright(" ^ s ^")" in
+                        check_list_typ operation s *)
        | Access(list_id, number) -> let operation = list_id ^ "[" 
                                         ^ string_of_int number ^ "]"
                                     in check_list_typ operation list_id

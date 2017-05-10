@@ -77,6 +77,9 @@ type:
     | File
     | struct id
 
+sdecl:
+    struct id { vdecl_list };
+
 expr:
 	...
 	| type id [ ]; /* List */
@@ -122,7 +125,7 @@ The following "white space" characters are ignored except they separate tokens: 
 	int         string      float		void		function        listen
     pipe        File        struct      global      http            if
     else        for         while       addleft     addright        popleft
-    popright    return      true        false
+    return      true        false
 \end{lstlisting}
 \subsection{Punctuation}
 \subsubsection{Semicolon}
@@ -151,27 +154,57 @@ Comments are initiated with $‘/* ‘$ and closed with $‘*/’$ and cannot be
 %\subsubsection{subsubsection}
 \section{Operators and Expression}
 \subsection{Expression}
-In pipeline, a expression must contain at least one operand with any number of operators. Each operator has either one or two operand. Pipeline does not support the (inline if) operator.A expression must be a typed object.\\ 
+In pipeline, a expression must contain at least one operand with any number of operators. Each operator has either one or two operands. Pipeline does not support the ternary (inline if) operator. An expression must be a typed object.\\ 
 \vspace{1mm}\\
 Grammar:
 \begin{lstlisting}
-p-expr:
-  id
-  |string
-  |(expr)
-
-postfix_expr:
-  p-expr
-  |postfix_expr . identifer
-  |postfix_expr ++
-  |postfix_expr --
+expr:
+    int_lit
+    | true
+    | false
+    | id
+    | float_lit    
+    | string_lit
+    | expr + expr
+    | expr - expr            
+    | expr *  expr           
+    | expr / expr           
+    | expr % expr
+    | expr = expr           
+    | expr != expr           
+    | expr < expr           
+    | expr <= expr           
+    | expr > expr           
+    | expr >= expr           
+    | expr && expr           
+    | expr || expr           
+    | expr . expr           
+    | expr $ expr           
+    | - expr %prec NEG       
+    | ! expr                   
+    | id = expr             
+    | id ( actuals_opt ) /*function call */
+    | ( expr )          
+    | id [ int_literal ]   /* access the nth item in a list */ 
+    | addleft ( id , expr )  
+    | addright ( id , expr ) 
+    | popleft ( id  ) 
+    | popright ( id ) 
     
+actuals_opt:
+    /* nothing */ { [] }
+    | actuals_list
+
+actuals_list:
+    expr
+    | actuals_list , expr
 \end{lstlisting}
 Examples of Expression:
 \begin{lstlisting}
 100;
-100+10;
-sqrt(10);
+i = 100+10;
+string s;
+s = "Hello" $ " " $ "World!";
 \end{lstlisting}
 \vspace{1 mm}
 Group of subexpressions are done by parentheses, the innermost expression is evaluated first. Outermost parentheses is optional.\\
@@ -185,47 +218,29 @@ Expression with unary operators group from right to left.\\
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-unary_expr:
-   postfix_expr
-   |unary_op unary_expr
-
-unary_op:
-    &
-   |@
-   |+
-   |-
-   |!
+expr:
+	[...]
+	| - expr %prec NEG       
+    | ! expr         
 \end{lstlisting}
-Address operator and dereference operator will be introduced in pointer operators section below.\\
-Unary operator "+" and "-" must be applied to arithmetic type and the result is the operand itself and the negative of the operand respectively.\\
-"!" negation can only be applied to boolean expression and will inverse the value of the expression.\\ 
-\subsection{Increment and decrement}
-Pipeline supports increment operator “++” and  decrement operator “--”. The operand must be one of the primitive types or a pointer. The operators can only be applied after the operand.Operand will be evaluated before incrementation.\\
-The result of pointer increment will depends on the type of the pointer.\\
-Grammar for postfix increment and decrement is listed in the postfix expression section above.\\
-\vspace{1 mm}\\
-Examples:
-\begin{lstlisting}
-int x;
-int@ p = &x;
-x++     /* same as x =  x+1 */
-p++    /* same as p = &x + sizeof(x) */ 
-\end{lstlisting}
+Unary operator "-" must be applied to arithmetic type (integers or floating-point numbers) and the result is the operand itself and the negative of the operand respectively.\\
+"!" negation can only be applied to boolean expression and will inverse the value of  a given boolean expression.\\ 
 \subsection{Arithmetic Operations}
 Pipeline provides 4 standard arithmetic operations (addition, subtraction, multiplication, and division) as well as modular division and negation.\\
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-multiplicative_expr:
-    unary_expr
-    |multiplicative_expr * multiplicative_expr
-    |multiplicative_expr / multiplicative_expr
-    |multiplicative_expr % multiplicative_expr
+expr:
+    [...]
+    |expr * expr
+    |expr / expr
+    |expr % expr
 
-additive_expr:
-     multiplicative_expr
-     |additive_expr + additive_expr
-     |additive_expr - additive_expr
+/*additive_expr*/
+expr:
+     [...]
+     |expr + expr
+     |expr - expr
 
 \end{lstlisting}
 \pagebreak
@@ -260,23 +275,19 @@ b = -10;
 \subsection{Comparison Operator}
 Pipeline supports Comparison Operator to determine the relationship between two operands. The result of a comparison operator will either be 1 or 0. Two operands of the comparison operator must be comparable types. Char type will be compared on their integer reference on ASCII encoding.\\
 comparable types:\\
-ints and floats can be compared by their numerical value.\\
-comparison between 2 pointers is not defined.\\
-all other types arer not comparable in pipeline.\\
+ints and floats can be compared by their numerical value. and strings are comparable using the built-in function cmp()\\
+all other types are not comparable in pipeline.\\
 \vspace{1 mm}
 \textbf{Grammar:}
 \begin{lstlisting}
-relational_expr:
-     additive_expr
-     |relational_expr < additive_expr
-     |relational_expr > additive_expr
-     |relational_expr >= additive_expr
-     |relational_expr <= additive_expr
-
- equality_expr:
-      relational_expr 
-     | equality_expr == relational_expr
-     | equality_expr != relational_expr
+expr:
+     [...]
+     | expr < expr
+     | expr > expr
+     | expr >= expr
+     | expr <= expr
+     | expr == expr
+     | expr != expr
 
 \end{lstlisting}
 \vspace{1 mm}
@@ -308,20 +319,17 @@ y >= x;
 
 \end{lstlisting}
 \subsection{Logical Expression}
-Logical Expression will evaluate both operands and compute the truth value of those two operands. In Pipeline, only 0 will be evaluated to False. AND and OR are two logical expression in pipeline.\\
+Logical Expression will evaluate both operands and compute the truth value of those two operands. In Pipeline, AND and OR are two logical expressions in pipeline and are only compatible with expressions that evaluate to a boolean type.\\
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-and_expr:
-      equality_expr
-      |and_expr 'and' equality_expr
-
-or_expr:
-      and_expr
-      |or_expr 'or' and_expression
+expr:
+  	  [...]   
+      |expr && expr
+      |expr || expr
 
 \end{lstlisting}
-AND operator "and":\\
+AND operator "\&\&" :
 The expression will be evaluated to 1 if and only if both operands are true.
 \begin{lstlisting}
 int x = 1;
@@ -347,9 +355,9 @@ A assignment operator stores the value of the right operand in the left operand 
 \vspace{1 mm}\\
 Grammar:
 \begin{lstlisting}
-assignmnet_expr:
-      or_expression
-      | unary_expr = assignemnt_expr
+expr:
+	  [...]
+      | id = expr
 
 \end{lstlisting}
 \vspace{1 mm}
@@ -358,45 +366,70 @@ Examples of assignment:
 int x = 10; 
 float y  =  0.5;  
 float z = 1.0 + 2.5;
+x = 1 + 2;
 \end{lstlisting}	
-\subsection{Pointers Operator}
-There are two pointer operators in Pipeline, "@" for dereference and "\&" reference.\\
-"@" operator will dereference the value in the pointer address.\\
-"\&" operator will return the memory address of a variable.\\
-Grammar for pointer expressions are listed above in the unary expression section.\\
-\vspace{1 mm}\\
-Example:
+\subsection{Function call}
+A funcion call is simply the function name and the arguments the user wants to pass into the function as a comma separated list. If the funtion takes no parameters then it is blank, if it does it gets parsed as a comma separated list called an actuals list.
 \begin{lstlisting}
-int x = 10;
-int@ p;
-p = &x; /* the memory address of x will be stored in pointer variable p*/
-int@@ ptr;
-ptr = &p; /* the address of the address of the pointer to x will be stored in ptr*/
+/* grammar */
+expr:
+	[...]
+    | id ( actuals_opt ) /*function call */
+    
+actuals_opt:
+    /* nothing */ { [] }
+    | actuals_list
+
+actuals_list:
+    expr
+    | actuals_list , expr
+
+/* example */
+
 \end{lstlisting}
-The pointer type will indicate the size of the object stored in the given address. If the type of the object in the address is not known, a void pointer can be used. However, a void pointer cannot be dereferenced since the machine won't know how many byte to read in the address. 
-\subsection{Array access}
-Pipeline uses subscript to access element in an array. A[i] will access the ith element in array A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
-The grammar for array access expression is described in the postfix expression section above.\\
+\subsection{List appending, access, and popping}
+Pipeline uses subscript to access element in a List. A[i] will access the ith element in List A. Pipeline uses 0 indexing, the first element in an array has index 0.\\
 attempting to access elements outside of the list bound is undefined.\\
+The built-in functions addleft, addright, popleft and popright  are really part of the expression grammar
 \pagebreak\\
 Example:
 \begin{lstlisting}
+/* grammar */
+expr:
+	[...]
+    | id [ int_literal ]   /* access the nth item in a list */ 
+    | addleft ( id , expr )  
+    | addright ( id , expr ) 
+    | popleft ( id  ) 
+/* example */
 int x[10] = [1,2,3,4,5,6,7,8,9,10];
 x[0]; /*This expression will be evaluated to 1*/
 x[9]; /*This expression will be evaluated to 10*/
 \end{lstlisting}
 \subsection{Operator Precedence}
+\begin{lstlisting}
+    1) "."
+	2) right "!" for not and "-" for negative
+	3) "*" multiplication "/" division
+	4) "+","-", "$" concatenation
+	5) "<", ">", "<=" and ">="
+	6) "==" and "!="
+	7) "&&" and
+	8) "||" or
+	9) "=" assignment
+    11) NOELSE
+\end{lstlisting}    
 \begin{tabu} to 1\textwidth { | X[c] | X[c] | }
  \hline
  Precedence & operator \\ 
  \hline
-1  & Function calls, array sub-scripting, and membership access operator expressions.\\
+1  & Function calls, List sub-scripting, and membership access dot "." operator expressions.\\
  \hline
-2  & Unary operators(from right to left)\\
+2  & Unary operators\\
  \hline
 3 & Multiplication, division, and modular division expressions.\\
 \hline
-4 & Addition and subtraction expressions.\\
+4 & Addition, subtraction and concatenation expressions.\\
 \hline
 5 & relational expressions.\\
 \hline
@@ -411,114 +444,123 @@ x[9]; /*This expression will be evaluated to 10*/
 \end{tabu}
 %\subsection{subsection}
 %\subsubsection{subsubsection}
-\section{Declarations and Statements}
-\subsection{Declaration}
-A declaration specifies the interpretation of a given identifier. The declaration allows for the programmer to create anything that has a unique identifier and a type, i.e. function, variable, etc. Declarations have the form:
-\begin{lstlisting}
-declaration:
-	declaration-specifiers;
-	declaration-specifiers init-declarator-list;
-\end{lstlisting}
-The init-delarator-list and declaration-specifiers have the following grammar:
-\begin{lstlisting}
-declaration-specifiers:
-	storage-specifier; | storage-specifier declaration-specifiers
-	type-specifier | type-specifier declaration-specifiers
-	type-qualifier | type-qualifier declaration-specifiers
-	
-declaration-list:
-	declaration
-	declaration-list declaration
-struct-declaration-list:
-	struct { struct-declaration-list }
-	struct id { struct-declaration-list }
-
-struct-declaration:
-	spec-qualifier-list struct-decl-list ;
-
-init-declarator-list:
-	init-declarator
-	init-declarator-list, init-declarator
-	
-init-declarator:
-	declarator
-	declarator = initializer
-
-initializer:
-	assignment-expression
-	{ initializer-list }
-	{ initializer-list , }
-
-initializer-list:
-	initializer
-	initializer-list , initializer
-
-spec-qualifier-list:
-	type-specifier
-	type-specifier spec-qualifier-list
-	type-qualifier
-	type-qualifier spec-qualifier-list
-
-struct-declarator-list:
-	struct-declarator
-	struct-declarator-list, struct-declarator
-\end{lstlisting}
-Every declaration must have a declarator, any declaration without a specific declarator (explained below) will not be counted as a valid function.
-\subsubsection{Declarators}
-each declarator declares a unique identifier, and asserts that when that identifier appears again in any expression the result must be of the same form. Meaning that given a declarator, such as an int, any expression that involves the identifier must result in a value that is of the same type.
+\section{Statements}
+Statements make up the bulk of the code, and they comprise of declarations, expressions, and control flow. There are several kinds of statements, which fall into 4 distinct categories: expression, declarations, compound, and control flow (selection and iteration).
 \subsubsection{Grammar:}
 \begin{lstlisting}
-declarator:
-	pointer direct-declarator
-	direct-declarator
+stmt:
+    expr ;
+    | return ;
+    | return expr ;
+    | { stmt_list } /* a Block of statements */
+    | if ( expr ) stmt %prec NOELSE
+    | if ( expr ) stmt else stmt
+    | for ( expr_opt ; expr ; expr_opt ) stmt
+    | while ( expr ) stmt                      
+    | type id ;
+    | type id = expr ;
+    | type id [ ] ;   
+ 
+sdecl:
+    struct id { vdecl_list };
 
-direct-declarator:
-	identifier
-	(declarator)
-	direct-declarator [ lit ]
-	direct-declarator [ ]
-	direct-declarator ( param-list )
-	direct-declarator ()
-	direct-declarator ( identifier-list )
-	
+vdecl:
+    type id ;
+    
+vdecl_list:
+    /* nothing */  
+    | vdecl_list vdecl
 
-pointer:
-	@ type-qualifier-list
-	@ type-qualifier-list pointer
-	@ type-qualifier-list
+global:
+    global type id ;
+    | global type id = expr ;
 
-type-qualifier-list:
-	type-qualifier
-	type-qualifier-list type-qualifier
+
+stmt_list:
+    /* nothing */  
+    | stmt_list stmt
+ 
+
 \end{lstlisting}
-\subsection{Statements}
-Statements make up the bulk of the code, and they comprise of declarations and expressions. There are several kinds of statements, which fall into 4 distinct categories: expression, compound, selection, and iteration.
-\subsubsection{Grammar:}
+\section{Declaration}
+In python declarations (apart from function declarations which will be discussed next section) are part either statements, vdecl or sdecl. 
 \begin{lstlisting}
-statement:
-	expression-statement
-	compound-statement
-	selection-statement
-	loop-statement
+stmt:
+    | type id ;
+    | type id = expr ;
+    | type id [ ] ;   
+    
+sdecl:
+    struct id { vdecl_list };     
 
-statement-list:
-	statement
-	statement-list statement
+vdecl:
+    type id ;
+    
+vdecl_list:
+    /* nothing */  
+    | vdecl_list vdecl
 
-compound-statement:
-	{ declaration-list statement-list }
-	{ declaration-list }
-	{ }
+global:
+    global type id ;
+    | global type id = expr ;
 
-expression-statement:
-	expression ;
-	;
+\end{lstlisting}
+The sdecl is used to define a struct type definition, and can include various other types as variables. and can be defined in the main body of the function and then used as a type in a declaration in any function or pipe.
+\begin{lstlisting}
+/* sdecl grammar */
+sdecl:
+    struct id { vdecl_list };     
 
+vdecl:
+    type id ;
+    
+vdecl_list:
+    /* nothing */  
+    | vdecl_list vdecl
+
+/* definition */
+struct Example{
+    bool b;
+    int i;
+    string s;
+    float f;
+    File fl;
+    struct some_already_defined_struct;
+};
+
+/* declaration as a type */
+/*
+stmt:
+	[...]
+	| type id ;
+*/    
+function foo(){
+	struct Example ex;
+	ex.i = 1;
+}
+\end{lstlisting}
+The global is a special type of variable declaration that is availible to all other functions, and is declared with the \texttt{global} keyword. They are special because not only are they the only variables availible to all functions and pipes, but they are the only variable declarations that can be declared outside of a block between curly braces.
+\begin{lstlisting}
+/* grammar */
+global:
+    global type id ;
+    | global type id = expr ;
+/* use */
+global int my_global_int;
+global string my_global_string = "abcd;
+function foo{
+	my_global_int = 1;
+	return my_global_int;
+}
+pipe{
+    print_str(my_global_string);
+    print_str("\n");
+}
 \end{lstlisting}
 \subsection{Control Flow}
-As with any imperative programming language, Pipeline has control flow mechanisms. Control flow mechanisms control the order in which statements are executed within a program. Although this definition does not fully apply to Pipeline by design, control flow mechanisms in Pipeline still control the order in which statements are executed both inside of and, to an extent, outside of pipelines.
+As with any imperative programming language, Pipeline has control flow mechanisms. Control flow mechanisms control the order in which statements are executed within a program.
 \subsubsection{Selection-statements}
-A conditional is a way to decide what action you wish to take based on the given situation. A conditional relies on some given expression that can be evaluated to true or false, or rather in Pipeline, like in C, any expression that can be evaluated to an integer. Pipeline uses the conventions established in C for evaluating an integer as true or false, where ANY non-zero value evaluates to true and only zero(0) evaluates to false.\\
+A conditional is a way to decide what action you wish to take based on the given situation. A conditional relies on some given expression that can be evaluated to a true or false boolean. Pipeline uses boolean expressions for evaluating to true or false.\\
 A conditional statement is written with the \texttt{if} statement followed by the aforementioned conditional statement and encloses the body of its text in curly braces ('\{' and '\}').
 \begin{lstlisting}
 if <conditional expression> { <body_of_statements> }
@@ -535,10 +577,17 @@ if <conditional expression> {
 \end{lstlisting}
 \subsubsection{Grammars}
 \begin{lstlisting}
-selection-statements:
-	if expression compound-statement
-	if expression compound-statement else statement
+stmt:
+    | if ( expr ) stmt %prec NOELSE
+    | if ( expr ) stmt else stmt
+    | { stmt_list }
+
+
+stmt_list:
+    /* nothing */  
+    | stmt_list stmt
 \end{lstlisting}
+
 \subsubsection{Loops}
 Loops are exactly what they sound like; they execute a body of code repeatedly. They are one of the most important tools in an imperative language for they allow the user to automate repetitive processes in an intuitive manner.\\
 Pipeline uses the two most standard types of loops, while and for loops. The while loop works exactly like the conditional if statement, except after it executes its body of code it re-evaluates the expression and if it remains true (non-zero) it repeats the block of code. This continues until the condition becomes false, at which point the program continues past the loop. The loop is constructed with the \texttt{while} keyword as follows:
@@ -555,17 +604,17 @@ for <assignment-expression>; <conditional-expression>; expression {
 \end{lstlisting}
 \subsubsection{Grammar}
 \begin{lstlisting}
-loop-statement:
-	while expression statement
-	for expr_opt expr_opt expression statement
-	for expr_opt expr_opt statement
-
-expr_opt:
-	expression;
-	;	
+stmt:
+	| { stmt_list }
+    | for ( expr_opt ; expr ; expr_opt ) stmt
+    | while ( expr ) stmt     
+    
+stmt_list:
+    /* nothing */  
+    | stmt_list stmt
 \end{lstlisting}
 For clarification, here is the explicit order of evaluation for the loop-statements:\\
-For the \texttt{while} loop, the expression that is the test expression, is evaluated. If that expression is non-zero the program then executes the subsequent statement or statements. After executing them, it re-evaluates the expression, and if still non-zero it repeats the statements.\\
+For the \texttt{while} loop, the expression that is the boolean test expression, is evaluated. If that expression is true the program then executes the subsequent statement or statements. After executing them, it re-evaluates the expression, and if still true it repeats the statements.\\
 For the \texttt{for} loop, the first expression is evaluated only once, when the loop is first encountered. Then it evaluates the second expression upon each iteration, if it is non-zero, then it will execute the code. The 3rd expression is evaluated after each iteration, before it re-evaluates the second instruction.
 %\subsection{subsection}
 %\subsubsection{subsubsection}
@@ -573,49 +622,50 @@ For the \texttt{for} loop, the first expression is evaluated only once, when the
 \subsection{Anatomy of a Function}
 A function in pipeline is defined with the keyword \texttt{fun} followed by the function name, the parameters and then the return type or types if applicable. The function definition must contain these elements in order to be a viable function, and the body of the function must be enclosed in curly braces ('\{' '\}'). In general the function definition has the following Grammar and syntax:\\
 \begin{lstlisting}
-fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
+function function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 {
 	<body of code>
 }
 \end{lstlisting}
 A function need not take any parameters, nor need it return any values.
-\subsubsection{Declaration}
+\subsubsection{Function Declaration}
 In Pipeline, as in C, the function must exist before it is called to be used. Meaning, you cannot call any function within any other function unless it has been explicitly stated previous to that function was defined. A function declaration allows the programmer to declare a function exists before he/she has defined the function itself. A function declaration is almost identical to the above function definition, except that instead of curly braces and a code body, there is only a semicolon:
 \begin{lstlisting}
+/* grammar */
+fdecl:
+    function type id ( formals_opt ) { stmt_list }
+
+/* syntax *.
 fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
 {
 	<body of code>
 }
 \end{lstlisting}
-\subsection{Grammar}
+\subsubsection{Grammar}
 \begin{lstlisting}
-fun-definition:
-	fun declarator param-list_opt type-qualifier_opt compund-statement
+fdecl:
+    function type id
 
-fun-declaration:
-	fun declarator param-list_opt type-qualifier_opt;
+formals_opt:
+    /* nothing */ 
+    | formal_list  
 
-param-list_opt:
-	( param_list )
-	( )
-
-type-qualifier_opt:
-	( type-specifier )
-	( )
-
-param-list:
-	declaration-specifiers declarator
-	param-list , declaration-specifiers declarator
-
+formal_list:
+    type id
+    | formal_list , type id 
 
 \end{lstlisting}
 \subsubsection{Parameters and Return values}
 Pipeline is a pass by value language, meaning that whenever a value is passed to another function or from another function, it is merely a copy. This is why Pipeline provides pointers like C, so that they can pass and manipulate a given object in memory, and not a copy of that object that keeps the original intact. Therefore the scope of any variable is the function in which is was declared, and in order for it to exist external to that function a pointer to its memory location must be provided.
 \subsubsection{The "main" function}
-The main function is the function that is executed at run time. The main function has as parameters char *string and int argc, which are related to the command-line arguments provided at run-time. The argv variable holds a pointer to the array of the strings typed by the user at run-time, the first of which is always the name of the executable, and the argc variable is the number of those arguments including the executable name.
+The main function does not really exist in pipeline, but is rather any blocked code that exists outside of any function or pipe. All the code outside of these functions and inside of these blocks is aggregated and executed at run-time. The main function has no real parameters, and does not support command line arguments.
 \subsection{Scope}
-The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am referring to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function.
-\section{Asynchronous Programming with Pipeline}
+The scope of a variable is from the point it was declared, until the end of the translation unit in which it resides. By translation unit, I am referring to control flow code bodies, functions, pipelines and ,in the case of a global variable, the program itself. The scope a parameter is from the point at which the function code block starts, until the end of the function. Also within function, any variable declared within a block ( between curly braces ) exists from when it is declared until the end of that block, this includes for, while, and if blocks.
+\section{Pipes}
+TODO: Add pipe grammars and a subsection about the listen and http routing.
+\begin{comment}
+% Most of this is meant for the tutorial, but I left it here so that you
+% guys could grab what you needed from it
 Async control flow is incredibly useful when dealing with I/O operations, which are the foundation of web-based programming. When restricted to a single-threaded and single-process model, I/O operations in a programming language are blocking forcing the program to wait for a potentially unbounded time. Introduce multi-threading or multi-process models, and a programming language becomes much more complex. The single-threaded asynchronous control flow model simplifies dealing with I/O operations such that the program does not.
 
 
@@ -668,7 +718,7 @@ the program moves it off of the main thread, and then on the main thread continu
 
 \subsection{Data and Pipelines}
 If there is a blocking I/O operation, it must be put in a pipeline or the return value for the blocking function may be filled with junk or a null value, and this erroneous value could be used immediately if the next line makes use of the variable. Pipelines should be treated as islands of data, in that functions which depend on (take as arguments) values returned from blocking functions can only execute after the blocking function returns, which is unpredictable. In that sense, functions that are data dependent and relate to a particular instance or type of I/O operation should likely be encapsulated in a single pipeline. 
-
+\end{comment}
 \subsection{Grammars}
 \begin{lstlisting}
 pipe-statement:
@@ -787,7 +837,7 @@ expr:
     | true
     | false
     | id
-    | float_litFLOAT_LIT     
+    | float_lit   
     | string_lit
     | expr + expr
     | expr - expr            
