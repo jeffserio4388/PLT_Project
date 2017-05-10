@@ -12,7 +12,7 @@
 %}
 
 	%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA LSBRACE RSBRACE DOT
-	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT 
+	%token PLUS MINUS TIMES DIVIDE ASSIGN NOT MOD 
 	%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR CONCAT
 	%token RETURN IF ELSE FOR WHILE INT BOOL VOID STRING STRUCT GLOBAL FLOAT FILE
 	%token PIPE FUNCTION LISTEN HTTP
@@ -31,7 +31,7 @@
 	%left EQ NEQ
 	%left LT GT LEQ GEQ
 	%left PLUS MINUS CONCAT
-	%left TIMES DIVIDE
+	%left TIMES DIVIDE MOD
 	%right NOT NEG
     %left DOT
 
@@ -146,20 +146,13 @@ expr SEMI                                                     { Expr $1 }
 | RETURN SEMI                                                 { Return Noexpr }
 | RETURN expr SEMI                                            { Return $2 }
 | LBRACE stmt_list RBRACE                                     { Block(List.rev $2) }
-/*| LBRACE stmt_list RBRACE                                   { Block($2) }*/
 | IF LPAREN expr RPAREN stmt %prec NOELSE                     { If($3, $5, Block([])) }
 | IF LPAREN expr RPAREN stmt ELSE stmt                        { If($3, $5, $7) }
 | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt     { For($3, $5, $7, $9) }
 | WHILE LPAREN expr RPAREN stmt                               { While($3, $5) }
-/*| LIST ID ASSIGN STRING LPAREN stringlit_list RPAREN SEMI     { Str_list_decl($2, $6) }*/
-/*| LIST ID ASSIGN INT LPAREN literal_list RPAREN SEMI          { Int_list_decl($2, $6) }*/ 
-/*| ADDLEFT LPAREN expr COMMA expr RPAREN SEMI                  { Add_left($3, $5) }
-| ADDRIGHT LPAREN expr COMMA expr RPAREN SEMI                 { Add_left($3, $5) }
-| FINDNODE LPAREN expr COMMA expr COMMA expr RPAREN SEMI      { Add_left($3, $5) }*/
 | typ ID SEMI                                                   {Local($1,$2, Noexpr)}
 | typ ID ASSIGN expr SEMI                                 {Local($1,$2,$4)}
 | typ ID LSBRACE RSBRACE SEMI                             {List(List_t($1),$2)}
-/*| STRUCT ID ID SEMI                                       {Struct($2,$3)} */
 
 expr_opt:
 /* nothing */ { Noexpr }
@@ -184,6 +177,7 @@ LITERAL                         { Literal($1) }
 | expr GEQ    expr              { Binop($1, Geq,   $3) }
 | expr AND    expr              { Binop($1, And,   $3) }
 | expr OR     expr              { Binop($1, Or,    $3) }
+| expr MOD    expr              { Binop($1, Mod,   $3) }
 | expr DOT    expr              { StructAccess($1, $3) }
 | expr CONCAT expr              { Concat($1,$3) }
 | MINUS expr %prec NEG          { Unop(Neg, $2) }

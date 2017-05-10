@@ -45,7 +45,6 @@ let _ =
                         let oc = open_out new_file_name in 
                         Printf.fprintf oc "%s" (Codegen.translate ast); 
                         close_out oc;
-                        (*let oc = open_out "out.c" in Printf.fprintf oc "%s" (Codegen.translate ast); close_out oc;*)
             match action with
                 Ast | Translate -> ();
                 | Compile | Run -> 
@@ -71,14 +70,11 @@ let _ =
                         in
                         ignore(read_process gen_o_file);
                         ignore(read_process gen_exec);
-                        (*ignore(read_process "gcc -g -Wall -Wno-unused-variable -I stdlib/ -g -L stdlib/ out.c -lmylist -luv"); *)
             match action with
                 Ast | Translate | Compile -> ();
                 | Run | Compare -> 
                  let executable = "./" ^ fullNameStub ^ " > " in
                  ignore(read_process (executable ^ fullNameStub ^ ".out")); 
-                (*| Run | Compare -> ignore(read_process ("./a.out > " ^ fullNameStub ^ ".out")); *)
-                (* ignore(Unix.execv "./a.out" [| "./a.out"; "> stdout.txt" |]); *)
             match action with
                 Ast | Translate | Compile | Run -> ();
                 | Compare -> let a = "diff " ^ fullNameStub ^ ".out 2>&1 " ^ fullNameStub ^ ".expected > " ^ fullNameStub ^ ".diff" in 

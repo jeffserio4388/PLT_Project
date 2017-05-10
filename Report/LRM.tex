@@ -52,75 +52,37 @@ ExampleCode(blah, blah)
 %\renewcommand{\thesubsection}{\thesection.\alph{subsection}.} 
 
 %\setcounter{page}{0}
-\chapter{LRM}
+\chapter{Language Reference Manual}
+\section{About Pipeline and the LRM}
+Pipeline is an asynchronous event-driven, strongly typed, statically scoped, imperative style pass=by-value programming language. It translates into C code so that it can use the event-driven C library libuv, which is the library that powers nodejs. It is centered around a pipe which is more of a user-friendly interface to a thread-like asynchronous programming structure. It executes everything inside of the pipe synchronously in relation to the other statements in the pipe, but asynchronously from the main block of code. The result is a block of non-blocking code that acts independently from the main program, and involves little to no context-switching.
 \section{Data Types}
-
-
-
-\subsection{Primitive Types}
-These are the following primitive data types in Pipeline:
+Pipeline has 7 types and one object that acts like a type, but cannot be passed to other functions. \\
+Pipeline has \texttt{int, bool, void, string, float, struct and File} types.
 \begin{itemize}
     \item int -  Standard 32-bit (4 bytes) signed integer. It can take any value in the range [-2147483648, 2147483647].
     \item float - Single precision floating point number, that occupies 32 bits (4 bytes) and its significand has a precision of 24 bits (about 7 decimal digits). 
-    \item char - An 8-bit (1 byte) ASCII character. Extended ASCII set is included, so we use all 256 possible values.
-    \item pointer - A 64-bit pointer that holds the value to a location in memory; very similar to those found in C.
+    \item string - an array of characters
+    \item File - a user-defined object for file I/O
+    \item bool - a boolean
+    \item struct- a user-defined type that can contain a struct type, string, bool, float, or int
+    \item void - a type only usable as a function type to signify that there it returns nothing.
 \end{itemize}
 \begin{lstlisting}
-	Type specifiers are:
-        void
-        char
-        int
-        float
+type:
+    int
+    | bool
+    | void
+    | string
+    | float
+    | File
+    | struct id
+
+expr:
+	...
+	| type id [ ]; /* List */
 
 \end{lstlisting}
-\subsection{Compound Types}
-\begin{itemize}
-    \item String - objects that represent sequences of characters. 
-    \item Array - A data structure that lets you store one or more elements (of a particular data type) consecutively in memory. The elements are indexed beginning at position zero. 
-    \\Example:
-
-\begin{lstlisting}
-                      a = [1,2,3,4,5];
-		              c = [ [1,2,3,4],[5,6,7,8]];
-		              d = []
-\end{lstlisting}
-    \item Struct - A structure is a programmer-defined data type made up of variables of other data types (possibly including other structure types). 
- Example:
-        \begin{lstlisting}		              
-		              struct foo {
-			               int bar;
-			               string bar1;
-                      };
-		      
-
-\end{lstlisting}
-        
-
-    \item Tuples - A tuple is a finite ordered list of elements. Tuples are used to group together related data, they are immutable. Tuples have the following form:
-    \begin{lstlisting}
-                                tuple-specifier:
-                                    tuple declarator expression
-                                    
-                                tuple-list:
-                                    tuple
-                                    tuple-list
-                                    
-                                tuple:
-                                    tuple
-                                    tuple = expression
-                                    
-                                    
-    \end{lstlisting}
-    
-\end{itemize}
-
-Example with tuple:
-\begin{lstlisting}
-                            b = ("Bob", 19, "CS")
-\end{lstlisting}
-
-
-
+The \texttt{int} type is a 32-bit integer, and the \texttt{float} type is a 64-bit floating-point number. They are the only types that can be used in the same binary operations like addition. The \texttt{bool} is a boolean that translates to a 1 or a 0 in C, with true = 1 and false = 0. The \texttt{string} type is a string of characters and translates to an array of characters in C. Because \texttt{string} is a complex type, and there is no garbage collection in pipeline, strings are not guaranteed when passed between functions. The \texttt{File} type is used for file I/O operations. It is under the covers a user-defined File object which contains the file pointer, a string buffer (which is deleted when the file is closed), and pointers to the functions for reading writing and closing the file object. The \texttt{List} type is not a fully fledged type, but rather a collection of expressions that operate on a singly linked list. Because there is no garbage collection the list could not be fully implemented as a type without significant memory leaks, so we decided to make it only availible within the function it was called. Structs are essentially one-to-one in C and can be used to define a collection of types.
 %\subsection{subsection}
 %\subsubsection{subsubsection}
 \section{Lexical Conventions}
@@ -154,67 +116,14 @@ Literals are sequence of numbers, which may be identified with the regular expre
 There are five classes of tokens:
 identifiers, keywords, string literals,operators, other separators.\\
 The following "white space" characters are ignored except they separate tokens: blanks, tabs, newlines, and comments.\\
-These are the list of tokens used in pipeline:\\
+
+\subsubsection{Reserved Words}
 \begin{lstlisting}
-| "(" { LPAREN } 
-| ")" { RPAREN } 
-| "{" { LBRACE } 
-| "}" { RBRACE } 
-| ";" { SEMI } 
-| "." { NAMESPACE }
-| ":" { COLON } 
-| "," { COMMA } 
-| "+" { PLUS } 
-| "-" { MINUS }
-| "*" { TIMES } 
-| "%" { MOD } 
-| ">>" { RSHIFT } 
-| "<<" { LSHIFT } 
-| "/" { DIVIDE } 
-| "=" { ASSIGN } 
-| "==" { EQ }
-| "!=" { NEQ } 
-| "<" { LT } 
-| "<=" { LEQ } 
-| ">" { GT } 
-| ">=" { GEQ } 
-| "!" { NOT } 
-| "if" { IF } 
-| "else" { ELSE } 
-| "elif" { ELIF } 
-| "for" { FOR } 
-| "return" { RETURN } 
-| "int" { INT }
-| "float" { FLOAT } 
-| "char" { CHAR }
-| "@" { POINTER } 
-| "&" { AMPERSAND } 
-| "void" { VOID } 
-| "struct" { STRUCT } 
-| "string" { STRING } 
-| "break" { BREAK } 
-
-The "pipe" token : {PIPE}
-This token is used to signify the beginning of the pipe block of code. 
-pipe
-{
-statement-list
-} 
-
-The "fun" token : { FUNCTION } 
-This token is used to define functions, followed by the function name, the parameters and then the return type or types if applicable.
-fun function_name(P_type_1 p_name_1, ..., P_type_n p_name_n)(ret_type)
-{
-<body of code>
-}
-
-The "catch" token : {CATCH}
-Any pipe's sequential flow could be  interrupted by an error. This token is used for catching such unrecoverable errors.
-catch( parameter-list ) { statement-list }
-
-
+	int         string      float		void		function        listen
+    pipe        File        struct      global      http            if
+    else        for         while       addleft     addright        popleft
+    popright    return      true        false
 \end{lstlisting}
-
 \subsection{Punctuation}
 \subsubsection{Semicolon}
 As in C, the semicolon ‘;’ is required to terminate any statement in Pipeline
@@ -228,7 +137,7 @@ In order to keep the language free-format, braces are used to separate blocks. T
 LBRACE statements RBRACE
 \end{lstlisting}
 
-\subsubsection{Paranthesis }
+\subsubsection{Paranthesis}
 To assert precedence, expressions may be encapsulated within parentheses to guarantee order of operations.
 \begin{lstlisting}
 LPAREN expression RPAREN
@@ -236,6 +145,8 @@ LPAREN expression RPAREN
 
 \subsubsection{Comments }
 Comments are initiated with $‘/* ‘$ and closed with $‘*/’$ and cannot be nested.
+
+
 %\subsection{subsection}
 %\subsubsection{subsubsection}
 \section{Operators and Expression}
@@ -770,8 +681,147 @@ statement-list:
 \end{lstlisting}
 \section{Tools for Web Developement}
 Pipeline is a language designed for backend web development. As such, there are certain tools necessary for the backend web programmer.
-\subsection{Comprehensive List of Tools for Web Development}
-\subsubsection{subsection}
-\subsubsection{subsubsection}
-\end{document}
 
+\subsection{Full Grammar}
+Associativity in order (if associativity is not stated it is left associative)
+\begin{lstlisting}
+    1) "."
+	2) right "!" for not and "-" for negative
+	3) "*" multiplication "/" division
+	4) "+","-", "$" concatenation
+	5) "<", ">", "<=" and ">="
+	6) "==" and "!="
+	7) "&&" and
+	8) "||" or
+	9) "=" assignment
+    11) NOELSE
+
+program:
+	decls EOF
+
+decls:
+    /* nothing */      
+    | decls global    
+    | decls stmt     
+    | decls fdecl    
+    | decls pdecl    
+    | decls sdecl    
+
+sdecl:
+    struct id { vdecl_list };
+
+
+listen:
+    listen ( string_lit , int_lit, ); http_list
+
+http_list:
+    /* nothing */       
+    | http_list http    
+
+http:
+    http ( string_lit , string_lit ) ;
+
+listen_opt:
+    /* nothing */
+    | listen  
+
+pdecl:
+    pipe { listen_opt stmt_list }
+
+vdecl:
+    type id ;
+
+fdecl:
+    function type id
+
+formals_opt:
+    /* nothing */ 
+    | formal_list  
+
+formal_list:
+    type id
+    | formal_list , type id 
+
+type:
+    int
+    | bool
+    | void
+    | string
+    | float
+    | File
+    | struct id
+
+vdecl_list:
+    /* nothing */  
+    | vdecl_list vdecl
+
+global:
+    global type id ;
+    | global type id = expr ;
+
+
+stmt_list:
+    /* nothing */  
+    | stmt_list stmt
+
+
+stmt:
+    expr ;
+    | return ;
+    | return expr ;
+    | { stmt_list }
+    | if ( expr ) stmt %prec NOELSE
+    | if ( expr ) stmt else stmt
+    | for ( expr_opt ; expr ; expr_opt ) stmt
+    | while ( expr ) stmt                      
+    | type id ;
+    | type id = expr ;
+    | type id [ ] ;   
+
+expr_opt:
+    /* nothing */
+    | expr       
+
+expr:
+    int_lit
+    | true
+    | false
+    | id
+    | float_litFLOAT_LIT     
+    | string_lit
+    | expr + expr
+    | expr - expr            
+    | expr *  expr           
+    | expr / expr           
+    | expr = expr           
+    | expr != expr           
+    | expr < expr           
+    | expr <= expr           
+    | expr > expr           
+    | expr >= expr           
+    | expr && expr           
+    | expr || expr           
+    | expr . expr           
+    | expr $ expr           
+    | - expr %prec NEG       
+    | ! expr                   
+    | id = expr             
+    | id ( actuals_opt )
+    | ( expr )          
+    | id [ int_literal ]   /* access the nth item in a list */ 
+    | addleft ( id , expr )  
+    | addright ( id , expr ) 
+    | popleft ( id  ) 
+    | popright ( id ) 
+
+
+actuals_opt:
+    /* nothing */ { [] }
+    | actuals_list
+
+actuals_list:
+    expr
+    | actuals_list , expr
+\end{lstlisting}
+   
+\end{document}

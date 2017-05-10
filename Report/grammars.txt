@@ -1,0 +1,139 @@
+Associativity in order (if associativity is not stated it is left associative)
+
+    1) "."
+	2) right "!" for not and "-" for negative
+	3) "*" multiplication "/" division
+	4) "+","-", "$" concatenation
+	5) "<", ">", "<=" and ">="
+	6) "==" and "!="
+	7) "&&" and
+	8) "||" or
+	9) "=" assignment
+    11) NOELSE
+
+program:
+	decls EOF
+
+decls:
+    /* nothing */      
+    | decls global    
+    | decls stmt     
+    | decls fdecl    
+    | decls pdecl    
+    | decls sdecl    
+
+sdecl:
+    struct id { vdecl_list };
+
+
+listen:
+    listen ( string_lit , int_lit, ); http_list
+
+http_list:
+    /* nothing */       
+    | http_list http    
+
+http:
+    http ( string_lit , string_lit ) ;
+
+listen_opt:
+    /* nothing */
+    | listen  
+
+pdecl:
+    pipe { listen_opt stmt_list }
+
+vdecl:
+    type id ;
+
+fdecl:
+    function type id
+
+formals_opt:
+    /* nothing */ 
+    | formal_list  
+
+formal_list:
+    type id
+    | formal_list , type id 
+
+type:
+    int
+    | bool
+    | void
+    | string
+    | float
+    | File
+    | struct id
+
+vdecl_list:
+    /* nothing */  
+    | vdecl_list vdecl
+
+global:
+    global type id ;
+    | global type id = expr ;
+
+
+stmt_list:
+    /* nothing */  
+    | stmt_list stmt
+
+
+stmt:
+    expr ;
+    | return ;
+    | return expr ;
+    | { stmt_list }
+    | if ( expr ) stmt %prec NOELSE
+    | if ( expr ) stmt else stmt
+    | for ( expr_opt ; expr ; expr_opt ) stmt
+    | while ( expr ) stmt                      
+    | type id ;
+    | type id = expr ;
+    | type id [ ] ;   
+
+expr_opt:
+    /* nothing */
+    | expr       
+
+expr:
+    int_lit
+    | true
+    | false
+    | id
+    | float_litFLOAT_LIT     
+    | string_lit
+    | expr + expr
+    | expr - expr            
+    | expr *  expr           
+    | expr / expr           
+    | expr = expr           
+    | expr != expr           
+    | expr < expr           
+    | expr <= expr           
+    | expr > expr           
+    | expr >= expr           
+    | expr && expr           
+    | expr || expr           
+    | expr . expr           
+    | expr $ expr           
+    | - expr %prec NEG       
+    | ! expr                   
+    | id = expr             
+    | id ( actuals_opt )
+    | ( expr )          
+    | id [ int_literal ]   /* access the nth item in a list */ 
+    | addleft ( id , expr )  
+    | addright ( id , expr ) 
+    | popleft ( id  ) 
+    | popright ( id ) 
+
+
+actuals_opt:
+    /* nothing */ { [] }
+    | actuals_list
+
+actuals_list:
+    expr
+    | actuals_list , expr
