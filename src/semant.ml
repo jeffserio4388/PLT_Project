@@ -627,8 +627,8 @@ in
   in
   let listen_check l = 
         let helper arg = 
-            if StringMap.mem arg fdecls then ()
-            else if StringMap.mem arg reserved_funcs then ()
+            if StringMap.mem (String.sub arg 1 (String.length(arg)-2)) fdecls then ()
+            else if StringMap.mem (String.sub arg 1 (String.length(arg)-2)) reserved_funcs then ()
             else raise (Failure("illegal http function argument " ^ arg ))
         in
         List.iter (fun h ->  helper h.httpArg3) l.arg3
