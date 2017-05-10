@@ -1,2 +1,9 @@
 global int a = 10;
-global int a = 11;
+
+function void test(){
+    print_int(a);
+
+}
+{
+    test();
+}
