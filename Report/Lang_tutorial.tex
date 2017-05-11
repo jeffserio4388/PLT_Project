@@ -359,6 +359,45 @@ function int fib(int x){//function the calculates the nth Fibonacci numbers
  }
 \end{lstlisting}
 \section{pipe}
+Pipes are created to enable asynchronous programming using the event-driven architecture. Ideally the code that is blocking, and the variables dependent on it, go inside a pipe. Multiple pipes can be created in the program.
+\begin{lstlisting}
+pipe{
+	int a ;
+	int b ;
+	while(1);
+	int c = a + b;
+	print_int(a+b);
+}
+\end{lstlisting}
+
+\section{Routing}
+Pipeline language supports the following HTTP functions - LISTEN, GET, PUT, POST. All these functions are supported only inside a pipe. The Listen function has to go first inside the pipe before anything else, and the rest of the HTTP functions require LISTEN to be present for them to execute. The listen function takes a string (IP Address) and an integer (the port number). The other HTTP functions take “GET”, “POST”, “PUT”, “DELETE” as the 1st argument; the route as the 2nd argument; and the callback function(function name is passed as string) as the 3rd argument.
+
+\begin{lstlisting}
+function string get_user_handler(){
+    return "You sent me a GET request !!!???! ";
+}
+function string put_user_handler(){
+    return "You sent me a PUT request !!!???! ";
+}
+function string post_user_handler(){
+    return "You sent me a POST request !!!???! ";
+}
+function string delete_user_handler(){
+    return "You sent me a DELETE request !!!???! ";
+}
+pipe {
+    listen("127.0.0.1",8080);
+    http("GET","/user","get_user_handler");
+    http("PUT","/user","put_user_handler");
+    http("POST","/user","post_user_handler");
+    http("DELETE","/user","delete_user_handler");
+}
+
+\end{lstlisting}
+    
+
+
 \section{build-in functions}
 build-in functions provided by the pipeline language:\\
 \begin{itemize}
