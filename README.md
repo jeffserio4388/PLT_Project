@@ -23,7 +23,7 @@ Repository for PLT team project codename: Pipeline
     apt-get install ocaml ocaml-native-compilers camlp4-extra opam
 
 ## Step 3: Pipeline
-    navigate to the PLT_project folder
+    navigate to the PLT_Project folder
     enter command 'make'
 
 ## Step 4:Run the test
