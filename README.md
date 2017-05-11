@@ -26,7 +26,11 @@ Repository for PLT team project codename: Pipeline
     navigate to the src folder
     enter command 'make'
 
-## Step 3: Run files with the pipeline executable as follows:
+## Step 4:Run the test
+    navigate to the src folder
+    enter command 'python testall.py'
+
+## Step 5: Run files with the pipeline executable as follows:
     ./pipeline -<flag> <filename.pl>
     where <flag> can be any of the following
         ("-a", Ast);        (* Print the AST *)
@@ -34,7 +38,6 @@ Repository for PLT team project codename: Pipeline
         ("-c", Compile);    (* Compile the output c file *)
         ("-r", Run);        (* Run the program *)
         ("-d", Compare) ]   (* Compare output and expected output *)
-
 
 
 
