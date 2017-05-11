@@ -7,13 +7,14 @@ Repository for PLT team project codename: Pipeline
 
 Download libuv from the following link: http://dist.libuv.org/dist/v1.11.0/
 Follow the instructions to install:
+    $ sudo apt-get install ocaml
     $ sudo apt-get install automake
     $ sudo apt-get install libtoolize
     $ ./autogen.sh
     $ ./configure
     $ make
     $ make check
-    $ make install
+    $ sudo make install
     $ echo "export LD_LIBRARY_PATH=\"/usr/local/lib\"" >> ~/.bashrc
     $ source ~/.bashrc
 
