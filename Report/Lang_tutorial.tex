@@ -54,6 +54,38 @@ ExampleCode(blah, blah)
 %\setcounter{page}{0}
 \chapter{Language Tutorial}
 \section{Setup}
+\subsection{install dependencies}
+\begin{verbatim}
+Download libuv from the following link: http://dist.libuv.org/dist/v1.11.0/
+Follow the instructions to install:
+ sudo apt-get install automake
+ sudo apt-get install libtoolize
+ ./autogen.sh
+ ./configure
+ make
+ make check
+ sudo make install
+ echo "export LD_LIBRARY_PATH=\"/usr/local/lib\"" >> ~/.bashrc
+ source ~/.bashrc
+\end{verbatim}
+\subsection{install ocaml}
+\begin{verbatim}
+add-apt-repository ppa:avsm/ppa
+apt-get update
+apt-get install ocaml ocaml-native-compilers camlp4-extra opam
+\end{verbatim}
+\subsection{make pipeline executable}
+\begin{verbatim}
+navigate to the src folder
+enter command 'make'
+\end{verbatim}
+\subsection{run tests}
+\begin{verbatim}
+navigate to the src folder
+enter command 'python testall.py'
+\end{verbatim}
+\subsection{Run files with the pipeline executable as follows:}
+\includegraphics[scale = 0.5]{how_to_run}\\
 \section{Program composition}
 All statements in a pipeline program must be in one of the following blocks(function, pipe, anonymous block) with global variables as exception.\\
 \begin{lstlisting}
