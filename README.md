@@ -5,8 +5,8 @@ Repository for PLT team project codename: Pipeline
 
 ## Step 1: Libuv
 
-Download libuv from the following link: http://dist.libuv.org/dist/v1.11.0/
-Follow the instructions to install:
+    Download libuv from the following link: http://dist.libuv.org/dist/v1.11.0/
+    Follow the instructions to install:
     $ sudo apt-get install automake
     $ sudo apt-get install libtoolize
     $ ./autogen.sh
