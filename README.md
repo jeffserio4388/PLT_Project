@@ -7,14 +7,18 @@ Repository for PLT team project codename: Pipeline
 
 Download libuv from the following link: http://dist.libuv.org/dist/v1.11.0/
 Follow the instructions to install:
-    $ sh autogen.sh
+    $ sudo apt-get install automake
+    $ sudo apt-get install libtoolize
+    $ ./autogen.sh
     $ ./configure
     $ make
     $ make check
     $ make install
+    $ echo "export LD_LIBRARY_PATH=\"/usr/local/lib\"" >> ~/.bashrc
+    $ source ~/.bashrc
 
 Add the following line to your bashrc:
-    export LD_LIBRARY_PATH="/usr/local/lib"
+    
 
 ## Step 2: Pipeline
     navigate to the src folder
