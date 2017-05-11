@@ -1,0 +1,192 @@
+Fatal error: exception Failure("illegal binary operator int + string in 1+\"hello\"")
+rm: cannot remove '../basic_tests/test-fail-intstrop': No such file or directory
+Fatal error: exception Failure("illegal assignment int = string in i = s")
+rm: cannot remove '../basic_tests/test-fail-intstring-assignmismatch': No such file or directory
+Fatal error: exception Failure("illegal assignment in float j = i of type int")
+rm: cannot remove '../basic_tests/test-fail-intfloat-assignmismatch': No such file or directory
+Fatal error: exception Failure("illegal file mode \"f\"given as argument in open file perhaps you added an extra space.")
+rm: cannot remove '../basic_tests/test-fail-filemode': No such file or directory
+Fatal error: exception Failure("illegal assignment in int i = f of type file")
+rm: cannot remove '../basic_tests/test-fail-intfile-assignmismatch': No such file or directory
+Fatal error: exception Parsing.Parse_error
+rm: cannot remove '../basic_tests/test-fail-listdecinit': No such file or directory
+Fatal error: exception Parsing.Parse_error
+rm: cannot remove '../basic_tests/test-fail-intstruct-assignmismatch': No such file or directory
+Fatal error: exception Failure("illegal assignment int = int in i = k")
+rm: cannot remove '../basic_tests/test-fail-intlist': No such file or directory
+Fatal error: exception Parsing.Parse_error
+rm: cannot remove '../basic_tests/test-fail-structlit': No such file or directory
+Fatal error: exception Failure("illegal assignment bool = string in i = s")
+rm: cannot remove '../basic_tests/test-fail-stringbool-assignmismatch': No such file or directory
+Fatal error: exception Failure("variable g is of type file which cannot be initialized and declared at the time.")
+rm: cannot remove '../basic_tests/test-fail-fileinitandassign': No such file or directory
+Fatal error: exception Parsing.Parse_error
+rm: cannot remove '../basic_tests/test-fail-structvarmismatch': No such file or directory
+Fatal error: exception Failure("illegal function definition. function print_stris the name of a built_in function")
+rm: cannot remove '../basic_tests/test-fail-funcnamedbuiltin': No such file or directory
+Fatal error: exception Failure("duplicate function foo")
+rm: cannot remove '../basic_tests/test-fail-dupfuncs': No such file or directory
+Fatal error: exception Failure("illegal unary operator -string in -s")
+rm: cannot remove '../basic_tests/test-fail-negstring': No such file or directory
+Fatal error: exception Failure("illegal concatenation operator string $  int in \"a\" $ \"b\" $ 4")
+rm: cannot remove '../basic_tests/test-fail-concatint': No such file or directory
+Fatal error: exception Failure("illegal binary operator float + string in 1.+s")
+rm: cannot remove '../basic_tests/test-fail-floatstrop': No such file or directory
+Fatal error: exception Failure("illegal assignment in string s = foo of type file")
+rm: cannot remove '../basic_tests/test-fail-filestr-assignmismatch': No such file or directory
+Fatal error: exception Parsing.Parse_error
+rm: cannot remove '../basic_tests/test-fail-filestruct-assignmismatch': No such file or directory
+Fatal error: exception Failure("illegal assignment float = string in i = s")
+rm: cannot remove '../basic_tests/test-fail-floatstring-assignmismatch': No such file or directory
+Fatal error: exception Failure("i is an illegal void type variable")
+rm: cannot remove '../basic_tests/test-fail-voidvar': No such file or directory
+Fatal error: exception Failure("illegal assignment int = bool in i = s")
+rm: cannot remove '../basic_tests/test-fail-intbool-assignmismatch': No such file or directory
+Fatal error: exception Failure("illegal actual argument found int expected file in 1")
+rm: cannot remove '../basic_tests/test-fail-fileopmismatch': No such file or directory
+rm: cannot remove '*o': No such file or directory
+Starting the tests..
+test-fail-intstrop.pl
+../basic_tests/test-fail-intstrop.diff
+../basic_tests/test-fail-intstrop.diff
+rm ../basic_tests/test-fail-intstrop
+test-fail-intstring-assignmismatch.pl
+../basic_tests/test-fail-intstring-assignmismatch.diff
+../basic_tests/test-fail-intstring-assignmismatch.diff
+rm ../basic_tests/test-fail-intstring-assignmismatch
+test-fail-intfloat-assignmismatch.pl
+../basic_tests/test-fail-intfloat-assignmismatch.diff
+../basic_tests/test-fail-intfloat-assignmismatch.diff
+rm ../basic_tests/test-fail-intfloat-assignmismatch
+test-fail-filemode.pl
+../basic_tests/test-fail-filemode.diff
+../basic_tests/test-fail-filemode.diff
+rm ../basic_tests/test-fail-filemode
+test-fail-intfile-assignmismatch.pl
+../basic_tests/test-fail-intfile-assignmismatch.diff
+../basic_tests/test-fail-intfile-assignmismatch.diff
+rm ../basic_tests/test-fail-intfile-assignmismatch
+test-fail-listdecinit.pl
+../basic_tests/test-fail-listdecinit.diff
+../basic_tests/test-fail-listdecinit.diff
+rm ../basic_tests/test-fail-listdecinit
+test-fail-intstruct-assignmismatch.pl
+../basic_tests/test-fail-intstruct-assignmismatch.diff
+../basic_tests/test-fail-intstruct-assignmismatch.diff
+rm ../basic_tests/test-fail-intstruct-assignmismatch
+test-fail-intlist.pl
+../basic_tests/test-fail-intlist.diff
+../basic_tests/test-fail-intlist.diff
+rm ../basic_tests/test-fail-intlist
+test-fail-structlit.pl
+../basic_tests/test-fail-structlit.diff
+../basic_tests/test-fail-structlit.diff
+rm ../basic_tests/test-fail-structlit
+test-fail-stringbool-assignmismatch.pl
+../basic_tests/test-fail-stringbool-assignmismatch.diff
+../basic_tests/test-fail-stringbool-assignmismatch.diff
+rm ../basic_tests/test-fail-stringbool-assignmismatch
+test-fail-fileinitandassign.pl
+../basic_tests/test-fail-fileinitandassign.diff
+../basic_tests/test-fail-fileinitandassign.diff
+rm ../basic_tests/test-fail-fileinitandassign
+test-fail-structvarmismatch.pl
+../basic_tests/test-fail-structvarmismatch.diff
+../basic_tests/test-fail-structvarmismatch.diff
+rm ../basic_tests/test-fail-structvarmismatch
+test-fail-funcnamedbuiltin.pl
+../basic_tests/test-fail-funcnamedbuiltin.diff
+../basic_tests/test-fail-funcnamedbuiltin.diff
+rm ../basic_tests/test-fail-funcnamedbuiltin
+test-fail-dupfuncs.pl
+../basic_tests/test-fail-dupfuncs.diff
+../basic_tests/test-fail-dupfuncs.diff
+rm ../basic_tests/test-fail-dupfuncs
+test-fail-negstring.pl
+../basic_tests/test-fail-negstring.diff
+../basic_tests/test-fail-negstring.diff
+rm ../basic_tests/test-fail-negstring
+test-fail-concatint.pl
+../basic_tests/test-fail-concatint.diff
+../basic_tests/test-fail-concatint.diff
+rm ../basic_tests/test-fail-concatint
+test-fail-floatstrop.pl
+../basic_tests/test-fail-floatstrop.diff
+../basic_tests/test-fail-floatstrop.diff
+rm ../basic_tests/test-fail-floatstrop
+test-fail-filestr-assignmismatch.pl
+../basic_tests/test-fail-filestr-assignmismatch.diff
+../basic_tests/test-fail-filestr-assignmismatch.diff
+rm ../basic_tests/test-fail-filestr-assignmismatch
+test-fail-filestruct-assignmismatch.pl
+../basic_tests/test-fail-filestruct-assignmismatch.diff
+../basic_tests/test-fail-filestruct-assignmismatch.diff
+rm ../basic_tests/test-fail-filestruct-assignmismatch
+test-fail-floatstring-assignmismatch.pl
+../basic_tests/test-fail-floatstring-assignmismatch.diff
+../basic_tests/test-fail-floatstring-assignmismatch.diff
+rm ../basic_tests/test-fail-floatstring-assignmismatch
+test-fail-voidvar.pl
+../basic_tests/test-fail-voidvar.diff
+../basic_tests/test-fail-voidvar.diff
+rm ../basic_tests/test-fail-voidvar
+test-fail-intbool-assignmismatch.pl
+../basic_tests/test-fail-intbool-assignmismatch.diff
+../basic_tests/test-fail-intbool-assignmismatch.diff
+rm ../basic_tests/test-fail-intbool-assignmismatch
+test-fail-fileopmismatch.pl
+../basic_tests/test-fail-fileopmismatch.diff
+../basic_tests/test-fail-fileopmismatch.diff
+rm ../basic_tests/test-fail-fileopmismatch
+
+---------- PASSED TESTS ------------
+**** PASSED - failed for file test-fail-intstrop.pl
+
+**** PASSED - failed for file test-fail-intstring-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-intfloat-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-filemode.pl
+
+**** PASSED - failed for file test-fail-intfile-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-listdecinit.pl
+
+**** PASSED - failed for file test-fail-intstruct-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-intlist.pl
+
+**** PASSED - failed for file test-fail-structlit.pl
+
+**** PASSED - failed for file test-fail-stringbool-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-fileinitandassign.pl
+
+**** PASSED - failed for file test-fail-structvarmismatch.pl
+
+**** PASSED - failed for file test-fail-funcnamedbuiltin.pl
+
+**** PASSED - failed for file test-fail-dupfuncs.pl
+
+**** PASSED - failed for file test-fail-negstring.pl
+
+**** PASSED - failed for file test-fail-concatint.pl
+
+**** PASSED - failed for file test-fail-floatstrop.pl
+
+**** PASSED - failed for file test-fail-filestr-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-filestruct-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-floatstring-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-voidvar.pl
+
+**** PASSED - failed for file test-fail-intbool-assignmismatch.pl
+
+**** PASSED - failed for file test-fail-fileopmismatch.pl
+
+---------- FAILED TESTS ------------
+---------- TESTS STATS------------
+Passed : 23
+Failed : 0
