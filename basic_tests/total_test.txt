@@ -1,0 +1,858 @@
+{ int i = 1 + "hello";
+print_str("failed\n");
+
+ }
+global bool a = true;
+global bool b = false;
+
+{
+print_bool(a);
+print_bool(b);
+}
+{
+File test_file;
+init_file_obj(test_file, "test-fileIO.txt", "w+");
+fwrite_str("Hello World\n", test_file);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+string s = fread_line(test_file);
+print_str(s);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+s = freadn(test_file, 4);
+print_str(s);
+print_str("\n");
+close_file(test_file);
+}
+{
+string x ="hello";
+string y ="world";
+
+print_str(x);
+print_str(y);
+}
+{
+int i = 10;
+float j = i + 1.0;
+print_float(j);
+print_str("\n");
+}
+{
+int a [];
+float b [];
+string c [];
+bool d [];
+addleft(c,"test");
+print_str(c[0]);
+}
+{
+File test_file;
+init_file_obj(test_file, "test-fileIO.txt", "w+");
+fwrite_str("Hello World\n", test_file);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+string s = fread_line(test_file);
+print_str(s);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+s = freadn(test_file, 4);
+print_str(s);
+print_str("\n");
+close_file(test_file);
+}
+{
+int i = 10;
+float j = i + 1.0;
+print_float(j);
+print_str("\n");
+}
+/* This should fail */
+{
+int i;
+string s = "hello";
+i = s; 
+print_str("failed\n");
+
+}
+global float x = 1.1;
+global float y = 1.2;
+
+{ print_float(y); }
+global float x = 1.1;
+global float y = 1.2;
+
+{ print_float(y); }
+struct A {
+    int i;
+};
+{
+struct A a;
+a.i = 1;
+int i = a.i;
+print_int(i);
+print_str("\n");
+}
+{
+int a = 10;
+print_int(a);
+}
+struct x{
+    int a;
+    int b;
+};
+
+{
+struct x test; 
+test.a = 1;
+print_int(test.a);
+}
+{
+string a = "hello";
+print_str(a);
+}
+{
+string a = "hello ";
+string b = "world";
+string d = "!";
+string c;
+c = a$b$d;
+print_str(c);
+}
+{
+string a[];
+
+addright(a,"1");
+addright(a,"2");
+addright(a,"3");
+int i = 0;
+print_str(a[0]);
+print_str(a[1]);
+print_str(a[2]);
+}
+{
+int i;
+for (i = 99; i >0; i = i-1)
+    {       
+
+    string wall = " bottles of beer on the wall";
+    string beer = " bottles of beer.";
+    string pass = "Take one down and paas it around, ";
+    string nomore = "No more bottle of beer on the wall";
+    if(i>1){
+        print_int(i);
+        print_str(wall$", ");
+		print_int(i);
+		print_str(beer$"\n");
+        print_str(pass);
+        print_int(i-1);
+        print_str(wall$".\n\n");
+        }
+    else{
+        print_int(i);
+        print_str(wall$",");
+        print_int(i);
+        print_str(beer$"\n");
+        print_str(pass);
+        print_str(nomore$"\n\n");
+        print_str(nomore $ ", no more bottle of beer"$"\n");
+        print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
+        }
+    }
+    }
+function int test(int a, int b){
+    return a+b;
+}
+{
+int c;
+c = test(1,2);
+print_int(c);
+}
+{
+int a = 1;
+int b = 2;
+print_int(a);
+print_int(b);
+}
+
+
+function int fib(int x){
+
+    if(x==0){
+        return 0;
+    }
+    if (x==1){
+        return 1;
+    }
+    return fib(x-1)+fib(x-2);
+}
+{
+int c = fib(4);
+
+print_int(c);
+}
+
+
+
+{
+File test_file;
+init_file_obj(test_file, "test-fileIO.txt", "w+");
+fwrite_str("Hello World\n", test_file);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+string s = fread_line(test_file);
+print_str(s);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+s = freadn(test_file, 4);
+print_str(s);
+print_str("\n");
+close_file(test_file);
+}
+{
+string a = "hello";
+string b = "hello";
+bool x;
+x = cmp(a,b);
+print_bool(x);
+}
+/* This should fail */
+{
+int i = 1;
+float j = i;
+print_str("failed\n");
+
+}
+{
+int list [];
+int a = 1;
+addleft(list,a);
+addleft(list,a+1);
+addleft(list,a+2);
+print_int(list[0]);
+print_int(list[1]);
+print_int(list[2]);
+popleft(list);
+print_int(list[0]);
+popleft(list);
+print_int(list[0]);
+}
+global int a = 10;
+global int b = 11;
+function void foo(){
+    int i = a + b;
+    print_int(i);
+    print_str("\n");
+}
+{
+    foo();
+}
+{int a = 1;
+int b = 2;
+int c;
+c = a+b;
+print_int(c);}
+{
+File f;
+init_file_obj(f, "test_file.txt", "f");
+print_str("failed\n");
+
+}
+struct x{
+    int a;
+    int b;
+};
+
+{
+struct x test; 
+test.a = 1;
+print_int(test.a);
+}
+function int fib(int x){
+
+    if(x==0){
+        return 0;
+    }
+    if (x==1){
+        return 1;
+    }
+    return fib(x-1)+fib(x-2);
+}
+{
+int c = fib(4);
+
+print_int(c);
+}
+
+
+
+struct A {
+    int i;
+};
+{
+struct A a;
+a.i = 1;
+int i = a.i;
+print_int(i);
+print_str("\n");
+}
+{File f;
+int i = f;
+print_str("failed\n");
+
+}
+{
+int a [];
+float b [];
+string c [];
+bool d [];
+addleft(c,"test");
+print_str(c[0]);
+}
+function int test(int a, int b){
+    return a+b;
+}
+{
+int c;
+c = test(1,2);
+print_int(c);
+}
+{
+string a = "hello";
+int length;
+length = len(a);
+print_int(length);
+}
+struct test{
+    int a;
+    string b;
+};
+
+struct test2{
+    int a;
+    float b;
+};
+{
+struct test x;
+struct test2 y;
+x.a = 1;
+y.a = 10;
+print_int(x.a);
+print_int(y.a);
+}
+struct A {
+    int i;
+};
+{
+struct A a;
+a.i = 1;
+int i = a.i;
+print_int(i);
+print_str("\n");
+}
+{
+int a[];
+int b = 1;
+addleft(a,b);
+print_int(a[0]);
+}
+
+{
+int i[];
+int j[] = i;
+print_str("failed\n");
+
+}
+{
+int a [];
+int b = 5;
+int c;
+addleft(a,b);
+c = a[0];
+print_int(c);
+}
+
+
+{
+File test_file;
+init_file_obj(test_file, "test-fileIO.txt", "w+");
+fwrite_str("Hello World\n", test_file);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+string s = fread_line(test_file);
+print_str(s);
+close_file(test_file);
+init_file_obj(test_file, "test-fileIO.txt", "r+");
+s = freadn(test_file, 4);
+print_str(s);
+print_str("\n");
+close_file(test_file);
+}
+{
+int i;
+for (i = 99; i >0; i = i-1)
+    {       
+
+    string wall = " bottles of beer on the wall";
+    string beer = " bottles of beer.";
+    string pass = "Take one down and paas it around, ";
+    string nomore = "No more bottle of beer on the wall";
+    if(i>1){
+        print_int(i);
+        print_str(wall$", ");
+		print_int(i);
+		print_str(beer$"\n");
+        print_str(pass);
+        print_int(i-1);
+        print_str(wall$".\n\n");
+        }
+    else{
+        print_int(i);
+        print_str(wall$",");
+        print_int(i);
+        print_str(beer$"\n");
+        print_str(pass);
+        print_str(nomore$"\n\n");
+        print_str(nomore $ ", no more bottle of beer"$"\n");
+        print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
+        }
+    }
+    }
+{
+int a = 0;
+while(a<10){
+    print_int(a);
+    a = a+1;
+}
+}
+{
+int i = 10;
+float j = i + 1.0;
+print_float(j);
+print_str("\n");
+}
+/* This should fail */
+Struct A {
+   int k;
+};
+{
+int i;
+Struct A s;
+i = s; 
+print_str("failed\n");
+
+}
+{
+int a = 10;
+print_int(a);
+}
+global float x = 1.1;
+global float y = 1.2;
+
+{ print_float(y); }
+{
+int i[];
+int k = 1;
+i = k;
+print_str("failed\n");
+
+}
+struct test{
+    int a;
+    string b;
+};
+
+struct test2{
+    int a;
+    float b;
+};
+{
+struct test x;
+struct test2 y;
+x.a = 1;
+y.a = 10;
+print_int(x.a);
+print_int(y.a);
+}
+Struct A{
+    int a;
+};
+{
+Struct A a = { };
+print_str("failed\n");
+
+}
+pipe {
+    int a =1;
+    int b =2;
+    print_int(a);
+    print_int(b);
+}
+/* This should fail */
+{
+bool i;
+string s = "hello";
+i = s; 
+print_str("failed\n");
+
+}
+global bool a = true;
+global bool b = false;
+
+{
+print_bool(a);
+print_bool(b);
+}
+global bool a = true;
+global bool b = false;
+
+{
+print_bool(a);
+print_bool(b);
+}
+{
+int a;
+for(a=0;a<10;a = a+1){
+    print_int(a);
+}
+}
+{
+float a = 1.5;
+print_float(a);
+}
+pipe {
+    int a =1;
+    int b =2;
+    print_int(a);
+    print_int(b);
+}
+{
+int list [];
+int a = 1;
+addleft(list,a);
+addleft(list,a+1);
+addleft(list,a+2);
+print_int(list[0]);
+print_int(list[1]);
+print_int(list[2]);
+popleft(list);
+print_int(list[0]);
+popleft(list);
+print_int(list[0]);
+}
+global int a = 10;
+global int b = 11;
+function void foo(){
+    int i = a + b;
+    print_int(i);
+    print_str("\n");
+}
+{
+    foo();
+}
+{int a = 1;
+int b = 2;
+int c;
+c = a+b;
+print_int(c);}
+pipe {
+    int a =1;
+    int b =2;
+    print_int(a);
+    print_int(b);
+}
+function string test(){
+    string x = "hello"; 
+    return rt_string(x);
+}
+{
+string hello = test();
+print_str(hello);
+}
+{
+int a;
+for(a=0;a<10;a = a+1){
+    print_int(a);
+}
+}
+{
+string a = "hello";
+int length;
+length = len(a);
+print_int(length);
+}
+{
+File f;
+File g = f;
+print_str("failed\n");
+}
+{
+int a;
+for(a=0;a<10;a = a+1){
+    print_int(a);
+}
+}
+pipe {
+    int a =1;
+    int b =2;
+    print_int(a);
+    print_int(b);
+}
+struct A{
+    int i;
+}
+{
+string s = "hello";
+struct A a;
+a.i = s;
+print_str("failed\n");
+
+}
+function int print_str(string s){
+  print_str("failed\n");
+}
+{
+ print_str("failed\n");
+}
+{
+string a[];
+
+addright(a,"1");
+addright(a,"2");
+addright(a,"3");
+int i = 0;
+print_str(a[0]);
+print_str(a[1]);
+print_str(a[2]);
+}
+{
+float a = 1.5;
+print_float(a);
+}
+{
+string x ="hello";
+string y ="world";
+
+print_str(x);
+print_str(y);
+}
+{int a = 1;
+int b = 2;
+int c;
+c = a+b;
+print_int(c);}
+function void foo(int x){
+    print_int(x);
+    print_str("\n");
+}
+
+function void foo(int y){
+    print_int(y);
+    print_str("\n");
+}
+{
+print_str("failed\n");
+}
+{
+string s = "abcd";
+s = -s;
+print_str("failed\n");
+
+}
+{
+string a = "hello";
+print_str(a);
+}
+{
+string a = "hello ";
+string b = "world";
+string d = "!";
+string c;
+c = a$b$d;
+print_str(c);
+}
+{
+int a;
+for(a=0;a<10;a = a+1){
+    print_int(a);
+}
+}
+{string s = "a" $ "b" $ 4;
+print_str("failed\n");
+}
+{
+string s = "hello";
+float j = 1.0 + s;
+print_str("failed\n");
+}
+
+struct A {
+    int i;
+};
+{
+struct A a;
+a.i = 1;
+int i = a.i;
+print_int(i);
+print_str("\n");
+}
+/* This should fail */
+{
+File foo;
+string s = foo;
+print_str("failed\n");
+}
+{int a = 1;
+int b = 2;
+int c;
+c = a+b;
+print_int(c);}
+{
+int a = 1;
+int b = 2;
+print_int(a);
+print_int(b);
+}
+
+
+{
+int a = 0;
+while(a<10){
+    print_int(a);
+    a = a+1;
+}
+}
+/* This should fail */
+Struct A {
+   int a;
+};
+{
+File i;
+Struct a s;
+i = s; 
+print_str("failed\n");
+
+}
+{
+int a[];
+int b = 1;
+addleft(a,b);
+print_int(a[0]);
+}
+
+{
+int a [];
+int b = 5;
+int c;
+addleft(a,b);
+c = a[0];
+print_int(c);
+}
+
+
+{
+string a = "hello";
+string b = "hello";
+bool x;
+x = cmp(a,b);
+print_bool(x);
+}
+{
+int i;
+for (i = 99; i >0; i = i-1)
+    {       
+
+    string wall = " bottles of beer on the wall";
+    string beer = " bottles of beer.";
+    string pass = "Take one down and paas it around, ";
+    string nomore = "No more bottle of beer on the wall";
+    if(i>1){
+        print_int(i);
+        print_str(wall$", ");
+		print_int(i);
+		print_str(beer$"\n");
+        print_str(pass);
+        print_int(i-1);
+        print_str(wall$".\n\n");
+        }
+    else{
+        print_int(i);
+        print_str(wall$",");
+        print_int(i);
+        print_str(beer$"\n");
+        print_str(pass);
+        print_str(nomore$"\n\n");
+        print_str(nomore $ ", no more bottle of beer"$"\n");
+        print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
+        }
+    }
+    }
+global bool a = true;
+global bool b = false;
+
+{
+print_bool(a);
+print_bool(b);
+}
+/* This should fail */
+{
+float i;
+string s = "hello";
+i = s;
+print_str("failed\n");
+}
+global float x = 1.1;
+global float y = 1.2;
+
+{ print_float(y); }
+{ 
+void i; 
+print_str("failed\n");
+}
+{
+int i;
+for (i = 99; i >0; i = i-1)
+    {       
+
+    string wall = " bottles of beer on the wall";
+    string beer = " bottles of beer.";
+    string pass = "Take one down and paas it around, ";
+    string nomore = "No more bottle of beer on the wall";
+    if(i>1){
+        print_int(i);
+        print_str(wall$", ");
+		print_int(i);
+		print_str(beer$"\n");
+        print_str(pass);
+        print_int(i-1);
+        print_str(wall$".\n\n");
+        }
+    else{
+        print_int(i);
+        print_str(wall$",");
+        print_int(i);
+        print_str(beer$"\n");
+        print_str(pass);
+        print_str(nomore$"\n\n");
+        print_str(nomore $ ", no more bottle of beer"$"\n");
+        print_str("Go to the store and buy some more, 99 bottles of beer on the wall.\n");
+        }
+    }
+    }
+/* This should fail */
+{
+int i;
+bool s = true;
+i = s; 
+print_str("failed\n");
+
+}
+{
+fwrite_str("1", 1);
+print_str("failed\n");
+}
+{
+int i = 10;
+float j = i + 1.0;
+print_float(j);
+print_str("\n");
+}
